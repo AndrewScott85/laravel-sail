@@ -47,4 +47,10 @@ Route::middleware([
             'photos' => Photo::all()
         ]);
     })->name('photos'); // This will respond to requests for admin/photos and have a name of admin.photos
+
+    Route::get('/photos/create', function ()
+    {
+        return inertia('Admin/PhotoCreate');
+    })->name('photos.create');
+
 });

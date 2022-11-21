@@ -13,33 +13,65 @@ defineProps({
                 Photos
             </h2>
         </template>
-
-        <div class="py-12">
+        <div class="py-12">           
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <!-- All posts go here -->
-                    <h2 class="text-2xl">Photos</h2>
-                    <a class="px-3 bg-sky-600 text-white rounded-sm" href="admin/photos/create">Create New</a>
-                    <table class="table-auto w-full text-left">
-                        <thead>
+                    <div class="flex justify-between mb-4">
+                    <h2 class="text-2xl font-bold py-2">Photos</h2>
+                    <button class="px-1 bg-sky-600 text-white rounded-sm" href="admin/photos/create">Create New</button>
+                </div>
+                    <div class="flex flex-col">
+                        <div class="my-2 overflow-x-auto">
+                    <table class="min-w-full divide-y">
+                        <thead class="text-xs font-semibold uppercase">
                             <tr>
-                                <th>ID</th>
-                                <th>Photo</th>
-                                <th>Description</th>
-                                <th>Actions</th>
+                                <th scope="col" >ID</th>
+                                <th scope="col">Photo</th>
+                                <th scope="col" class="p-2 ">Description</th>
+                                <th scope="col" class="relative">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="photo in photos">
-                            <td>{{photo.id}}</td>
-                            <td><img width="60" :src="photo.path" alt=""></td>
-                            <td>{{photo.description}}</td>
-                            <td>View - Edit - Delete</td>
+                            <td class="px-4">{{photo.id}}</td>
+                            <td><img width="100" :src="photo.path" alt=""></td>
+                            <td class="px-4 py-4 ">{{photo.description.slice(0,100) + "..."}}</td>
+                            <td class="px-4 flex auto">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-1 py-1 rounded">
+                                    View
+                                </button>
+                                <button class="bg-green-600 hover:bg-green-700 text-white font-bold px-1 py-1 rounded">
+                                    Edit
+                                </button>
+                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold px-1 py-1 rounded">
+                                    Delete
+                                </button>
+                            
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+                </div>
+
+                    <!-- <table>
+                        <template #header>  
+                            <th>ID</th>
+                            <th>Photo</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </template>
+                        <template #body> 
+                            <tr v-for="photo in photos"></tr>
+                            <td class="px-6 py-4 whitespace-nowrap">{{photo.id}}</td>
+                            <td class="px-6 py-4"><img :src="photo.path" alt=""></td>
+                            <td class="px-6 py-4">
+                            <div class="text-sm text-gray-500">{{photo.description.slice(0,100) + '...'}}</div>
+                        </td>
+                        </template>
+                    </table> -->
+                </div>
             </div>
-        </div>
+       
     </AppLayout>
 </template>
