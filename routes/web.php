@@ -26,7 +26,6 @@ Route::get('/', function () {
 });
 
 Route::get('photos', function() {
-    // dd(Photo::all());
     return Inertia::render('Guest/Photos', [
         'photos' => Photo::all(),
         'canLogin' => Route::has('login'),
@@ -38,8 +37,14 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
+])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/photos', function () {
+        return inertia('Admin/Photos', [
+            'photos' => Photo::all()
+        ]);
+    })->name('photos'); // This will respond to requests for admin/photos and have a name of admin.photos
 });
