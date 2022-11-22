@@ -53,8 +53,13 @@ export default defineComponent({
                         </p>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
                     </div>
+                    
+                    <div class="grid grid-cols-2">
+                        <div class="preview">
+                            <img width="300" :src="'/storage/' + photo.path" alt="">
 
-                    <div>
+                        </div>
+                        <div>
                         <label class="block text-sm font-medium text-gray-700"
                             >Photo</label
                         >
@@ -103,7 +108,9 @@ export default defineComponent({
                     </div>
 
                     <div class="text-red-600" v-if="form.errors.path">{{ form.errors.path }}</div>
-                    <button
+
+                    </div>
+                                        <button
                         type="submit"
                         :disabled="form.processing"
                         class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
