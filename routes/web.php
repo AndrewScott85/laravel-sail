@@ -44,7 +44,7 @@ Route::middleware([
 
     Route::get('/photos', function () {
         return inertia('Admin/Photos', [
-            'photos' => Photo::all()
+            'photos' => Photo::orderByDesc('id')->get()
         ]);
     })->name('photos'); // This will respond to requests for admin/photos and have a name of admin.photos
 
@@ -52,5 +52,47 @@ Route::middleware([
     {
         return inertia('Admin/PhotoCreate');
     })->name('photos.create');
+
+    Route::post('/photos', function() {
+       $validated_data = Request::validate([
+            'path' => ['required', 'image', 'max:500'],
+            'description' => ['required']
+       ]);
+        $path = Storage::disk('public')->put('photos', Request::file('path'));
+        $validated_data['path'] = $path;
+        Photo::create($validated_data);
+        return to_route('admin.photos');
+        
+    })->name('photos.store');
+
+    Route::get('/photos/{photo}/edit', function (Photo $photo) {
+        return inertia('Admin/PhotoEdit', [
+            'photo' => $photo
+        ]);
+    })->name('photos.edit');
+
+    Route::put('/photos/{photo}', function (Photo $photo) {
+
+        $validated_data = Request::validate([
+            'description' => ['required']
+       ]);
+
+        if(Request::hasFile('path')) {
+            $validated_data['path'] = Request::validate([
+                'path' => ['required', 'image', 'max:500'],
+            ]);
+
+//Grab old image and delete it
+            $oldImage = $photo->path;
+            Storage::delete($oldImage);
+
+        $path = Storage::disk('public')->put('photos', Request::file('path'));
+        $validated_data['path'] = $path;
+    }
+   
+    $photo->update($validated_data);
+        return to_route('admin.photos');
+        
+    })->name('photos.update');
 
 });

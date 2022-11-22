@@ -7,10 +7,14 @@ export default defineComponent({
     components: {
         AppLayout,
     },
-    setup() {
+    props:{
+        photo: Object
+    },
+    setup(props) {
         const form = useForm({
+            _method: "PUT",
             path: null,
-            description: null,
+            description: props.photo.description,
         });
 
         return { form };
@@ -19,15 +23,15 @@ export default defineComponent({
 </script>
 
 <template>
-    <AppLayout title="Create Photo">
+    <AppLayout title="Edit Photo">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Create Photo
+                Edit Photo
             </h2>
         </template>
         <div class="py-12">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
-                <form @submit.prevent="form.post(route('admin.photos.store'))">
+                <form @submit.prevent="form.post(route('admin.photos.update', photo.id))">
                     <div>
                         <label
                             for="description"

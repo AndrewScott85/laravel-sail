@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { Link } from '@inertiajs/inertia-vue3';
 
 defineProps({
     photos: Array,
@@ -18,7 +19,7 @@ defineProps({
                     <!-- All posts go here -->
                     <div class="flex justify-between mb-4">
                     <h2 class="text-2xl font-bold py-2">Photos</h2>
-                    <button class="px-1 bg-sky-600 text-white rounded-sm" href="admin/photos/create">Create New</button>
+                    <Link class="flex items-center px-1 bg-sky-600 text-white rounded-md" :href="route('admin.photos.create')">Create New</Link>
                 </div>
                     <div class="flex flex-col">
                         <div class="my-2 overflow-x-auto">
@@ -34,15 +35,16 @@ defineProps({
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="photo in photos">
                             <td class="px-4">{{photo.id}}</td>
-                            <td><img width="100" :src="photo.path" alt=""></td>
+                            <td><img width="100" :src=" '/storage/' + photo.path" alt=""></td>
                             <td class="px-4 py-4 ">{{photo.description.slice(0,100) + "..."}}</td>
-                            <td class="px-4 flex auto">
+                            <td class="px-4 flex align-bottom">
                                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-1 py-1 rounded">
                                     View
                                 </button>
-                                <button class="bg-green-600 hover:bg-green-700 text-white font-bold px-1 py-1 rounded">
+                                <Link class="bg-green-600 hover:bg-green-700 text-white font-bold px-1 py-1 rounded"
+                                :href="route('admin.photos.edit', photo.id)">
                                     Edit
-                                </button>
+                            </Link>
                                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold px-1 py-1 rounded">
                                     Delete
                                 </button>
