@@ -1,25 +1,19 @@
-<script>
+<script setup>
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
+import { propsToAttrMap } from "@vue/shared";
 
-export default defineComponent({
-    components: {
-        AppLayout,
-    },
-    props:{
-        photo: Object
-    },
-    setup(props) {
+defineProps({
+    photo: Object
+});
         const form = useForm({
             _method: "PUT",
             path: null,
-            description: props.photo.description,
+            description: propsToAttrMap.description,
         });
 
-        return { form };
-    },
-});
+
 </script>
 
 <template>
