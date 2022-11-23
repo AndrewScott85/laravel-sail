@@ -95,4 +95,10 @@ Route::middleware([
         
     })->name('photos.update');
 
+    Route::delete('/photos/{photo}', function (Photo $photo) {
+        Storage::delete($photo->path);
+        $photo->delete();
+        return to_route('admin.photos');
+    })->name('photos.delete');
+
 });
