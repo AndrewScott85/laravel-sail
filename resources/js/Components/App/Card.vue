@@ -35,10 +35,10 @@ const deletePhoto = (photo) => {
 </script>
 
 <template>
-    <div class="flex flex-col shadow-lg h-80">
-        <img class="h-48 object-contain justify-center" :src="'/storage/' + photo.path" alt="" />
-            <div class="text-gray-700 text-base px-1 py-2">{{ photo.description }}</div>
-        <div class="absolute bottom-0">
+    <div class="flex flex-col shadow-lg bg-black">
+        <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt="" />
+            <div class="text-white text-base  px-2 py-2 h-32 overflow-hidden">{{ photo.description }}</div>
+        <div class="flex items-center justify-center">
             <button
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-1 py-1 rounded">
                 View
@@ -50,7 +50,9 @@ const deletePhoto = (photo) => {
                 Edit
             </Link>
             <DangerButton @click="confirmPhotoDeletion"> Delete </DangerButton>
-            <DialogModal :show="confirmingPhotoDeletion" @close="closeModal">
+        </div>
+    </div>
+    <DialogModal :show="confirmingPhotoDeletion" @close="closeModal">
                 <template #title>
                     Delete
                     {{ photo.description.slice(0, 20) + "..." }}
@@ -66,7 +68,5 @@ const deletePhoto = (photo) => {
                         >Delete</DangerButton
                     >
                 </template>
-            </DialogModal>
-        </div>
-    </div>
+    </DialogModal>
 </template>
