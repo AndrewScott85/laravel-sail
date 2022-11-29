@@ -2,9 +2,7 @@
 import { ref } from 'vue';
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
-import DialogModal from '@/Components/DialogModal.vue';
-import DangerButton from '@/Components/DangerButton.vue';
-import Card from '../../Components/App/Card.vue';
+import Card from '../../Components/Card.vue';
 
 
 defineProps({

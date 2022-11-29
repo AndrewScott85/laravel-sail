@@ -10,7 +10,7 @@ defineProps({
     },
     maxWidth: {
         type: String,
-        default: '2xl',
+        default: 'fit',
     },
     closeable: {
         type: Boolean,

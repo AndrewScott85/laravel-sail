@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from "vue";
-import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import DialogModal from "@/Components/DialogModal.vue";
 import DangerButton from "@/Components/DangerButton.vue";
+import Modal from "@/Components/Modal.vue";
+import FullScreenphoto from "@/Components/FullScreenPhoto.vue";
 
 defineProps({
     photo: Object,
@@ -14,11 +15,17 @@ const form = useForm({
 });
 
 const confirmingPhotoDeletion = ref(false);
+const openingPhotoModal = ref(false);
 
 const closeModal = () => {
     confirmingPhotoDeletion.value = false;
 
     form.reset();
+};
+
+const closePhotoModal = () => {
+    openingPhotoModal.value = false;
+
 };
 
 const confirmPhotoDeletion = () => {
@@ -31,7 +38,13 @@ const deletePhoto = (photo) => {
         onSuccess: () => closeModal(),
         onFinish: () => form.reset(),
     });
+
 };
+
+const openPhotoModal = () => {
+    openingPhotoModal.value = true;
+};
+
 </script>
 
 <template>
@@ -39,7 +52,7 @@ const deletePhoto = (photo) => {
         <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt="" />
             <div class="text-white text-base  px-2 py-2 h-32 overflow-hidden">{{ photo.description }}</div>
         <div class="flex items-center justify-center">
-            <button
+            <button @click="openPhotoModal"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-1 py-1 rounded">
                 View
             </button>
@@ -54,11 +67,16 @@ const deletePhoto = (photo) => {
     </div>
     <DialogModal :show="confirmingPhotoDeletion" @close="closeModal">
                 <template #title>
-                    Delete
-                    {{ photo.description.slice(0, 20) + "..." }}
+                    <div class="font-bold bg-gray-100">
+                        <p class="px-4 py-4"> Are you sure you want to delete this photo?</p>
+                        </div>
                 </template>
                 <template #content>
-                    <div>Are you sure you want to delete this photo?</div>
+                    <div class="flex flex-col items-center gap-4 py-4 mx-20 bg-slate-900">
+                        <img class="h-48 px-4" :src="'/storage/' + photo.path" alt="" />
+                        <p class="text-lg text-white">{{ photo.description.slice(0, 50) + "..." }}</p>
+
+                    </div>
                 </template>
                 <template #footer>
                     <button @click="closeModal" class="px-4 py-2 bg-gray-600">
@@ -69,4 +87,13 @@ const deletePhoto = (photo) => {
                     >
                 </template>
     </DialogModal>
+    <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
+        
+        <template #content>
+                    <div class="flex flex-col gap-4">
+                        <img class="" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
+                        <p class="text-lg">{{ photo.description}}</p>
+                    </div>
+                </template>
+    </FullScreenphoto>
 </template>
