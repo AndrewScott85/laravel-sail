@@ -49,7 +49,7 @@ const openPhotoModal = () => {
 
 <template>
     <div class="flex flex-col shadow-lg bg-black">
-        <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt="" />
+        <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt="" @click="openPhotoModal"/>
             <div class="text-white text-base  px-2 py-2 h-32 overflow-hidden">{{ photo.description }}</div>
         <div class="flex items-center justify-center">
             <button @click="openPhotoModal"
@@ -90,8 +90,8 @@ const openPhotoModal = () => {
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
         
         <template #content>
-                    <div class="flex flex-col gap-4">
-                        <img class="" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
+                    <div class="flex flex-col gap-4" >
+                        <img class="object-scale-down p-4" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
                         <p class="text-lg">{{ photo.description}}</p>
                     </div>
                 </template>
