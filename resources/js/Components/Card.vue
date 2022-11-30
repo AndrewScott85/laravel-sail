@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import DialogModal from "@/Components/DialogModal.vue";
 import DangerButton from "@/Components/DangerButton.vue";
-import Modal from "@/Components/Modal.vue";
 import FullScreenphoto from "@/Components/FullScreenPhoto.vue";
 
 defineProps({
@@ -90,9 +89,11 @@ const openPhotoModal = () => {
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
         
         <template #content>
-                    <div class="flex flex-col gap-4" >
-                        <img class="object-scale-down p-4" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
-                        <p class="text-lg">{{ photo.description}}</p>
+                    <div class="flex flex-col bg-auto gap-4" >
+                        <img class="object-scale-down  px-4" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
+                        <div class="w-auto flex-auto">
+                        <p class="text-lg bg-white px-4 flex-wrap">{{ photo.description}}</p>
+                        </div>
                     </div>
                 </template>
     </FullScreenphoto>

@@ -2,17 +2,15 @@
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
-import { propsToAttrMap } from "@vue/shared";
 
-defineProps({
+const props = defineProps({
     photo: Object
 });
         const form = useForm({
             _method: "PUT",
             path: null,
-            description: propsToAttrMap.description,
+            description: props.photo.description,
         });
-
 
 </script>
 
@@ -34,16 +32,15 @@ defineProps({
                         >
                         <div class="mt-1">
                             <textarea
-                                id="about"
-                                name="about"
+                                id="description"
+                                name="description"
                                 rows="3"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="lorem ipsum"
                                 v-model="form.description"
                             ></textarea>
                         </div>
                         <p class="mt-2 text-sm text-gray-500">
-                            Brief description for your photo.
+                            Brief description for this photo.
                         </p>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
                     </div>

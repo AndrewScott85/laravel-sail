@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import Card from '../../Components/Card.vue';
@@ -19,7 +18,7 @@ defineProps({
             </h2>
         </template>
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-full mx-auto sm:px-6 lg:px-8">
                 <!-- All posts go here -->
                 <div class="flex justify-between mb-4">
                     <h2 class="text-2xl font-bold py-2">Photos</h2>
