@@ -1,7 +1,7 @@
 <script setup>
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { Link, useForm } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
     photo: Object
@@ -24,35 +24,15 @@ const props = defineProps({
         <div class="py-12">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                 <form @submit.prevent="form.post(route('admin.photos.update', photo.id))">
-                    <div>
-                        <label
-                            for="description"
-                            class="block text-sm font-medium text-gray-700"
-                            >Description</label
-                        >
-                        <div class="mt-1">
-                            <textarea
-                                id="description"
-                                name="description"
-                                rows="3"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                v-model="form.description"
-                            ></textarea>
-                        </div>
-                        <p class="mt-2 text-sm text-gray-500">
-                            Brief description for this photo.
-                        </p>
-                        <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
-                    </div>
                     
-                    <div class="grid grid-cols-2">
+                    <div class="flex flex-col">
                         <div class="preview">
-                            <img width="300" :src="'/storage/' + photo.path" alt="">
+                            <img class="mx-auto" width="300" :src="'/storage/' + photo.path" alt="">
 
                         </div>
                         <div>
-                        <label class="block text-sm font-medium text-gray-700"
-                            >Photo</label
+                        <label class="block text-lg font-bold text-gray-700 pt-4"
+                            >Want to change this photo?</label
                         >
                         <div
                             class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6"
@@ -99,15 +79,39 @@ const props = defineProps({
                     </div>
 
                     <div class="text-red-600" v-if="form.errors.path">{{ form.errors.path }}</div>
-
+                    <div>
+                        <label
+                            for="description"
+                            class="block text-lg font-bold text-gray-700 pt-8"
+                            > Edit Description Here</label
+                        >
+                        <div class="mt-1">
+                            <textarea
+                                id="description"
+                                name="description"
+                                rows="3"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                v-model="form.description"
+                            ></textarea>
+                        </div>
+                        <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
                     </div>
-                                        <button
+                    </div>
+                    <div class="pt-6 flex justify-end gap-4">
+                        <Link
+                        class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-md"
+                        :href="route('admin.photos')"
+                        >
+                        Cancel
+                        </Link>
+                        <button
                         type="submit"
                         :disabled="form.processing"
-                        class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Save
+                        class="inline-flex  justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        >
+                        Save Changes
                     </button>
+                </div>
                 </form>
             </div>
         </div>

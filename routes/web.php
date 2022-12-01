@@ -25,13 +25,13 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('photos', function() {
-    return Inertia::render('Guest/Photos', [
-        'photos' => Photo::all(),
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register')
-    ]);
-});
+// Route::get('photos', function() {
+//     return Inertia::render('Guest/Photos', [
+//         'photos' => Photo::all(),
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register')
+//     ]);
+// });
 
 Route::middleware([
     'auth:sanctum',
@@ -55,7 +55,7 @@ Route::middleware([
 
     Route::post('/photos', function() {
        $validated_data = Request::validate([
-            'path' => ['required', 'image', 'max:500'],
+            'path' => ['required', 'image', 'max:10000'],
             'description' => ['required']
        ]);
         $path = Storage::disk('public')->put('photos', Request::file('path'));
@@ -79,7 +79,7 @@ Route::middleware([
 
         if(Request::hasFile('path')) {
             $validated_data['path'] = Request::validate([
-                'path' => ['required', 'image', 'max:500'],
+                'path' => ['required', 'image', 'max:10000'],
             ]);
 
 //Grab old image and delete it

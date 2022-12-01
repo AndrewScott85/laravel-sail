@@ -28,7 +28,7 @@ defineProps({
                         >Create New</Link
                     >
                 </div>
-                <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 sm:gap-4 lg:gap-6">
+                <div class="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 sm:gap-4 lg:gap-6">
                 <div class="" v-for="photo in photos">
                           <Card :photo="photo"></Card>     
                 </div>

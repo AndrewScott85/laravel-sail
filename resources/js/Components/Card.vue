@@ -47,14 +47,14 @@ const openPhotoModal = () => {
 </script>
 
 <template>
-    <div class="flex flex-col shadow-lg bg-black">
+    <div class="flex flex-col shadow-lg bg-gray-500 rounded-md">
         <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt="" @click="openPhotoModal"/>
             <div class="text-white text-base  px-2 py-2 h-32 overflow-hidden">{{ photo.description }}</div>
-        <div class="flex items-center justify-center">
-            <button @click="openPhotoModal"
+        <div class="flex gap-2 justify-center pt-4">
+            <!-- <button @click="openPhotoModal"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-1 py-1 rounded">
-                View
-            </button>
+                Full-Size
+            </button> -->
             <Link
                 class="bg-green-600 hover:bg-green-700 text-white font-bold px-1 py-1 rounded"
                 :href="route('admin.photos.edit', photo.id)"
