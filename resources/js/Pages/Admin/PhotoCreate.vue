@@ -2,15 +2,18 @@
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/inertia-vue3";
 
 export default defineComponent({
     components: {
         AppLayout,
+        Link
     },
     setup() {
         const form = useForm({
             path: null,
             description: null,
+            title: null,
         });
 
         return { form };
@@ -30,34 +33,31 @@ export default defineComponent({
                 <form @submit.prevent="form.post(route('admin.photos.store'))">
                     <div>
                         <label
-                            for="description"
-                            class="block text-sm font-medium text-gray-700"
-                            >Description</label
+                            for="title"
+                            class="block text-m font-bold text-gray-700"
+                            >Title</label
                         >
-                        <div class="mt-1">
-                            <textarea
-                                id="about"
-                                name="about"
-                                rows="3"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="lorem ipsum"
-                                v-model="form.description"
-                            ></textarea>
+                        <div class="m-1">
+                            <input
+                                id="title"
+                                name="title"
+                                class="py-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                placeholder="  Enter a title for your post here"
+                                v-model="form.title"
+                            />
                         </div>
-                        <p class="mt-2 text-sm text-gray-500">
-                            Brief description for your photo.
-                        </p>
-                        <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
+                        
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700"
+                        <label class="block text-m mt-6 font-bold text-gray-700"
                             >Photo</label
                         >
                         <div
                             class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6"
                         >
                             <div class="space-y-1 text-center">
+                                <div v-if="!form.path">
                                 <svg
                                     class="mx-auto h-12 w-12 text-gray-400"
                                     stroke="currentColor"
@@ -73,6 +73,7 @@ export default defineComponent({
                                     />
                                 </svg>
                                 <div class="flex text-sm text-gray-600">
+                                    
                                     <label
                                         for="path"
                                         class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
@@ -95,17 +96,46 @@ export default defineComponent({
                                     PNG, JPG, GIF up to 10MB
                                 </p>
                             </div>
+                            </div>
+                            <div class="flex justify-center items-center gap-10 text-slate-800 font-bold" v-if="form.path">
+                                <p class="">Selected Image: {{ form.path.name }}</p>
+                                <button class="inline-flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" @click="(form.path=null)">Change Image</button>
+                            </div>
                         </div>
                     </div>
 
                     <div class="text-red-600" v-if="form.errors.path">{{ form.errors.path }}</div>
-                    <button
-                        type="submit"
-                        :disabled="form.processing"
-                        class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Save
-                    </button>
+                    <label
+                            for="description"
+                            class="block text-m mt-6 font-bold text-gray-700"
+                            >Description</label
+                        >
+                        <div class="my-2">
+                            <textarea
+                                id="description"
+                                name="description"
+                                rows="3"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                placeholder="Description for your photo."
+                                v-model="form.description"
+                            ></textarea>
+                        </div>
+                        <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
+                    <div class="flex justify-end py-10 gap-4">
+                        <Link
+                        class="inline-flex justify-center rounded-md border border-transparent bg-slate-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                        :href="route('admin.photos')"
+                        >
+                        Cancel
+                        </Link>
+                        <button
+                            type="submit"
+                            :disabled="form.processing"
+                            class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        >
+                            Save
+                        </button>
+                     </div>
                 </form>
             </div>
         </div>

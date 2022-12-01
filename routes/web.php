@@ -56,7 +56,9 @@ Route::middleware([
     Route::post('/photos', function() {
        $validated_data = Request::validate([
             'path' => ['required', 'image', 'max:10000'],
-            'description' => ['required']
+            'description' => ['required'],
+            'title' => ['required']
+
        ]);
         $path = Storage::disk('public')->put('photos', Request::file('path'));
         $validated_data['path'] = $path;
@@ -74,7 +76,8 @@ Route::middleware([
     Route::put('/photos/{photo}', function (Photo $photo) {
 
         $validated_data = Request::validate([
-            'description' => ['required']
+            'description' => ['required'],
+            'title' => ['required']
        ]);
 
         if(Request::hasFile('path')) {
