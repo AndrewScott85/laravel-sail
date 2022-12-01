@@ -46,8 +46,10 @@ const openPhotoModal = () => {
 
 </script>
 
+
 <template>
     <div class="flex flex-col shadow-lg bg-gray-500 rounded-md">
+        <div class="text-white text-lg pl-4 pt-2 font-bold">{{photo.created_at.slice(0,10)}}</div>
         <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt="" @click="openPhotoModal"/>
             <div class="text-white text-base  px-2 py-2 h-32 overflow-hidden">{{ photo.description }}</div>
         <div class="flex gap-2 justify-center pt-4">
@@ -90,8 +92,11 @@ const openPhotoModal = () => {
         
         <template #content>
                     <div class="flex flex-col bg-auto gap-4" >
-                        <img class="object-scale-down  px-4" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
-                        <div class="w-auto flex-auto">
+                        <h2 class="text-xl font-bold p-4">{{photo.created_at.slice(0,10)}}</h2>
+                        <div class="flex justify-center">
+                        <img class="object-scale-down  py-6 px-4" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
+                        </div>
+                        <div class="flex-auto">
                         <p class="text-lg bg-white px-4 flex-wrap">{{ photo.description}}</p>
                         </div>
                     </div>
