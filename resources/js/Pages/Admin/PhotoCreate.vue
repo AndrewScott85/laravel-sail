@@ -31,7 +31,8 @@ export default defineComponent({
         <div class="py-12">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                 <form @submit.prevent="form.post(route('admin.photos.store'))">
-                    <div>
+                    <div class="flex flex-col px-4">
+                        <div>
                         <label
                             for="title"
                             class="block text-m font-bold text-gray-700"
@@ -46,9 +47,9 @@ export default defineComponent({
                                 v-model="form.title"
                             />
                         </div>
-                        
                     </div>
-
+                    
+                    <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
                     <div>
                         <label class="block text-m mt-6 font-bold text-gray-700"
                             >Photo</label
@@ -84,6 +85,7 @@ export default defineComponent({
                                             name="path"
                                             type="file"
                                             class="sr-only"
+                                            accept="image/*"
                                             @input="
                                                 form.path =
                                                     $event.target.files[0]
@@ -97,9 +99,10 @@ export default defineComponent({
                                 </p>
                             </div>
                             </div>
-                            <div class="flex justify-center items-center gap-10 text-slate-800 font-bold" v-if="form.path">
-                                <p class="">Selected Image: {{ form.path.name }}</p>
-                                <button class="inline-flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" @click="(form.path=null)">Change Image</button>
+                            <div class="flex flex-col lg:flex-row  items-center gap-10 text-slate-800 font-bold" v-if="form.path">
+                                <p class="font-bold">Selected Image: <span class="font-medium px-2"> {{ form.path.name }}</span></p>
+                                <div class="text-red-600 font-bold" v-if="form.errors.path">{{ form.errors.path }}</div>
+                                <button class="inline-flex justify-center rounded-md border border-transparent bg-indigo-500 py-2 ml-4 px-2 text-lg font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="(form.path=null)">Change Image</button>
                             </div>
                         </div>
                     </div>
@@ -121,7 +124,8 @@ export default defineComponent({
                             ></textarea>
                         </div>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
-                    <div class="flex justify-end py-10 gap-4">
+                    </div>
+                        <div class="flex justify-end py-10 gap-4 px-4">
                         <Link
                         class="inline-flex justify-center rounded-md border border-transparent bg-slate-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                         :href="route('admin.photos')"
@@ -131,7 +135,7 @@ export default defineComponent({
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            class="inline-flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         >
                             Save
                         </button>

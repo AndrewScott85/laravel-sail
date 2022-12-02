@@ -20,7 +20,7 @@ defineProps({
         >
             <Link
                 v-if="$page.props.user"
-                :href="route('dashboard')"
+                :href="route('/admin/')"
                 class="text-sm text-gray-700 dark:text-gray-500 underline"
                 >Dashboard</Link
             >
@@ -47,6 +47,7 @@ defineProps({
            <section class="photos">
         <div class="card" v-for="photo in photos" :key="photo.id">
         <img :src="photo.path" alt="">
+        <p>{{photo.description}}</p>
         </div>
         </section>
             </div>

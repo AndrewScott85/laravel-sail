@@ -25,9 +25,10 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::get('photos', function() {
-//     return Inertia::render('Guest/Photos', [
-//         'photos' => Photo::all(),
+// Route::get('/photos', function() {
+//     dd(photo::all());
+//     return inertia('Guest/Photos', [
+//         'photos' => Photo::orderByDesc('id')->get(),
 //         'canLogin' => Route::has('login'),
 //         'canRegister' => Route::has('register')
 //     ]);

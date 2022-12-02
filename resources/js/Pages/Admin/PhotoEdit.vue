@@ -1,5 +1,4 @@
 <script setup>
-import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 
@@ -25,24 +24,24 @@ const props = defineProps({
         <div class="py-12">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                 <form @submit.prevent="form.post(route('admin.photos.update', photo.id))">
-                    <div class="flex flex-col">
+                    <div class="flex flex-col px-4">
                         <div>
                         <label
                             for="title"
                             class="block text-m font-bold text-gray-700"
                             >Title</label
                         >
-                        <div class="m-1">
+                        <div class="">
                             <input
                                 id="title"
                                 name="title"
-                                class="py-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                placeholder="lorem ipsum"
+                                class="py-1 px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                 v-model="form.title"
                             />
                         </div>
                         </div>
-                        <div class="flex items-center py-10 gap-10">
+                        <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
+                        <div class="flex flex-col lg:flex-row items-center py-10 gap-10">
                             <img class="flex-start" width="300" :src="'/storage/' + photo.path" alt="">
   
                         <div class="flex flex-col grow justify-center">
@@ -80,6 +79,7 @@ const props = defineProps({
                                             name="path"
                                             type="file"
                                             class="sr-only"
+                                            accept="image/*"
                                             @input="
                                                 form.path =
                                                     $event.target.files[0]
@@ -93,15 +93,16 @@ const props = defineProps({
                                 </p>
                             </div>
                             </div>
-                            <div class="flex justify-center items-center gap-10 text-slate-800 font-bold" v-if="form.path">
-                                <p class="">Selected Image: {{ form.path.name }}</p>
-                                <button class="inline-flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2" @click="(form.path=null)">Change Image</button>
+                            <div class=" flex flex-col lg:flex-row justify-center items-center gap-10 text-slate-800" v-if="form.path">
+                                <p class="font-bold">Selected Image: <span class="font-medium px-4"> {{ form.path.name }}</span></p>
+                                <div class="text-red-600 font-bold" v-if="form.errors.path">{{ form.errors.path }}</div>
+                                <button class="inline-flex justify-center rounded-md border border-transparent bg-indigo-300 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="(form.path=null)">Change Image</button>
                             </div>
                         </div>
                         </div>
                     </div>
 
-                    <div class="text-red-600" v-if="form.errors.path">{{ form.errors.path }}</div>
+                    
                     <div>
                         <label
                             for="description"
@@ -113,14 +114,14 @@ const props = defineProps({
                                 id="description"
                                 name="description"
                                 rows="3"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                 v-model="form.description"
                             ></textarea>
                         </div>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
                     </div>
                     </div>
-                    <div class="pt-6 flex justify-end gap-4">
+                    <div class="pt-6 flex justify-end gap-4 px-4">
                         <Link
                         class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-md"
                         :href="route('admin.photos')"
@@ -130,7 +131,7 @@ const props = defineProps({
                         <button
                         type="submit"
                         :disabled="form.processing"
-                        class="inline-flex  justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="inline-flex  justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 font-bold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         >
                         Save Changes
                     </button>
