@@ -25,14 +25,13 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::get('/photos', function() {
-//     dd(photo::all());
-//     return inertia('Guest/Photos', [
-//         'photos' => Photo::orderByDesc('id')->get(),
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register')
-//     ]);
-// });
+Route::get('/photos', function() {
+    return inertia('Guest/Photos', [
+        'photos' => Photo::orderByDesc('id')->get(),
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register')
+    ]);
+});
 
 Route::middleware([
     'auth:sanctum',

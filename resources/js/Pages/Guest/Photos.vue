@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from "@inertiajs/inertia-vue3";
+import CardViewOnly from "../../Components/CardViewOnly.vue";
 
 defineProps({
     canLogin: Boolean,
@@ -20,7 +21,7 @@ defineProps({
         >
             <Link
                 v-if="$page.props.user"
-                :href="route('/admin/')"
+                :href="route('admin.dashboard')"
                 class="text-sm text-gray-700 dark:text-gray-500 underline"
                 >Dashboard</Link
             >
@@ -41,14 +42,15 @@ defineProps({
             </template>
         </div>
 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col justify-center pt-8 sm:justify-start">
            <h1>Photos</h1>
            <section class="photos">
-        <div class="card" v-for="photo in photos" :key="photo.id">
-        <img :src="photo.path" alt="">
-        <p>{{photo.description}}</p>
-        </div>
+            <div class="grid sm:grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div class="my-2" v-for="photo in photos" :key="photo.id">
+                          <CardViewOnly :photo="photo"></CardViewOnly>     
+                </div>
+            </div>
         </section>
             </div>
 
