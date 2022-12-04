@@ -36,12 +36,13 @@ export default defineComponent({
                         <label
                             for="title"
                             class="block text-m font-bold text-gray-700"
-                            >Title</label
+                            >Title (max 40 characters)</label
                         >
                         <div class="m-1">
                             <input
                                 id="title"
                                 name="title"
+                                maxlength="40"
                                 class="py-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                 placeholder="  Enter a title for your post here"
                                 v-model="form.title"

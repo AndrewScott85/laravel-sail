@@ -5,7 +5,7 @@ import DialogModal from "@/Components/DialogModal.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import FullScreenphoto from "@/Components/FullScreenPhoto.vue";
 
-defineProps({
+const props = defineProps({
     photo: Object,
 });
 
@@ -44,26 +44,30 @@ const openPhotoModal = () => {
     openingPhotoModal.value = true;
 };
 
+const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("/");
+
 </script>
 
 
 <template>
-    <div class="flex flex-col shadow-lg bg-gray-500 rounded-md">
-        <div class="text-white text-lg pl-4 pt-2 font-bold">{{photo.created_at.slice(0,10)}}</div>
+    <div class="flex flex-col shadow-lg bg-gray-500 p-4 w-[22rem] lg:w-96 rounded-sm cursor-pointer hover:bg-slate-600 hover:border hover:border-emerald-600">
+        <div class="flex flex-col justify-between items-center text-white font-base">
+            <p class="text-base self-end">{{photoDate}}</p>
+            <p class="text-lg font-bold self-start">{{photo.title}}</p>
+        </div>
         <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt="" @click="openPhotoModal"/>
-            <div class="text-white text-base  px-2 py-2 h-32 overflow-hidden">{{ photo.description }}</div>
+        <div v-if="photo.description.length > 100" class="text-white text-base px-2 py-2 h-28">
+        <p>{{ photo.description.slice(0,100) + "...." }}</p>
+    </div>
+    <div v-else class="text-white text-base  px-2 py-4 h-28">{{ photo.description }}</div>
         <div class="flex gap-2 justify-center pt-4">
-            <!-- <button @click="openPhotoModal"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-1 py-1 rounded">
-                Full-Size
-            </button> -->
             <Link
-                class="bg-green-600 hover:bg-green-700 text-white font-bold px-1 py-1 rounded"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-1 rounded-sm"
                 :href="route('admin.photos.edit', photo.id)"
             >
-                Edit
+                EDIT
             </Link>
-            <DangerButton @click="confirmPhotoDeletion"> Delete </DangerButton>
+            <DangerButton class="font-bold rounded-sm" @click="confirmPhotoDeletion"> Delete </DangerButton>
         </div>
     </div>
     <DialogModal :show="confirmingPhotoDeletion" @close="closeModal">

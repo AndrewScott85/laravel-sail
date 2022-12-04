@@ -5,12 +5,17 @@ import { Link, useForm } from "@inertiajs/inertia-vue3";
 const props = defineProps({
     photo: Object
 });
-        const form = useForm({
+
+const form = useForm({
             _method: "PUT",
             path: null,
             description: props.photo.description,
             title: props.photo.title,
         });
+
+    const countdown = () => {
+      return 40 - form.title.length;
+    }
 
 </script>
 
@@ -27,17 +32,21 @@ const props = defineProps({
                     <div class="flex flex-col px-4">
                         <div>
                         <label
+                            id="title"
                             for="title"
                             class="block text-m font-bold text-gray-700"
-                            >Title</label
+                            >Title (max 40 characters)</label
                         >
-                        <div class="">
+                        <div id="titleWarn" class="">
                             <input
                                 id="title"
                                 name="title"
+                                maxlength="40"
                                 class="py-1 px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                 v-model="form.title"
+                                v-on:keydown="countdown"
                             />
+                            <p>Characters remaining: <countdown></countdown></p>
                         </div>
                         </div>
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>

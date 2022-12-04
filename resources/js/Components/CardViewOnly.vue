@@ -28,7 +28,7 @@ const openPhotoModal = () => {
 
 
 <template>
-    <div class="flex flex-col px-4 shadow-lg bg-gray-500 rounded-md">
+    <div class="flex flex-col px-4 shadow-lg bg-gray-500 rounded-sm">
         <div class="flex justify-between items-center text-white py-4 font-base">
             <p class="text-lg font-bold">{{photo.title}}</p>
             <p>{{photo.created_at.slice(0,10)}}</p>

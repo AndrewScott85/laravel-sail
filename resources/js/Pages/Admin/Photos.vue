@@ -30,8 +30,8 @@ defineProps({
                 <div class="flex justify-between mx-2 my-4">
                     <h2 class="text-2xl font-bold py-2">All Photos</h2>
                 </div>
-                <div class="grid sm:grid-cols-1 md:grid-cols-3 xl:grid-cols-4 sm:gap-4 lg:gap-6">
-                <div class="m-2" v-for="photo in photos" :key="photo.id">
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-4 justify-items-center">
+                <div class="m-2 flex flex-1" v-for="photo in photos" :key="photo.id">
                           <CardEditable :photo="photo"></CardEditable>     
                 </div>
             </div>
