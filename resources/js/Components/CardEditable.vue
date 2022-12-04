@@ -50,19 +50,19 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
 
 
 <template>
-    <div class="flex flex-col shadow-lg bg-gray-500 p-4 w-[22rem] lg:w-96 rounded-sm cursor-pointer hover:bg-slate-600 hover:border hover:border-emerald-600">
-        <div class="flex flex-col justify-between items-center text-white font-base">
+    <div class="flex flex-col shadow-lg bg-gray-500 p-4 w-[22rem] lg:w-96 rounded-sm hover:bg-slate-600 hover:border hover:border-emerald-600">
+        <div class="flex justify-between items-center text-white font-base">
+            <h3 class="text-lg font-bold self-start cursor-pointer hover:underline" @click="openPhotoModal">{{photo.title}}</h3>
             <p class="text-base self-end">{{photoDate}}</p>
-            <p class="text-lg font-bold self-start">{{photo.title}}</p>
         </div>
-        <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt="" @click="openPhotoModal"/>
+        <img class=" h-60 object-contain py-4 cursor-pointer" :src="'/storage/' + photo.path" alt="" @click="openPhotoModal"/>
         <div v-if="photo.description.length > 100" class="text-white text-base px-2 py-2 h-28">
         <p>{{ photo.description.slice(0,100) + "...." }}</p>
     </div>
     <div v-else class="text-white text-base  px-2 py-4 h-28">{{ photo.description }}</div>
         <div class="flex gap-2 justify-center pt-4">
             <Link
-                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-1 rounded-sm"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-16 py-1 rounded-sm"
                 :href="route('admin.photos.edit', photo.id)"
             >
                 EDIT
@@ -77,14 +77,14 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
                         </div>
                 </template>
                 <template #content>
-                    <div class="flex flex-col items-center gap-4 py-4 mx-20 bg-slate-900">
+                    <div class="flex flex-col items-center gap-4 py-4 mx-20 bg-slate-500">
                         <img class="h-48 px-4" :src="'/storage/' + photo.path" alt="" />
                         <p class="text-lg text-white">{{ photo.description.slice(0, 50) + "..." }}</p>
 
                     </div>
                 </template>
                 <template #footer>
-                    <button @click="closeModal" class="px-4 py-2 bg-gray-600">
+                    <button @click="closeModal" class="px-8 py-2 mr-2 text-white font-bold bg-slate-600">
                         Cancel
                     </button>
                     <DangerButton @click="deletePhoto(photo)"
@@ -96,12 +96,15 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
         
         <template #content>
                     <div class="flex flex-col bg-auto gap-4" >
-                        <h2 class="text-xl font-bold p-4">{{photo.created_at.slice(0,10)}}</h2>
+                        <div class="flex flex-col md:flex-row items-center justify-between">
+                            <h2 class="order-last md:order-first font-bold text-left pl-2 md:text-2xl md:pl-10">{{photo.title}}</h2>
+                            <h3 class="text-right p-2 md:text-xl md:p-6">{{photoDate}}</h3>                        
+                        </div>
                         <div class="flex justify-center">
                         <img class="object-scale-down  py-6 px-4" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
                         </div>
                         <div class="flex-auto">
-                        <p class="text-lg bg-white px-4 flex-wrap">{{ photo.description}}</p>
+                        <p class="bg-white md:text-xl px-4 pb-4 text-center">{{ photo.description}}</p>
                         </div>
                     </div>
                 </template>

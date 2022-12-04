@@ -7,18 +7,24 @@ import { Link } from "@inertiajs/inertia-vue3";
 export default defineComponent({
     components: {
         AppLayout,
-        Link
+        Link,
     },
     setup() {
         const form = useForm({
             path: null,
             description: null,
-            title: null,
+            title: '',
         });
 
         return { form };
     },
+    computed: {
+        countdown() {
+        return 30 - this.form.title.length;
+    }
+    },
 });
+
 </script>
 
 <template>
@@ -36,17 +42,19 @@ export default defineComponent({
                         <label
                             for="title"
                             class="block text-m font-bold text-gray-700"
-                            >Title (max 40 characters)</label
+                            >Title (max 30 characters)</label
                         >
                         <div class="m-1">
                             <input
                                 id="title"
                                 name="title"
-                                maxlength="40"
+                                maxlength="30"
                                 class="py-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                 placeholder="  Enter a title for your post here"
                                 v-model="form.title"
+                                v-on:keydown="countdown"
                             />
+                            <p>Characters remaining: {{countdown}} </p>
                         </div>
                     </div>
                     

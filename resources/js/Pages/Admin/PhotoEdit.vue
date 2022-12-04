@@ -14,7 +14,7 @@ const form = useForm({
         });
 
     const countdown = () => {
-      return 40 - form.title.length;
+      return 30 - form.title.length;
     }
 
 </script>
@@ -35,13 +35,13 @@ const form = useForm({
                             id="title"
                             for="title"
                             class="block text-m font-bold text-gray-700"
-                            >Title (max 40 characters)</label
+                            >Title (max 35 characters)</label
                         >
                         <div id="titleWarn" class="">
                             <input
                                 id="title"
                                 name="title"
-                                maxlength="40"
+                                maxlength="30"
                                 class="py-1 px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                 v-model="form.title"
                                 v-on:keydown="countdown"
@@ -140,7 +140,7 @@ const form = useForm({
                         <button
                         type="submit"
                         :disabled="form.processing"
-                        class="inline-flex  justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 font-bold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                        class="inline-flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 font-bold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         >
                         Save Changes
                     </button>
