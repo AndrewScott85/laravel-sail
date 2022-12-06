@@ -17,11 +17,6 @@ defineProps({
             <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
                 Photos
             </h2>
-            <Link
-                        class="py-2 px-4 bg-indigo-700 text-white text-4xl font-bold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        :href="route('admin.photos.create')"
-                        >+</Link
-                    >
                 </div>
                 </template>
         <div class="py-8">
@@ -29,6 +24,11 @@ defineProps({
                 <!-- All posts go here -->
                 <div class="flex justify-between mx-2 my-4">
                     <h2 class="text-2xl font-bold py-2">All Photos</h2>
+                    <Link
+                        class="py-2 px-4 bg-indigo-700 text-white text-4xl font-bold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        :href="route('admin.photos.create')"
+                        >+</Link
+                    >
                 </div>
                 <div class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-4 justify-items-center">
                 <div class="m-2 flex flex-1" v-for="photo in photos" :key="photo.id">

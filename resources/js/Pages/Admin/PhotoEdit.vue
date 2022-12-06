@@ -32,12 +32,11 @@ const form = useForm({
                     <div class="flex flex-col px-4">
                         <div>
                         <label
-                            id="title"
                             for="title"
                             class="block text-m font-bold text-gray-700"
                             >Title (max 35 characters)</label
                         >
-                        <div id="titleWarn" class="">
+                        <div class="">
                             <input
                                 id="title"
                                 name="title"
@@ -51,8 +50,7 @@ const form = useForm({
                         </div>
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
                         <div class="flex flex-col lg:flex-row items-center py-10 gap-10">
-                            <img class="flex-start" width="300" :src="'/storage/' + photo.path" alt="">
-  
+                            <img class="flex-start" width="300" :src="'/storage/' + photo.path" alt="" v-if="!form.path">
                         <div class="flex flex-col grow justify-center">
                         <label class="self-center text-lg font-bold text-gray-700 pt-4"
                             >Want to change this photo?</label
@@ -105,7 +103,7 @@ const form = useForm({
                             <div class=" flex flex-col lg:flex-row justify-center items-center gap-10 text-slate-800" v-if="form.path">
                                 <p class="font-bold">Selected Image: <span class="font-medium px-4"> {{ form.path.name }}</span></p>
                                 <div class="text-red-600 font-bold" v-if="form.errors.path">{{ form.errors.path }}</div>
-                                <button class="inline-flex justify-center rounded-md border border-transparent bg-indigo-300 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="(form.path=null)">Change Image</button>
+                                <button class="inline-flex justify-center rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="(form.path=null)">Change Image</button>
                             </div>
                         </div>
                         </div>

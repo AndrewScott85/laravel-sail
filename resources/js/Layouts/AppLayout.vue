@@ -27,7 +27,6 @@ const logout = () => {
     Inertia.post(route('logout'));
 };
 
-console.log(Ziggy.routes);
 </script>
 
 <template>
@@ -45,7 +44,7 @@ console.log(Ziggy.routes);
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="'/'">
-                                    <ApplicationMark class="block h-9 w-auto" />
+                                    <ApplicationMark class="block h-14 w-auto" />
                                 </Link>
                             </div>
 
@@ -55,11 +54,11 @@ console.log(Ziggy.routes);
                                     Dashboard
                                 </NavLink> -->
                                 </div>
-                                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('admin.photos')" :active="route().current('admin.photos')">
                                     Photos
                                 </NavLink>                            
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
