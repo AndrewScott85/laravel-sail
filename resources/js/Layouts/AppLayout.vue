@@ -44,7 +44,7 @@ console.log(Ziggy.routes);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('admin.dashboard')">
+                                <Link :href="'/'">
                                     <ApplicationMark class="block h-9 w-auto" />
                                 </Link>
                             </div>

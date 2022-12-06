@@ -34,7 +34,7 @@ export default defineComponent({
                 Create Photo
             </h2>
         </template>
-        <div class="py-12">
+        <div class="py-12 max-w-7xl mx-auto">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                 <form @submit.prevent="form.post(route('admin.photos.store'))">
                     <div class="flex flex-col px-4">
