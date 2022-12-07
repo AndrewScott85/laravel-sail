@@ -15,7 +15,7 @@ defineProps({
         <template #header>
             <div class="flex justify-between items-center">
             <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
-                Photos
+                Posts
             </h2>
                 </div>
                 </template>
@@ -23,7 +23,7 @@ defineProps({
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- All posts go here -->
                 <div class="flex justify-between mx-2 my-4">
-                    <h2 class="text-2xl font-bold py-2">All Photos</h2>
+                    <h2 class="text-2xl font-bold py-2">All Posts</h2>
                     <Link
                         class="py-2 px-4 bg-indigo-700 text-white text-4xl font-bold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         :href="route('admin.photos.create')"

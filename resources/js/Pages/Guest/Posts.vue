@@ -2,6 +2,7 @@
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import CardViewOnly from "../../Components/CardViewOnly.vue";
 
+
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
@@ -10,10 +11,10 @@ defineProps({
 </script>
 
 <template>
-    <Head title="Photos" />
+    <Head title="Posts" />
 
     <div
-        class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"
+        class="relative flex items-top justify-center bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"
     >
         <div
             v-if="canLogin"
@@ -21,7 +22,7 @@ defineProps({
         >
             <Link
                 v-if="$page.props.user"
-                :href="route('admin.dashboard')"
+                :href="route('admin.posts')"
                 class="text-sm text-gray-700 dark:text-gray-500 underline"
                 >Dashboard</Link
             >
@@ -41,19 +42,20 @@ defineProps({
                 >
             </template>
         </div>
+    </div>
 
-        <div class="max-w-7xl mx-auto px-4">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex flex-col justify-center pt-8 sm:justify-start">
-           <h1>Photos</h1>
+           <h2 class="font-semibold text-3xl text-gray-800 leading-tight pb-6">Posts</h2>
+            </div>
            <section class="photos">
-            <div class="grid sm:grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            <div class="my-2" v-for="photo in photos" :key="photo.id">
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-4 justify-items-center">
+            <div class="my-2 flex flex-1" v-for="photo in photos" :key="photo.id">
                           <CardViewOnly :photo="photo"></CardViewOnly>     
                 </div>
             </div>
         </section>
-            </div>
 
         </div>
-    </div>
+    
 </template>

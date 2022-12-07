@@ -17,16 +17,17 @@ use App\Models\Photo;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    // return Inertia::render('Welcome', [
+    //     'canLogin' => Route::has('login'),
+    //     'canRegister' => Route::has('register'),
+    //     'laravelVersion' => Application::VERSION,
+    //     'phpVersion' => PHP_VERSION,
+    return redirect('/posts');
+
 });
 
-Route::get('/photos', function() {
-    return inertia('Guest/Photos', [
+Route::get('/posts', function() {
+    return inertia('Guest/Posts', [
         'photos' => Photo::orderByDesc('id')->get(),
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register')
@@ -42,11 +43,11 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/photos', function () {
-        return inertia('Admin/Photos', [
+    Route::get('/posts', function () {
+        return inertia('Admin/Posts', [
             'photos' => Photo::orderByDesc('id')->get()
         ]);
-    })->name('photos'); // This will respond to requests for admin/photos and have a name of admin.photos
+    })->name('posts'); // This will respond to requests for admin/photos and have a name of admin.photos
 
     Route::get('/photos/create', function ()
     {

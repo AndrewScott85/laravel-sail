@@ -56,8 +56,8 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
             <p class="text-base self-end">{{photoDate}}</p>
         </div>
         <img class=" h-60 object-contain py-4 cursor-pointer" :src="'/storage/' + photo.path" alt="" @click="openPhotoModal"/>
-        <div v-if="photo.description.length > 100" class="text-white text-base px-2 py-2 h-28">
-        <p>{{ photo.description.slice(0,100) + "...." }}</p>
+        <div v-if="photo.description.length > 180" class="text-white text-base px-2 py-2 h-28">
+        <p>{{ photo.description.slice(0,180) + "...." }}</p>
     </div>
     <div v-else class="text-white text-base  px-2 py-4 h-28">{{ photo.description }}</div>
         <div class="flex gap-2 justify-center pt-4">
@@ -101,10 +101,7 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
                             <h3 class="text-right p-2 md:text-xl md:p-6">{{photoDate}}</h3>                        
                         </div>
                         <div class="flex justify-center">
-                            <div class="relative">
                         <img class="object-scale-down  py-6 px-4" :src="'/storage/' + photo.path" alt="" @click="closePhotoModal"/>
-                        <button class="absolute top-0" @click="closePhotoModal">X</button>
-                    </div>
                     </div>
                         <div class="flex-auto">
                         <p class="bg-white md:text-xl px-4 pb-4 text-center">{{ photo.description}}</p>
