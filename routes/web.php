@@ -32,7 +32,7 @@ Route::get('/posts', function() {
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register')
     ]);
-});
+})->name('guest.posts');
 
 Route::middleware([
     'auth:sanctum',

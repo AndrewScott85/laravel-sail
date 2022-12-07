@@ -62,7 +62,8 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="'/'">
+                                <NavLink :href="route('guest.posts')"
+                                :active="route().current('guest.posts')">
                                     Guest View
                                 </NavLink>
                             </div>
