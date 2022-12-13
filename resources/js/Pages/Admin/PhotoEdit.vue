@@ -22,31 +22,32 @@ const countdown = () => {
 <template>
     <AppLayout title="Edit Photo">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-3xl leading-tight">
                 Edit Photo
             </h2>
         </template>
-        <div class="py-12">
+        <div class="py-12 max-w-7xl mx-auto">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                 <form @submit.prevent="form.post(route('admin.photos.update', photo.id))">
                     <div class="flex flex-col px-4">
                         <div>
-                            <label for="title" class="block text-m font-bold text-gray-700">Title (max 35
+                            <label for="title" class="block text-m font-bold">Title (max 35
                                 characters)</label>
-                            <div class="">
+                            <div class="m-1">
                                 <input id="title" name="title" maxlength="30"
-                                    class="py-1 px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                    class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                     v-model="form.title" v-on:keydown="countdown" />
-                                <p>Characters remaining: <countdown></countdown>
-                                </p>
+                                <p class="pt-2">Characters remaining: <countdown></countdown></p>
                             </div>
                         </div>
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
-                        <div class="flex flex-col lg:flex-row items-center py-10 gap-10">
+                        <div>
+                            <label class="block text-m mt-6 font-bold">Photo</label>
+                        <div class="flex bg-white flex-col lg:flex-row items-center px-4 py-10 gap-10">
                             <img class="flex-start" width="300" :src="'/storage/' + photo.path" alt=""
                                 v-if="!form.path">
                             <div class="flex flex-col grow justify-center">
-                                <label class="self-center text-lg font-bold text-gray-700 pt-4">Want to change this
+                                <label class="self-center text-lg font-bold text-gray-700 p-4">Change this
                                     photo?</label>
                                 <div
                                     class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
@@ -72,13 +73,13 @@ const countdown = () => {
                                                 <p class="pl-1">or drag and drop</p>
                                             </div>
                                             <p class="text-xs text-gray-500">
-                                                PNG, JPG, GIF up to 10MB
+                                                PNG, JPG, GIF up to 2MB
                                             </p>
                                         </div>
                                     </div>
                                     <div class=" flex flex-col lg:flex-row justify-center items-center gap-10 text-slate-800"
                                         v-if="form.path">
-                                        <p class="font-bold">Selected Image: <span class="font-medium px-4"> {{
+                                        <p class="font-bold text-gray-600">Selected Image: <span class="font-medium px-4"> {{
                                                 form.path.name
                                         }}</span></p>
                                         <div class="text-red-600 font-bold" v-if="form.errors.path">{{ form.errors.path
@@ -90,14 +91,15 @@ const countdown = () => {
                                 </div>
                             </div>
                         </div>
+                        </div>
 
 
                         <div>
-                            <label for="description" class="block text-m font-bold text-gray-700 pt-8"> Edit Description
+                            <label for="description" class="block text-m font-bold text-white pt-8"> Edit Description
                                 Here</label>
                             <div class="mt-1">
                                 <textarea id="description" name="description" rows="3"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                    class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                     v-model="form.description"></textarea>
                             </div>
                             <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>

@@ -56,7 +56,7 @@ Route::middleware([
 
     Route::post('/photos', function() {
        $validated_data = Request::validate([
-            'path' => ['required', 'image', 'max:10000'],
+            'path' => ['required', 'image', 'max:2000'],
             'description' => ['required'],
             'title' => ['required']
 
@@ -64,7 +64,7 @@ Route::middleware([
         $path = Storage::disk('public')->put('photos', Request::file('path'));
         $validated_data['path'] = $path;
         Photo::create($validated_data);
-        return to_route('admin.photos');
+        return to_route('admin.posts');
         
     })->name('photos.store');
 
@@ -83,7 +83,7 @@ Route::middleware([
 
         if(Request::hasFile('path')) {
             $validated_data['path'] = Request::validate([
-                'path' => ['required', 'image', 'max:10000'],
+                'path' => ['required', 'image', 'max:2000'],
             ]);
 
 //Grab old image and delete it
@@ -95,7 +95,7 @@ Route::middleware([
     }
    
     $photo->update($validated_data);
-        return to_route('admin.photos');
+        return to_route('admin.posts');
         
     })->name('photos.update');
 

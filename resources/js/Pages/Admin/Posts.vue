@@ -14,7 +14,7 @@ defineProps({
     <AppLayout title="Photos">
         <template #header>
             <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-3xl text-gray-100 leading-tight">
                 Posts
             </h2>
             <Link

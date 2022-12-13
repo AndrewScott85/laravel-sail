@@ -30,7 +30,7 @@ export default defineComponent({
 <template>
     <AppLayout title="Create Photo">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-3xl leading-tight px-4">
                 Create Photo
             </h2>
         </template>
@@ -39,22 +39,22 @@ export default defineComponent({
                 <form @submit.prevent="form.post(route('admin.photos.store'))">
                     <div class="flex flex-col px-4">
                         <div>
-                            <label for="title" class="block text-m font-bold text-gray-700">Title (max 30
+                            <label for="title" class="block text-m font-bold">Title (max 30
                                 characters)</label>
                             <div class="m-1">
                                 <input id="title" name="title" maxlength="30"
-                                    class="py-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                    class="py-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                     placeholder="  Enter a title for your post here" v-model="form.title"
                                     v-on:keydown="countdown" />
-                                <p>Characters remaining: {{ countdown }} </p>
+                                <p class="pt-2">Characters remaining: {{ countdown }} </p>
                             </div>
                         </div>
 
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
                         <div>
-                            <label class="block text-m mt-6 font-bold text-gray-700">Photo</label>
+                            <label class="block text-m mt-6 font-bold">Photo</label>
                             <div
-                                class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                                class="mt-1 bg-white flex justify-center rounded-md outline-2 outline-dashed outline-gray-300 outline-offset-[-10px] px-6 pt-5 pb-6">
                                 <div class="space-y-1 text-center">
                                     <div v-if="!form.path">
                                         <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
@@ -63,10 +63,10 @@ export default defineComponent({
                                                 d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
-                                        <div class="flex text-sm text-gray-600">
+                                        <div class="flex text-md text-gray-600">
 
                                             <label for="path"
-                                                class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                class="relative cursor-pointer rounded-md font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                                 <span>Upload a file</span>
                                                 <input id="path" name="path" type="file" class="sr-only"
                                                     accept="image/*" @input="
@@ -76,14 +76,14 @@ export default defineComponent({
                                             </label>
                                             <p class="pl-1">or drag and drop</p>
                                         </div>
-                                        <p class="text-xs text-gray-500">
-                                            PNG, JPG, GIF up to 10MB
+                                        <p class="text-md text-gray-600">
+                                            PNG, JPG, GIF up to 2MB
                                         </p>
                                     </div>
                                 </div>
-                                <div class="flex flex-col lg:flex-row  items-center gap-10 text-slate-800 font-bold"
+                                <div class="flex flex-col lg:flex-row items-center gap-10 font-bold"
                                     v-if="form.path">
-                                    <p class="font-bold">Selected Image: <span class="font-medium px-2"> {{
+                                    <p class="font-bold text-gray-600">Selected Image: <span class="font-medium px-2"> {{
                                             form.path.name
                                     }}</span></p>
                                     <div class="text-red-600 font-bold" v-if="form.errors.path">{{ form.errors.path }}
@@ -96,10 +96,10 @@ export default defineComponent({
                         </div>
 
                         <div class="text-red-600" v-if="form.errors.path">{{ form.errors.path }}</div>
-                        <label for="description" class="block text-m mt-6 font-bold text-gray-700">Description</label>
+                        <label for="description" class="block text-m mt-6 font-bold ">Description</label>
                         <div class="my-2">
                             <textarea id="description" name="description" rows="3"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-md"
                                 placeholder="Description for your photo." v-model="form.description"></textarea>
                         </div>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
