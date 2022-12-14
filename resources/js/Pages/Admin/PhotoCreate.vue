@@ -111,7 +111,7 @@ export default defineComponent({
                         Cancel
                         </Link>
                         <button type="submit" :disabled="form.processing"
-                            class="inline-flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                            class="inline-flex justify-center rounded-md border border-transparent bg-emerald-800 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                             Save
                         </button>
                     </div>
