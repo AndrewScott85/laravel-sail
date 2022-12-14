@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
-$DATABASE_URL=parse_url('JAWSDB_MARIA_URL');
+$DATABASE_URL=parse_url('JAWSDB_URL');
 
 return [
 
