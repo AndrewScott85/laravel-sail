@@ -10,7 +10,7 @@ defineProps({
     },
     maxWidth: {
         type: String,
-        default: '2xl',
+        default: 'min',
     },
     closeable: {
         type: Boolean,
@@ -35,13 +35,13 @@ const close = () => {
                 <slot name="title" />
             </div>
 
-            <div class="my-4">
+            <div class="">
                 <slot name="content" />
             </div>
         </div>
 
-        <div class="flex flex-row justify-end py-4 bg-black border-t border-gray-100 text-white text-right">
+        <!-- <div class="flex flex-row justify-end px-6 bg-gray-100 text-right">
             <slot name="footer" />
-        </div>
+        </div> -->
     </Modal>
 </template>

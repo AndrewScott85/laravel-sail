@@ -17,21 +17,22 @@ use App\Models\Photo;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    // return Inertia::render('Welcome', [
+    //     'canLogin' => Route::has('login'),
+    //     'canRegister' => Route::has('register'),
+    //     'laravelVersion' => Application::VERSION,
+    //     'phpVersion' => PHP_VERSION,
+    return redirect('/posts');
+
 });
 
-Route::get('photos', function() {
-    return Inertia::render('Guest/Photos', [
-        'photos' => Photo::all(),
+Route::get('/posts', function() {
+    return inertia('Guest/Posts', [
+        'photos' => Photo::orderByDesc('id')->get(),
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register')
     ]);
-});
+})->name('guest.posts');
 
 Route::middleware([
     'auth:sanctum',
@@ -42,11 +43,11 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/photos', function () {
-        return inertia('Admin/Photos', [
+    Route::get('/posts', function () {
+        return inertia('Admin/Posts', [
             'photos' => Photo::orderByDesc('id')->get()
         ]);
-    })->name('photos'); // This will respond to requests for admin/photos and have a name of admin.photos
+    })->name('posts'); // This will respond to requests for admin/photos and have a name of admin.photos
 
     Route::get('/photos/create', function ()
     {
@@ -55,13 +56,15 @@ Route::middleware([
 
     Route::post('/photos', function() {
        $validated_data = Request::validate([
-            'path' => ['required', 'image', 'max:500'],
-            'description' => ['required']
+            'path' => ['required', 'image', 'max:2000'],
+            'description' => ['required'],
+            'title' => ['required']
+
        ]);
         $path = Storage::disk('public')->put('photos', Request::file('path'));
         $validated_data['path'] = $path;
         Photo::create($validated_data);
-        return to_route('admin.photos');
+        return to_route('admin.posts');
         
     })->name('photos.store');
 
@@ -74,12 +77,13 @@ Route::middleware([
     Route::put('/photos/{photo}', function (Photo $photo) {
 
         $validated_data = Request::validate([
-            'description' => ['required']
+            'description' => ['required'],
+            'title' => ['required']
        ]);
 
         if(Request::hasFile('path')) {
             $validated_data['path'] = Request::validate([
-                'path' => ['required', 'image', 'max:500'],
+                'path' => ['required', 'image', 'max:2000'],
             ]);
 
 //Grab old image and delete it
@@ -91,7 +95,7 @@ Route::middleware([
     }
    
     $photo->update($validated_data);
-        return to_route('admin.photos');
+        return to_route('admin.posts');
         
     })->name('photos.update');
 
