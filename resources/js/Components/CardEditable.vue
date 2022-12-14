@@ -50,19 +50,21 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
 
 
 <template>
-    <div class="flex flex-col shadow-lg bg-neutral-800 p-4 w-[22rem] lg:w-96 rounded-sm hover:bg-neutral-900 hover:ring hover:ring-indigo-600/50 ring-offset-4 ring-offset-black cursor-pointer" @click="openPhotoModal">
-        <div class="flex justify-between items-center text-white font-base">
+    <div class="flex flex-col shadow-lg bg-neutral-800 p-4 w-[22rem] lg:w-96 rounded-sm hover:bg-neutral-900 hover:ring hover:ring-indigo-600/50 ring-offset-4 ring-offset-black">
+        <div class="flex justify-between items-center text-white font-base" @click="openPhotoModal">
             <h3 class="text-lg font-bold self-start cursor-pointer hover:underline" >{{photo.title}}</h3>
             <p class="text-base self-end">{{photoDate}}</p>
         </div>
-        <img class=" h-60 object-contain py-4 cursor-pointer" :src="'/storage/' + photo.path" alt=""/>
+        <div class="cursor-pointer" @click="openPhotoModal">
+        <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt=""/>
         <div v-if="(photo.description.length > 185)" class="text-white text-base px-2 py-2 h-32">
         <p>{{ photo.description.slice(0,185) + "...." }}</p>
     </div>
     <div v-else class="text-white text-base  px-2 py-4 h-32">{{ photo.description }}</div>
+</div>
         <div class="flex gap-2 justify-center mt-4">
             <Link
-                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-16 py-1 rounded-sm"
+                class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-16 py-1 rounded-sm"
                 :href="route('admin.photos.edit', photo.id)"
             >
                 EDIT
@@ -72,24 +74,24 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
     </div>
     <DialogModal :show="confirmingPhotoDeletion" @close="closeModal">
                 <template #title>
-                    <div class="font-bold bg-gray-100">
+                    <div class="font-bold border-b border-gray-100">
                         <p class="px-4 py-4"> Are you sure you want to delete this photo?</p>
                         </div>
                 </template>
                 <template #content>
-                    <div class="flex flex-col items-center gap-4 py-4 mx-20 bg-slate-500">
-                        <img class="h-48 px-4" :src="'/storage/' + photo.path" alt="" />
+                    <div class="flex flex-col items-center gap-4 p-4 mx-20">
+                        <img class="h-48" :src="'/storage/' + photo.path" alt="" />
                         <p class="text-lg text-white">{{ photo.description.slice(0, 50) + "..." }}</p>
-
                     </div>
                 </template>
                 <template #footer>
-                    <button @click="closeModal" class="px-8 py-2 mr-2 text-white font-bold bg-slate-600">
-                        Cancel
+                    <div class="pr-4">
+                    <button @click="closeModal" class="inline-flex text-sm items-center uppercase px-8 py-2 mr-4 rounded-sm font-bold bg-white text-black">
+                        CANCEL
                     </button>
-                    <DangerButton @click="deletePhoto(photo)"
-                        >Delete</DangerButton
-                    >
+                    <DangerButton  @click="deletePhoto(photo)"
+                        >Delete</DangerButton>
+                    </div>
                 </template>
     </DialogModal>
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
