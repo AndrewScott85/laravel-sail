@@ -46,7 +46,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
+            'url' => env('JAWSDB_URL'),
             'host' =>     isset($DATABASE_URL['host']) ? $DATABASE_URL['host'] : null,
             'port' =>     isset($DATABASE_URL['port']) ? $DATABASE_URL['port'] : null,
             'database' => isset($DATABASE_URL['path']) ? ltrim( $DATABASE_URL['path'], "/") : null,
