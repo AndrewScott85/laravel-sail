@@ -24,6 +24,7 @@ defineProps({
             </div>
         </template>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-black">
+            <div v-if="photos.length == 0">Nothing to display yet!</div>
         <section class="photos">
             <div class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-4 justify-items-center">
                 <div class="my-2 flex flex-1" v-for="photo in photos" :key="photo.id">
