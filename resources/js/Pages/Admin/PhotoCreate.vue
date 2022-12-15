@@ -45,7 +45,7 @@ export default defineComponent({
                                 <input id="title" name="title" maxlength="30"
                                     class="py-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                     placeholder="  Enter a title for your post here" v-model="form.title"
-                                    v-on:keydown="countdown" />
+                                    />
                                 <p class="pt-2">Characters remaining: {{ countdown }} </p>
                             </div>
                         </div>
