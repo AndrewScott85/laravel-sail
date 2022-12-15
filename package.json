@@ -4,7 +4,9 @@
         "dev": "vite",
         "build": "vite build",
         "watch" : "vite build --watch",
-        "postinstall": "npm run build"
+        "postinstall": "npm run build",
+        "post-install-cmd":
+            "ln -sr storage/app/public public/storage" 
     },
     "devDependencies": {
         "@inertiajs/inertia": "^0.11.0",
