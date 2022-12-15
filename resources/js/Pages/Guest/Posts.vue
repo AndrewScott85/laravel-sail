@@ -55,9 +55,10 @@ defineProps({
             </div>
             
         </div>
-        <div class="max-w-7xl mx-auto text-white sm:px-6 lg:px-8">
-        <p class="">A blog demo with AI created content. Images made from prompts given to midjourney and nightcafe, 
-            with descriptions and titles written by chatgpt. </p>
+        <div class="max-w-7xl mx-auto text-white sm:px-6 lg:px-8 pb-6">
+        <p class="">A blog demo with content created using generative AI.</p>
+            <p>Images made using <a class="font-bold" href="https://midjourney.com/home/?callbackUrl=%2Fapp%2F">Midjourney</a> and <a class="font-bold" href="https://creator.nightcafe.studio/">nightcafe</a>,
+            with descriptions and titles written by <a class="font-bold" href="https://chat.openai.com/chat">ChatGPT</a>. </p>
             <p class="">Login to checkout the user interface!</p>
         </div>
     </header>
