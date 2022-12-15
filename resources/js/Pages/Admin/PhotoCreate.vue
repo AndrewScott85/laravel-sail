@@ -3,6 +3,7 @@ import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { Link } from "@inertiajs/inertia-vue3";
+import ActionMessage from '@/Components/ActionMessage.vue';
 
 export default defineComponent({
     components: {
@@ -105,6 +106,13 @@ export default defineComponent({
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
                     </div>
                     <div class="flex justify-end py-10 gap-4 px-4">
+                        <div>
+                         
+                         <div v-show="form.processing" class="text-sm text-gray-100">
+                            Saving.... This can take a few seconds
+                         </div>
+                        
+                     </div>
                         <Link
                             class="inline-flex justify-center rounded-md border border-transparent bg-slate-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                             :href="route('admin.posts')">

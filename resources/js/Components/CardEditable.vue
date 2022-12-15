@@ -55,13 +55,14 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
             <h3 class="text-lg font-bold self-start cursor-pointer hover:underline" >{{photo.title}}</h3>
             <p class="text-base self-end">{{photoDate}}</p>
         </div>
-        <div class="cursor-pointer" @click="openPhotoModal">
-        <img class=" h-60 object-contain py-4" :src="'/storage/' + photo.path" alt=""/>
+        <div class="h-60 mt-4 rounded-sm flex justify-center cursor-pointer" @click="openPhotoModal">
+        <img class="" :src="'/storage/' + photo.path" alt=""/>
+        </div>
         <div v-if="(photo.description.length > 185)" class="text-white text-base px-2 py-2 h-32">
         <p>{{ photo.description.slice(0,185) + "...." }}</p>
     </div>
     <div v-else class="text-white text-base  px-2 py-4 h-32">{{ photo.description }}</div>
-</div>
+
         <div class="flex gap-2 justify-center mt-4">
             <Link
                 class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-16 py-1 rounded-sm"
