@@ -102,7 +102,7 @@ Route::middleware([
     Route::delete('/photos/{photo}', function (Photo $photo) {
         Storage::delete($photo->path);
         $photo->delete();
-        return to_route('admin.photos');
+        return to_route('admin.posts');
     })->name('photos.delete');
 
 });
