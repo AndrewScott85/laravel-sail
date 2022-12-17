@@ -24,6 +24,7 @@ defineProps({
             </div>
         </template>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-black">
+            <div v-if="!photos">Nothing to display yet!</div>
         <section class="photos">
             <div class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-4 justify-items-center">
                 <div class="my-2 flex flex-1" v-for="photo in photos" :key="photo.id">
@@ -58,7 +59,7 @@ defineProps({
         <p class="">A blog demo with content created using generative AI.</p>
             <p>Images made using <a class="font-bold" href="https://midjourney.com/home/?callbackUrl=%2Fapp%2F">Midjourney</a> and <a class="font-bold" href="https://creator.nightcafe.studio/">nightcafe</a>,
             with descriptions and titles written by <a class="font-bold" href="https://chat.openai.com/chat">ChatGPT</a>. </p>
-            <p class="">Login to checkout the user interface!</p>
+            <p class="mt-2"><Link class="font-bold text-xl underline" href="route('login')">Login</Link> to checkout the user interface! (Details provided on Login page)</p>
         </div>
     </header>
 
