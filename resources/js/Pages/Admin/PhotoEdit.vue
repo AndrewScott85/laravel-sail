@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { ref } from "vue";
 
 const props = defineProps({
     photo: Object
@@ -13,9 +14,23 @@ const form = useForm({
     title: props.photo.title,
 });
 
+let photoPrev = ref(null);
+    
+       const photoPreview = () => {
+        
+            const reader = new FileReader();
+
+            reader.readAsDataURL(form.path);
+
+            reader.onload = (e) => {
+                photoPrev.value = e.target.result
+            }
+        }
+
 const countdown = () => {
     return 30 - form.title.length;
 }
+
 
 </script>
 
@@ -34,7 +49,7 @@ const countdown = () => {
                             <label for="title" class="block text-m font-bold">Title (max 35
                                 characters)</label>
                             <div class="m-1">
-                                <input id="title" name="title" maxlength="30"
+                                <input id="title" name="title" maxlength="30" v-on:click="form.clearErrors('title')"
                                     class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                     v-model="form.title" v-on:keydown="countdown" />
                                 <p class="pt-2">Characters remaining: <countdown></countdown></p>
@@ -67,8 +82,9 @@ const countdown = () => {
                                                     <input id="path" name="path" type="file" class="sr-only"
                                                         accept="image/*" @input="
                                                             form.path =
-                                                            $event.target.files[0]
-                                                        " />
+                                                            $event.target.files[0]"
+                                                            @change="photoPreview"
+                                                        />
                                                 </label>
                                                 <p class="pl-1">or drag and drop</p>
                                             </div>
@@ -79,12 +95,10 @@ const countdown = () => {
                                     </div>
                                     <div class=" flex flex-col lg:flex-row justify-center items-center gap-10 text-slate-800"
                                         v-if="form.path">
-                                        <p class="font-bold text-gray-600">Selected Image: <span class="font-medium px-4"> {{
-                                                form.path.name
-                                        }}</span></p>
-                                        <div class="text-red-600 font-bold" v-if="form.errors.path">{{ form.errors.path
-                                        }}</div>
-                                        <button
+                                        <div class="rounded-full w-20 h-20"><img :src="photoPrev" /></div>
+                                   
+                                   <p class="font-bold text-gray-600">Selected Image: <span class="font-medium px-4"> {{
+                                                form.path.name}}</span></p><button v-on:click="form.clearErrors('path')"
                                             class="inline-flex justify-center rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                             @click="(form.path = null)">Change Image</button>
                                     </div>
@@ -93,12 +107,12 @@ const countdown = () => {
                         </div>
                         </div>
 
-
+                        <div class="text-red-600" v-if="form.errors.path">{{ form.errors.path}}</div>
                         <div>
                             <label for="description" class="block text-m font-bold text-white pt-8"> Edit Description
                                 Here</label>
                             <div class="mt-1">
-                                <textarea id="description" name="description" rows="3"
+                                <textarea id="description" name="description" rows="3" v-on:click="form.clearErrors('description')"
                                     class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                     v-model="form.description"></textarea>
                             </div>
@@ -106,6 +120,9 @@ const countdown = () => {
                         </div>
                     </div>
                     <div class="pt-6 flex justify-end gap-4 px-4">
+                        <div v-show="form.processing" class="text-sm text-gray-100">
+                            Saving.... This can take a few seconds
+                         </div>
                         <Link class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-md"
                             :href="route('admin.posts')">
                         Cancel
