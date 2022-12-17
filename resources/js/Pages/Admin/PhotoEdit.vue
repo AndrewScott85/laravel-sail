@@ -128,8 +128,9 @@ const countdown = () => {
                     </div>
                     <div class="pt-6 flex justify-end gap-4 px-4">
                         <div v-show="form.processing" class="text-sm text-gray-100">
-                            Saving.... This can take a few seconds
+                            Saving.... This can take a while, please be patient!
                          </div>
+                         <div v-if="form.processing "></div>
                         <Link class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-md"
                             :href="route('admin.posts')">
                         Cancel

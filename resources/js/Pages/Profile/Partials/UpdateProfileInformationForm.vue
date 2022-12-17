@@ -129,7 +129,7 @@ const clearPhotoFileInput = () => {
             </div>
 
             <!-- Name -->
-            <div class="col-span-6 sm:col-span-4">
+            <div class="col-span-6 sm:col-span-4 text-black">
                 <InputLabel for="name" value="Name" />
                 <TextInput
                     id="name"
@@ -142,7 +142,7 @@ const clearPhotoFileInput = () => {
             </div>
 
             <!-- Email -->
-            <div class="col-span-6 sm:col-span-4">
+            <div class="col-span-6 sm:col-span-4 text-black">
                 <InputLabel for="email" value="Email" />
                 <TextInput
                     id="email"
