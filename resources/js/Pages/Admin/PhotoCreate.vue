@@ -18,6 +18,26 @@ export default defineComponent({
 
         return { form };
     },
+
+    data() {
+        return {
+            photoPrev: null
+        }
+
+    },
+    methods: {
+        photoPreview(e) {
+            
+            const reader = new FileReader();
+
+            reader.readAsDataURL(e.target.files[0]);
+
+            reader.onload = (e) => {
+                this.photoPrev = e.target.result
+            }
+        }
+    },
+
     computed: {
         countdown() {
             return 30 - this.form.title.length;
@@ -44,7 +64,9 @@ export default defineComponent({
                             <div class="m-1">
                                 <input id="title" name="title" maxlength="30"
                                     class="py-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                    placeholder="  Enter a title for your post here" v-model="form.title"
+                                    placeholder="  Enter a title for your post here" 
+                                    v-model="form.title"
+                                    v-on:click="form.clearErrors('title')"
                                     />
                                 <p class="pt-2">Characters remaining: {{ countdown }} </p>
                             </div>
@@ -68,11 +90,15 @@ export default defineComponent({
                                             <label for="path"
                                                 class="relative cursor-pointer rounded-md font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                                 <span>Upload a file</span>
-                                                <input id="path" name="path" type="file" class="sr-only"
+                                                <input id="path" name="path" type="file" class="sr-only"  v-on:click="form.clearErrors('path')"
                                                     accept="image/*" @input="
                                                         form.path =
-                                                        $event.target.files[0]
-                                                    " />
+                                                        $event.target.files[0]" 
+                                                    @change="photoPreview" />
+                                                <progress v-if="form.progress" :value="form.progress.percentage"
+                                                    max="100">
+                                                    {{ form.progress.percentage }}%
+                                                </progress>
                                             </label>
                                             <p class="pl-1">or drag and drop</p>
                                         </div>
@@ -83,11 +109,9 @@ export default defineComponent({
                                 </div>
                                 <div class="flex flex-col lg:flex-row items-center gap-10 font-bold"
                                     v-if="form.path">
+                                    <div class="flex-start" width="200"><img :src="photoPrev" /></div>
                                     <p class="font-bold text-gray-600">Selected Image: <span class="font-medium px-2"> {{
-                                            form.path.name
-                                    }}</span></p>
-                                    <div class="text-red-600 font-bold" v-if="form.errors.path">{{ form.errors.path }}
-                                    </div>
+                                            form.path.name}}</span></p>
                                     <button
                                         class="inline-flex justify-center rounded-md border border-transparent bg-indigo-500 py-2 ml-4 px-2 text-lg font-bold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                         @click="(form.path = null)">Change Image</button>
@@ -98,7 +122,7 @@ export default defineComponent({
                         <div class="text-red-600" v-if="form.errors.path">{{ form.errors.path }}</div>
                         <label for="description" class="block text-m mt-6 font-bold ">Description</label>
                         <div class="my-2">
-                            <textarea id="description" name="description" rows="3"
+                            <textarea id="description" name="description" rows="3" v-on:click="form.clearErrors('description')"
                                 class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-md"
                                 placeholder="Description for your photo." v-model="form.description"></textarea>
                         </div>
