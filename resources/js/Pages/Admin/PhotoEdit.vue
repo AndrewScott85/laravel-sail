@@ -97,7 +97,7 @@ const countdown = () => {
                                         </div>
                                         <div class=" flex flex-col lg:flex-row justify-center items-center gap-10 text-slate-800"
                                             v-if="form.path">
-                                            <img class="flex-start" width="200"><img :src="photoPrev" />
+                                            <img class="flex-start" width="200" :src="photoPrev" />
                                             <p class="font-bold text-gray-600">Selected Image: <span
                                                     class="font-medium px-4"> {{
                                                             form.path.name

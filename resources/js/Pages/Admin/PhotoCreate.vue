@@ -95,11 +95,7 @@ export default defineComponent({
                                                         form.path =
                                                         $event.target.files[0]" 
                                                     @change="photoPreview" />
-                                                <progress v-if="form.progress" :value="form.progress.percentage"
-                                                    max="100">
-                                                    {{ form.progress.percentage }}%
-                                                </progress>
-                                            </label>
+                                                                                            </label>
                                             <p class="pl-1">or drag and drop</p>
                                         </div>
                                         <p class="text-md text-gray-600">
