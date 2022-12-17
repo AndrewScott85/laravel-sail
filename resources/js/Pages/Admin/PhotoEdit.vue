@@ -59,7 +59,7 @@ const countdown = () => {
                         <div>
                             <label class="block text-m mt-6 font-bold">Photo</label>
                         <div class="flex bg-white flex-col lg:flex-row items-center px-4 py-10 gap-10">
-                            <img class="flex-start" width="300" :src="'/storage/' + photo.path" alt=""
+                            <img class="flex-start" width="200" :src="'/storage/' + photo.path" alt=""
                                 v-if="!form.path">
                             <div class="flex flex-col grow justify-center">
                                 <label class="self-center text-lg font-bold text-gray-700 p-4">Change this
