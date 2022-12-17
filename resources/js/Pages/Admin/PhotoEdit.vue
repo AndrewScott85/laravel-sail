@@ -97,7 +97,7 @@ const countdown = () => {
                                         </div>
                                         <div class=" flex flex-col lg:flex-row justify-center items-center gap-10 text-slate-800"
                                             v-if="form.path">
-                                            <div class="flex-start" width="200"><img :src="photoPrev" /></div>
+                                            <img class="flex-start" width="200"><img :src="photoPrev" />
                                             <p class="font-bold text-gray-600">Selected Image: <span
                                                     class="font-medium px-4"> {{
                                                             form.path.name
@@ -127,6 +127,9 @@ const countdown = () => {
                         </div>
                     </div>
                     <div class="pt-6 flex justify-end gap-4 px-4">
+                        <div v-show="form.processing" class="text-sm text-gray-100">
+                            Saving.... This can take a few seconds
+                         </div>
                         <Link class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-md"
                             :href="route('admin.posts')">
                         Cancel
