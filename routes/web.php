@@ -61,11 +61,12 @@ Route::middleware([
             'title' => ['required']
 
        ]);
-        $path = Storage::disk('public')->put('photos', Request::file('path'));
+        $path = Storage::disk('s3')->put('photos', Request::file('path'));
+        $path = Storage::disk('s3')->url($path);
         $validated_data['path'] = $path;
         Photo::create($validated_data);
         return to_route('admin.posts');
-        
+
     })->name('photos.store');
 
     Route::get('/photos/{photo}/edit', function (Photo $photo) {
@@ -90,13 +91,14 @@ Route::middleware([
             $oldImage = $photo->path;
             Storage::delete($oldImage);
 
-        $path = Storage::disk('public')->put('photos', Request::file('path'));
+        $path = Storage::disk('s3')->put('photos', Request::file('path'));
+        $path = Storage::disk('s3')->url($path);
         $validated_data['path'] = $path;
     }
-   
+
     $photo->update($validated_data);
         return to_route('admin.posts');
-        
+
     })->name('photos.update');
 
     Route::delete('/photos/{photo}', function (Photo $photo) {
