@@ -32,7 +32,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
             <p class="text-base self-end">{{ photoDate }}</p>
         </div>
         <div class="h-60 mt-4 rounded-sm flex justify-center ">
-            <img class="" :src="'/storage/' + photo.path" alt="" />
+            <img class="" :src="photo.path" alt="" />
         </div>
         <div v-if="photo.description.length > 185" class="text-white text-base  px-2 py-4 h-32">
             <p>{{ photo.description.slice(0, 185) + "...." }}</p>
