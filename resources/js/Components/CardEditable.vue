@@ -81,7 +81,7 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
                 </template>
                 <template #content>
                     <div class="flex flex-col items-center gap-4 p-4 mx-20">
-                        <img class="h-48" :src="'/storage/' + photo.path" alt="" />
+                        <img class="h-48" :src="photo.path" alt="" />
                         <p class="text-lg text-white">{{ photo.description.slice(0, 50) + "..." }}</p>
                     </div>
                 </template>
