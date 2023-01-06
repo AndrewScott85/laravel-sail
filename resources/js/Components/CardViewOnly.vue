@@ -31,8 +31,11 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
             <h3 class="text-lg font-bold self-start hover:underline">{{ photo.title }}</h3>
             <p class="text-base self-end">{{ photoDate }}</p>
         </div>
+        <div>{{ photo.user.name }}
+        <img class="h-10" :src="photo.user.profile_photo_url" alt="">
+        </div>
         <div class="h-60 mt-4 rounded-sm flex justify-center ">
-            <img class="" :src="'/storage/' + photo.path" alt="" />
+            <img class="" :src="photo.path" alt="" />
         </div>
         <div v-if="photo.description.length > 185" class="text-white text-base  px-2 py-4 h-32">
             <p>{{ photo.description.slice(0, 185) + "...." }}</p>

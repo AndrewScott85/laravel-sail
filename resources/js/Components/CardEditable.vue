@@ -56,7 +56,7 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
             <h3 class="text-lg font-bold self-start cursor-pointer hover:underline" >{{photo.title}}</h3>
             <p class="text-base self-end">{{photoDate}}</p>
         </div>
-        <div>{{ photo.path }}</div>
+        <!-- <div>{{photo}}</div> -->
         <div class="h-60 mt-4 rounded-sm flex justify-center cursor-pointer" @click="openPhotoModal">
         <img class="" :src="photo.path" alt=""/>
         </div>

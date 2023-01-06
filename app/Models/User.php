@@ -10,6 +10,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -71,6 +73,15 @@ class User extends Authenticatable
      * @param  \Illuminate\Http\UploadedFile  $photo
      * @return void
      */
+
+    public function photos(): HasMany
+    {
+        return $this->hasMany(
+            related: Photo::class,
+            foreignKey: 'user_id',
+        );
+    }
+
     public function updateProfilePhoto(UploadedFile $photo)
     {
         tap($this->profile_photo_path, function ($previous) use ($photo) {
