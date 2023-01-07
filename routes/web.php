@@ -32,18 +32,18 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-])->prefix('admin')->name('admin.')->group(function () {
+])->prefix('user')->name('user.')->group(function () {
     Route::get('/', App\Http\Controllers\DashboardController::class)->name('dashboard');
 
     Route::get('/posts', function () {
-        return inertia('Admin/Posts', [
+        return inertia('User/Posts', [
             'photos' => Photo::orderByDesc('id')->get()
         ]);
-    })->name('posts'); // This will respond to requests for admin/photos and have a name of admin.photos
+    })->name('posts'); // This will respond to requests for user/photos and have a name of user.photos
 
     Route::get('/photos/create', function ()
     {
-        return inertia('Admin/PhotoCreate');
+        return inertia('User/PhotoCreate');
     })->name('photos.create');
 
     Route::post('/photos', function() {
@@ -55,13 +55,14 @@ Route::middleware([
         $path = Storage::disk('s3')->put('photos', Request::file('path'));
         $path = Storage::disk('s3')->url($path);
         $validated_data['path'] = $path;
+        $validated_data['user_id'] = Auth::id();
         Photo::create($validated_data);
-        return to_route('admin.posts');
+        return to_route('user.posts');
 
     })->name('photos.store');
 
     Route::get('/photos/{photo}/edit', function (Photo $photo) {
-        return inertia('Admin/PhotoEdit', [
+        return inertia('User/PhotoEdit', [
             'photo' => $photo
         ]);
     })->name('photos.edit');
@@ -88,14 +89,14 @@ Route::middleware([
     }
 
     $photo->update($validated_data);
-        return to_route('admin.posts');
+        return to_route('user.posts');
 
     })->name('photos.update');
 
     Route::delete('/photos/{photo}', function (Photo $photo) {
         Storage::delete($photo->path);
         $photo->delete();
-        return to_route('admin.posts');
+        return to_route('user.posts');
     })->name('photos.delete');
 
 });

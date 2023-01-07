@@ -19,7 +19,7 @@ defineProps({
             </h2>
             <Link
                         class="py-2 px-4 bg-emerald-700 text-white text-4xl font-bold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        :href="route('admin.photos.create')"
+                        :href="route('user.photos.create')"
                         >+</Link
                     >
                 </div>

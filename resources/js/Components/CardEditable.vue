@@ -32,7 +32,7 @@ const confirmPhotoDeletion = () => {
 };
 
 const deletePhoto = (photo) => {
-    form.delete(route("admin.photos.delete", photo.id), {
+    form.delete(route("user.photos.delete", photo.id), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset(),
@@ -68,7 +68,7 @@ const photoDate = props.photo.created_at.slice(2,10).split("-").reverse().join("
         <div class="flex gap-2 justify-center mt-4">
             <Link
                 class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-16 py-1 rounded-sm"
-                :href="route('admin.photos.edit', photo.id)"
+                :href="route('user.photos.edit', photo.id)"
             >
                 EDIT
             </Link>
