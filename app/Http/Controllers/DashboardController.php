@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use Inertia\Inertia;
 
+use Inertia\Inertia;
+use App\Models\Photo;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -13,8 +14,15 @@ class DashboardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    // public function __invoke(Request $request)
+    // {
+    //     return Inertia::render('Dashboard');
+    // }
+
+    public function displayAll()
     {
-        return Inertia::render('Dashboard');
+        return inertia('User/Posts', [
+            'photos' => Photo::orderByDesc('id')->with('user')->get()
+        ]);
     }
 }

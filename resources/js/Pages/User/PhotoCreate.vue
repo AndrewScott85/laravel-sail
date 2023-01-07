@@ -120,7 +120,7 @@ export default defineComponent({
                         <div class="my-2">
                             <textarea id="description" name="description" rows="3" v-on:click="form.clearErrors('description')"
                                 class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-md"
-                                placeholder="Description for your photo." v-model="form.description"></textarea>
+                                placeholder="Description for this post." v-model="form.description"></textarea>
                         </div>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
                     </div>

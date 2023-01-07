@@ -33,33 +33,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->prefix('user')->name('user.')->group(function () {
-    Route::get('/', App\Http\Controllers\DashboardController::class)->name('dashboard');
+    Route::get('/', [App\Http\Controllers\DashboardController::class, 'displayAll'])->name('posts');
 
-    Route::get('/posts', function () {
-        return inertia('User/Posts', [
-            'photos' => Photo::orderByDesc('id')->get()
-        ]);
-    })->name('posts'); // This will respond to requests for user/photos and have a name of user.photos
+    Route::get('/{uid}/posts', [App\Http\Controllers\UserController::class, 'userPosts'])->name('userposts');
 
-    Route::get('/photos/create', function ()
-    {
-        return inertia('User/PhotoCreate');
-    })->name('photos.create');
+    Route::get('/photos/create', [App\Http\Controllers\UserController::class, 'create'])->name('photos.create');
 
-    Route::post('/photos', function() {
-       $validated_data = Request::validate([
-            'path' => ['required', 'image', 'max:2000'],
-            'description' => ['required'],
-            'title' => ['required'],
-       ]);
-        $path = Storage::disk('s3')->put('photos', Request::file('path'));
-        $path = Storage::disk('s3')->url($path);
-        $validated_data['path'] = $path;
-        $validated_data['user_id'] = Auth::id();
-        Photo::create($validated_data);
-        return to_route('user.posts');
-
-    })->name('photos.store');
+    Route::post('/photos', [App\Http\Controllers\UserController::class, 'post'] )->name('photos.store');
 
     Route::get('/photos/{photo}/edit', function (Photo $photo) {
         return inertia('User/PhotoEdit', [
