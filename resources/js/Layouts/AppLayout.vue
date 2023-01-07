@@ -48,11 +48,11 @@ const logout = () => {
                                 <ApplicationMark class="block h-14 w-auto" />
                                 </Link>
                             </div>
-
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('user.posts')" :active="route().current('user.posts')">
-                                    Posts
+                                <NavLink :href="route('guest.posts')"
+                                :active="route().current('guest.posts')">
+                                    All Posts
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -62,9 +62,8 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('guest.posts')"
-                                :active="route().current('guest.posts')">
-                                    Guest View
+                                <NavLink :href="route('user.posts')" :active="route().current('user.posts')">
+                                    Edit
                                 </NavLink>
                             </div>
                         </div>

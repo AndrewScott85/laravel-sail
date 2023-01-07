@@ -35,7 +35,7 @@ Route::middleware([
 ])->prefix('user')->name('user.')->group(function () {
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'displayAll'])->name('posts');
 
-    Route::get('/{uid}/posts', [App\Http\Controllers\UserController::class, 'userPosts'])->name('userposts');
+    Route::get('/{uid}/posts', [App\Http\Controllers\GuestController::class, 'userPosts'])->name('userposts');
 
     Route::get('/photos/create', [App\Http\Controllers\UserController::class, 'create'])->name('photos.create');
 

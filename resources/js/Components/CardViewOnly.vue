@@ -61,7 +61,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
                     <h3 class="text-right p-2 md:text-xl md:p-6">{{ photoDate }}</h3>
                 </div>
                 <div class="flex justify-center">
-                    <img class="object-scale-down py-6 px-4" :src="photo.path" alt=""/>
+                    <img class="object-scale-down py-6 px-4" :src="photo.path" :alt="'Image for post: ' + photo.title"/>
                 </div>
                 <div class="max-w-7xl mx-auto">
                     <p class="whitespace-pre-line md:text-xl px-4 pb-4 text-left">{{ photo.description }}</p>

@@ -24,4 +24,13 @@ class GuestController extends Controller
             'canRegister' => Route::has('register')
         ]);
     }
+
+    public function userPosts($uid)
+    {
+        return inertia('Guest/Posts', [
+            'photos' => Photo::orderByDesc('id')->where('user_id', $uid)->with('user')->get(),
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register')
+        ]);
+    }
 }
