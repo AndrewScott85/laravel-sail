@@ -1,5 +1,5 @@
 <script setup>
-import { Fragment, ref } from 'vue';
+import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';

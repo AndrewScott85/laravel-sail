@@ -30,6 +30,8 @@ const deleteUser = () => {
     });
 };
 
+const showButton = ref(false);
+
 const closeModal = () => {
     confirmingUserDeletion.value = false;
 
@@ -67,7 +69,7 @@ const closeModal = () => {
                 <template #content>
                     Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.
 
-                    <div class="mt-4">
+                    <div class="m-4 text-black">
                         <TextInput
                             ref="passwordInput"
                             v-model="form.password"

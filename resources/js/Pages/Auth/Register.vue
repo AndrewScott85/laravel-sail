@@ -29,6 +29,8 @@ const submit = () => {
     <AuthenticationCard>
         <template #logo>
             <AuthenticationCardLogo />
+            <h1 class="text-4xl text-white font-bold text-center pb-10">GALÈRE.AI</h1>
+            <h2 class="text-2xl font-bold text-center text-white">CREATE ACCOUNT</h2>
         </template>
 
         <form @submit.prevent="submit">

@@ -25,6 +25,11 @@ class GuestController extends Controller
         ]);
     }
 
+    public function redirect()
+    {
+        return redirect('/allposts');
+    }
+
     public function userPosts($uid)
     {
         return inertia('Guest/Posts', [
