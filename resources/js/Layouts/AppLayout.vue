@@ -50,8 +50,8 @@ const logout = () => {
                             </div>
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('guest.posts')"
-                                :active="route().current('guest.posts')">
+                                <NavLink :href="route('allposts')"
+                                :active="route().current('allposts')">
                                     All Posts
                                 </NavLink>
                             </div>
@@ -62,8 +62,8 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('user.posts')" :active="route().current('user.posts')">
-                                    Edit
+                                <NavLink :href="route('user.manageposts')" :active="route().current('user.manageposts')">
+                                    Manage Posts
                                 </NavLink>
                             </div>
                         </div>

@@ -130,7 +130,7 @@ export default defineComponent({
                          </div>
                         <Link
                             class="inline-flex justify-center rounded-md border border-transparent bg-slate-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-                            :href="route('user.posts')">
+                            :href="route('user.manageposts')">
                         Cancel
                         </Link>
                         <button type="submit" :disabled="form.processing"

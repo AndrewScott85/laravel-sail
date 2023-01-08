@@ -57,7 +57,6 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
             <h3 class="text-lg font-bold self-start cursor-pointer hover:underline">{{ photo.title }}</h3>
             <p class="text-base self-end">{{ photoDate }}</p>
         </div>
-        <div>{{ photo.user.name }}</div>
         <div class="h-60 mt-4 rounded-sm flex justify-center cursor-pointer" @click="openPhotoModal">
             <img class="" :src="photo.path" alt="" />
         </div>
@@ -83,7 +82,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         </template>
         <template #content>
             <div class="flex flex-col items-center gap-4 p-4 mx-20">
-                <img class="h-48" :src="'/storage/' + photo.path" alt="" />
+                <img class="h-48" :src="photo.path" alt="" />
                 <p class="text-lg text-white">{{ photo.description.slice(0, 50) + "..." }}</p>
             </div>
         </template>
