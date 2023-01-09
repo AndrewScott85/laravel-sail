@@ -74,14 +74,6 @@ class User extends Authenticatable
      * @return void
      */
 
-    public function photos(): HasMany
-    {
-        return $this->hasMany(
-            related: Photo::class,
-            foreignKey: 'user_id',
-        );
-    }
-
     public function updateProfilePhoto(UploadedFile $photo)
     {
         tap($this->profile_photo_path, function ($previous) use ($photo) {
@@ -95,5 +87,14 @@ class User extends Authenticatable
                 Storage::disk($this->profilePhotoDisk())->delete($previous);
             }
         });
+    }
+    
+
+    public function photos(): HasMany
+    {
+        return $this->hasMany(
+            related: Photo::class,
+            foreignKey: 'user_id',
+        );
     }
 }
