@@ -9,6 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
+
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -73,6 +77,7 @@ class User extends Authenticatable
      * @param  \Illuminate\Http\UploadedFile  $photo
      * @return void
      */
+
 
     public function updateProfilePhoto(UploadedFile $photo)
     {

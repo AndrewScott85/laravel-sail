@@ -58,7 +58,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
             <p class="text-base self-end">{{ photoDate }}</p>
         </div>
         <div class="h-60 mt-4 rounded-sm flex justify-center cursor-pointer" @click="openPhotoModal">
-            <img class="" :src="photo.path" alt="" />
+        <img class="" :src="photo.path" alt=""/>
         </div>
         <div v-if="(photo.description.length > 185)" class="text-white text-base px-2 py-2 h-32">
             <p>{{ photo.description.slice(0, 185) + "...." }}</p>
@@ -75,26 +75,26 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         </div>
     </div>
     <DialogModal :show="confirmingPhotoDeletion" @close="closeModal">
-        <template #title>
-            <div class="font-bold border-b border-gray-100">
-                <p class="px-4 py-4"> Are you sure you want to delete this photo?</p>
-            </div>
-        </template>
-        <template #content>
-            <div class="flex flex-col items-center gap-4 p-4 mx-20">
-                <img class="h-48" :src="photo.path" alt="" />
-                <p class="text-lg text-white">{{ photo.description.slice(0, 50) + "..." }}</p>
-            </div>
-        </template>
-        <template #footer>
-            <div class="pr-4">
-                <button @click="closeModal"
-                    class="inline-flex text-sm items-center uppercase px-8 py-2 mr-4 rounded-sm font-bold bg-white text-black">
-                    CANCEL
-                </button>
-                <DangerButton @click="deletePhoto(photo)">Delete</DangerButton>
-            </div>
-        </template>
+                <template #title>
+                    <div class="font-bold border-b border-gray-100">
+                        <p class="px-4 py-4"> Are you sure you want to delete this photo?</p>
+                        </div>
+                </template>
+                <template #content>
+                    <div class="flex flex-col items-center gap-4 p-4 mx-20">
+                        <img class="h-48" :src="photo.path" alt="" />
+                        <p class="text-lg text-white">{{ photo.description.slice(0, 50) + "..." }}</p>
+                    </div>
+                </template>
+                <template #footer>
+                    <div class="pr-4">
+                    <button @click="closeModal" class="inline-flex text-sm items-center uppercase px-8 py-2 mr-4 rounded-sm font-bold bg-white text-black">
+                        CANCEL
+                    </button>
+                    <DangerButton  @click="deletePhoto(photo)"
+                        >Delete</DangerButton>
+                    </div>
+                </template>
     </DialogModal>
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
 

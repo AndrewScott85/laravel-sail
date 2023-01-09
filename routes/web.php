@@ -17,7 +17,6 @@ use App\Models\Photo;
 */
 
 Route::get('/',[App\Http\Controllers\GuestController::class, 'redirect']);
-
 Route::get('/allposts', App\Http\Controllers\GuestController::class)->name('allposts');
 Route::get('user/{uid}/posts', [App\Http\Controllers\GuestController::class, 'userPosts'])->name('userposts');
 
