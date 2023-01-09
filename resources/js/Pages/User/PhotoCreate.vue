@@ -50,9 +50,10 @@ export default defineComponent({
     <AppLayout title="Create Photo">
         <template #header>
             <h2 class="font-semibold text-3xl leading-tight px-4">
-                Create Photo
+                Create Post
             </h2>
         </template>
+        <div class="text-red-600 text-lg px-2 font-bold" v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI demonstration - Creation/Editing/Deletion is disabled on this account</div>
         <div class="py-12 max-w-7xl mx-auto">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                 <form @submit.prevent="form.post(route('user.photos.store'))">

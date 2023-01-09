@@ -19,6 +19,7 @@ defineProps({
             <h2 class="font-semibold text-xl text-gray-100 leading-tight">
                 Profile
             </h2>
+            <div class="text-bold text-red-600 text-xl" v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please note, all functionality on this page is disabled on the Demo Account</div>
         </template>
 
         <div>

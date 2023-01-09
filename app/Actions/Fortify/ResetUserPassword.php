@@ -19,6 +19,7 @@ class ResetUserPassword implements ResetsUserPasswords
      */
     public function reset($user, array $input)
     {
+        if ($user->id != 1 && $user->id != 2) {
         Validator::make($input, [
             'password' => $this->passwordRules(),
         ])->validate();
@@ -27,4 +28,5 @@ class ResetUserPassword implements ResetsUserPasswords
             'password' => Hash::make($input['password']),
         ])->save();
     }
+}
 }

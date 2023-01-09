@@ -58,7 +58,7 @@ defineProps({
 
             </div>
             
-        <div class="max-w-7xl flex flex-col items-center mx-auto text-white sm:px-6 lg:px-8 pb-2">
+        <div class="max-w-7xl flex flex-col self-start items-start px-2 text-white sm:px-6 lg:px-8 pb-2">
         <p class="">A blogging site with demo content created using generative AI.</p>
             <p>Images made using <a class="font-bold" href="https://midjourney.com/home/?callbackUrl=%2Fapp%2F">Midjourney</a> and <a class="font-bold" href="https://creator.nightcafe.studio/">nightcafe</a>,
             with descriptions and titles written by <a class="font-bold" href="https://chat.openai.com/chat">ChatGPT</a>. </p>
@@ -70,10 +70,10 @@ defineProps({
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-black">
         <div class="justify-center items-center py-8 sm:justify-start">
             <div class="pt-4 flex flex-col" v-if="singleUser">
-                <Link class="self-start rounded-md text-2xl text-bold text-white bg-indigo-900 p-2" :href="route('allposts')">&lt All Posts</Link>
-                <h2 class="font-semibold self-center text-3xl text-gray-100 pt-10">{{ photos[0].user.name }}'s Posts</h2>
+                <Link class="mx-2 lg:mx-8 self-start rounded-md text-lg lg:text-2xl text-bold text-white bg-indigo-900 p-2" :href="route('allposts')">&lt All Posts</Link>
+                <h2 class="font-semibold self-center text-xl lg:text-3xl text-gray-100 pt-4 lg:pt-0 lg:pb-4">{{ photos[0].user.name }}'s Posts</h2>
                 </div>
-                <h2 class="font-semibold self-center text-3xl text-gray-100" v-else>
+                <h2 class="font-semibold self-center text-xl lg:text-3xl text-gray-100" v-else>
                   All Posts
                 </h2>
         </div>
