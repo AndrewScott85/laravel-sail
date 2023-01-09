@@ -12,12 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-
-
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 
 class User extends Authenticatable
