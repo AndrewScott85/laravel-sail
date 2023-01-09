@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Models\Photo; 
+use App\Models\Photo;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,96 +16,21 @@ use App\Models\Photo;
 |
 */
 
+Route::get('/',[App\Http\Controllers\GuestController::class, 'redirect']);
+Route::get('/allposts', App\Http\Controllers\GuestController::class)->name('allposts');
+Route::get('user/{uid}/posts', [App\Http\Controllers\GuestController::class, 'userPosts'])->name('userposts');
 
-Route::get('/', function () {
-    // return Inertia::render('Welcome', [
-    //     'canLogin' => Route::has('login'),
-    //     'canRegister' => Route::has('register'),
-    //     'laravelVersion' => Application::VERSION,
-    //     'phpVersion' => PHP_VERSION,
-    return redirect('/posts');
-
-});
-
-Route::get('/posts', function() {
-    return inertia('Guest/Posts', [
-        'photos' => Photo::orderByDesc('id')->get(),
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register')
-    ]);
-})->name('guest.posts');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-
-    Route::get('/posts', function () {
-        return inertia('Admin/Posts', [
-            'photos' => Photo::orderByDesc('id')->get()
-        ]);
-    })->name('posts'); // This will respond to requests for admin/photos and have a name of admin.photos
-
-    Route::get('/photos/create', function ()
-    {
-        return inertia('Admin/PhotoCreate');
-    })->name('photos.create');
-
-    Route::post('/photos', function() {
-       $validated_data = Request::validate([
-            'path' => ['required', 'image', 'max:2000'],
-            'description' => ['required'],
-            'title' => ['required']
-
-       ]);
-        $path = Storage::disk('s3')->put('photos', Request::file('path'));
-        $path = Storage::disk('s3')->url($path);
-        $validated_data['path'] = $path;
-        Photo::create($validated_data);
-        return to_route('admin.posts');
-
-    })->name('photos.store');
-
-    Route::get('/photos/{photo}/edit', function (Photo $photo) {
-        return inertia('Admin/PhotoEdit', [
-            'photo' => $photo
-        ]);
-    })->name('photos.edit');
-
-    Route::put('/photos/{photo}', function (Photo $photo) {
-
-        $validated_data = Request::validate([
-            'description' => ['required'],
-            'title' => ['required']
-       ]);
-
-        if(Request::hasFile('path')) {
-            $validated_data['path'] = Request::validate([
-                'path' => ['required', 'image', 'max:2000'],
-            ]);
-
-//Grab old image and delete it
-            $oldImage = $photo->path;
-            Storage::delete($oldImage);
-
-        $path = Storage::disk('s3')->put('photos', Request::file('path'));
-        $path = Storage::disk('s3')->url($path);
-        $validated_data['path'] = $path;
-    }
-
-    $photo->update($validated_data);
-        return to_route('admin.posts');
-
-    })->name('photos.update');
-
-    Route::delete('/photos/{photo}', function (Photo $photo) {
-        Storage::delete($photo->path);
-        $photo->delete();
-        return to_route('admin.posts');
-    })->name('photos.delete');
+])->prefix('user')->name('user.')->group(function () {
+    Route::get('/manageposts', [App\Http\Controllers\UserController::class, 'displayAllEditable'])->name('manageposts');
+    Route::get('/photos/create', [App\Http\Controllers\UserController::class, 'create'])->name('photos.create');
+    Route::post('/photos', [App\Http\Controllers\UserController::class, 'post'])->name('photos.store');
+    Route::get('/photos/{photo}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('photos.edit');
+    Route::put('/photos/{photo}', [App\Http\Controllers\UserController::class, 'update'])->name('photos.update');
+    Route::delete('/photos/{photo}', [App\Http\Controllers\UserController::class, 'delete'])->name('photos.delete');
 
 });

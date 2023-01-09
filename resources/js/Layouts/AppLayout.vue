@@ -1,5 +1,5 @@
 <script setup>
-import { Fragment, ref } from 'vue';
+import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
@@ -48,23 +48,22 @@ const logout = () => {
                                 <ApplicationMark class="block h-14 w-auto" />
                                 </Link>
                             </div>
-
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('admin.posts')" :active="route().current('admin.posts')">
-                                    Posts
+                                <NavLink :href="route('allposts')"
+                                :active="route().current('allposts')">
+                                    All Posts
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('admin.photos.create')"
-                                    :active="route().current('admin.photos.create')">
+                                <NavLink :href="route('user.photos.create')"
+                                    :active="route().current('user.photos.create')">
                                     Add New
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('guest.posts')"
-                                :active="route().current('guest.posts')">
-                                    Guest View
+                                <NavLink :href="route('user.manageposts')" :active="route().current('user.manageposts')">
+                                    Manage Posts
                                 </NavLink>
                             </div>
                         </div>

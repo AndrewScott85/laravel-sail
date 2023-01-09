@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Storage;
 
 
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
+
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -21,6 +27,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
 
     /**
      * The attributes that are mass assignable.
@@ -64,6 +71,14 @@ class User extends Authenticatable
     ];
 
 
+        /**
+     * Update the user's profile photo.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $photo
+     * @return void
+     */
+
+
     public function updateProfilePhoto(UploadedFile $photo)
     {
         tap($this->profile_photo_path, function ($previous) use ($photo) {
@@ -77,5 +92,14 @@ class User extends Authenticatable
                 Storage::disk($this->profilePhotoDisk())->delete($previous);
             }
         });
+    }
+    
+
+    public function photos(): HasMany
+    {
+        return $this->hasMany(
+            related: Photo::class,
+            foreignKey: 'user_id',
+        );
     }
 }

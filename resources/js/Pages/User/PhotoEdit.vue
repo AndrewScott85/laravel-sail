@@ -43,7 +43,7 @@ const countdown = () => {
         </template>
         <div class="py-12 max-w-7xl mx-auto">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
-                <form @submit.prevent="form.post(route('admin.photos.update', photo.id))">
+                <form @submit.prevent="form.post(route('user.photos.update', photo.id))">
                     <div class="flex flex-col px-4">
                         <div>
                             <label for="title" class="block text-m font-bold">Title (max 35
@@ -60,7 +60,7 @@ const countdown = () => {
                         <div>
                             <label class="block text-m mt-6 font-bold">Photo</label>
                             <div class="flex bg-white flex-col lg:flex-row items-center px-4 py-10 gap-10">
-                                <img class="flex-start" width="200" :src="'/storage/' + photo.path" alt=""
+                                <img class="flex-start" width="200" :src="photo.path" alt=""
                                     v-if="!form.path">
                                 <div class="flex flex-col grow justify-center">
                                     <label class="self-center text-lg font-bold text-gray-700 p-4">Change this
@@ -132,7 +132,7 @@ const countdown = () => {
                          </div>
                          <div v-if="form.processing "></div>
                         <Link class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-md"
-                            :href="route('admin.posts')">
+                            :href="route('user.manageposts')">
                         Cancel
                         </Link>
                         <button type="submit" :disabled="form.processing"

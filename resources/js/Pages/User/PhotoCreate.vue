@@ -1,8 +1,7 @@
 <script>
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
-import { Link } from "@inertiajs/inertia-vue3";
+import { useForm, Link } from "@inertiajs/inertia-vue3";
 
 export default defineComponent({
     components: {
@@ -56,7 +55,7 @@ export default defineComponent({
         </template>
         <div class="py-12 max-w-7xl mx-auto">
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
-                <form @submit.prevent="form.post(route('admin.photos.store'))">
+                <form @submit.prevent="form.post(route('user.photos.store'))">
                     <div class="flex flex-col px-4">
                         <div>
                             <label for="title" class="block text-m font-bold">Title (max 30
@@ -120,7 +119,7 @@ export default defineComponent({
                         <div class="my-2">
                             <textarea id="description" name="description" rows="3" v-on:click="form.clearErrors('description')"
                                 class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-md"
-                                placeholder="Description for your photo." v-model="form.description"></textarea>
+                                placeholder="Description for this post." v-model="form.description"></textarea>
                         </div>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
                     </div>
@@ -130,7 +129,7 @@ export default defineComponent({
                          </div>
                         <Link
                             class="inline-flex justify-center rounded-md border border-transparent bg-slate-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-                            :href="route('admin.posts')">
+                            :href="route('user.manageposts')">
                         Cancel
                         </Link>
                         <button type="submit" :disabled="form.processing"
