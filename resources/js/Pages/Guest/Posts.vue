@@ -9,6 +9,7 @@ defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
     photos: Array,
+    singleUser: Boolean
 });
 </script>
 
@@ -17,9 +18,13 @@ defineProps({
     <Head v-if="!$page.props.user" title="Posts" />
     <AppLayout v-else title="Posts">
         <template #header>
-            <div class="flex justify-between items-center">
-                <h2 class="font-semibold text-3xl text-gray-100 leading-tight">
-                    Posts
+                <div class="flex flex-col items-center pt-4" v-if="singleUser">
+                <Link class="self-start rounded-md text-2xl text-bold bg-indigo-900 p-2" :href="route('allposts')">&lt All Posts</Link>
+                <h2 class="font-semibold text-3xl text-gray-100 pt-10">{{ photos[0].user.name }}'s Posts</h2>
+                </div>
+                <div class="flex flex-col items-center" v-else>
+                <h2 class="font-semibold text-3xl text-gray-100">
+                  All Posts
                 </h2>
             </div>
         </template>
@@ -38,14 +43,13 @@ defineProps({
     </AppLayout>
 
     <div v-if="!$page.props.user" class="bg-black min-h-screen">
-    <header class="bg-black shadow py-2 border-b border-gray-100">
+    <header class="bg-black flex flex-col items-center shadow pt-2 pb-6 border-b border-indigo-600">
         
-        <div class="max-w-7xl flex mx-auto items-center py-6 sm:px-6 lg:px-8 bg-black">
-            
-            <ApplicationMark class="block h-14 w-auto pr-4" /> 
+        <div class="max-w-7xl flex items-center py-6 sm:px-6 lg:px-8 bg-black">
+            <ApplicationMark class="h-14 w-auto pr-4" /> 
             <h1 class="text-4xl text-gray-100 grow">GALÈRE.AI</h1>
-            
-            <div v-if="canLogin" class="sm:block">
+        </div>
+            <div v-if="canLogin" class="sm:block absolute top-4 right-4">
                 <Link v-if="!$page.props.user" :href="route('login')"
                     class="text-sm text-gray-100 underline">Log in</Link>
 
@@ -54,18 +58,24 @@ defineProps({
 
             </div>
             
-        </div>
-        <div class="max-w-7xl mx-auto text-white sm:px-6 lg:px-8 pb-2">
-        <p class="">A blog demo with content created using generative AI.</p>
+        <div class="max-w-7xl flex flex-col items-center mx-auto text-white sm:px-6 lg:px-8 pb-2">
+        <p class="">A blogging site with demo content created using generative AI.</p>
             <p>Images made using <a class="font-bold" href="https://midjourney.com/home/?callbackUrl=%2Fapp%2F">Midjourney</a> and <a class="font-bold" href="https://creator.nightcafe.studio/">nightcafe</a>,
             with descriptions and titles written by <a class="font-bold" href="https://chat.openai.com/chat">ChatGPT</a>. </p>
-            <p class="mt-2"><Link class="font-bold text-xl underline" href="route('login')">Login</Link> to checkout the user interface! (Details provided on Login page)</p>
+            <p class="mt-2"><Link class="font-bold underline" :href="route('register')">Register</Link>
+                or <Link class="font-bold underline" :href="route('login')">Login</Link> to checkout the user interface! (Login Details provided on Login page for Demo Account)</p>
         </div>
     </header>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-black">
-        <div class="flex flex-col justify-center pt-8 sm:justify-start">
-            <h2 class="font-semibold text-3xl text-gray-100 leading-tight pb-6">Posts</h2>
+        <div class="justify-center items-center py-8 sm:justify-start">
+            <div class="pt-4 flex flex-col" v-if="singleUser">
+                <Link class="self-start rounded-md text-2xl text-bold text-white bg-indigo-900 p-2" :href="route('allposts')">&lt All Posts</Link>
+                <h2 class="font-semibold self-center text-3xl text-gray-100 pt-10">{{ photos[0].user.name }}'s Posts</h2>
+                </div>
+                <h2 class="font-semibold self-center text-3xl text-gray-100" v-else>
+                  All Posts
+                </h2>
         </div>
         <section class="photos">
             <div class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-4 justify-items-center">

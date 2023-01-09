@@ -18,10 +18,12 @@ class GuestController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $singleUser = false;
         return inertia('Guest/Posts', [
             'photos' => Photo::orderByDesc('id')->with('user')->get(),
             'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register')
+            'canRegister' => Route::has('register'),
+            'singleUser' => $singleUser
         ]);
     }
 
@@ -32,10 +34,12 @@ class GuestController extends Controller
 
     public function userPosts($uid)
     {
+        $singleUser = true;
         return inertia('Guest/Posts', [
             'photos' => Photo::orderByDesc('id')->where('user_id', $uid)->with('user')->get(),
             'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register')
+            'canRegister' => Route::has('register'),
+            'singleUser' => $singleUser
         ]);
     }
 }

@@ -56,14 +56,14 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('user.photos.create')"
-                                    :active="route().current('user.photos.create')">
-                                    Add New
+                                <NavLink :href="route('user.manageposts')" :active="route().current('user.manageposts')">
+                                    Manage Posts
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('user.manageposts')" :active="route().current('user.manageposts')">
-                                    Manage Posts
+                                <NavLink :href="route('user.photos.create')"
+                                    :active="route().current('user.photos.create')">
+                                    Add New
                                 </NavLink>
                             </div>
                         </div>
