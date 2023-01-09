@@ -19,10 +19,5 @@ class DashboardController extends Controller
     //     return Inertia::render('Dashboard');
     // }
 
-    public function displayAll()
-    {
-        return inertia('User/Posts', [
-            'photos' => Photo::orderByDesc('id')->with('user')->get()
-        ]);
-    }
+
 }

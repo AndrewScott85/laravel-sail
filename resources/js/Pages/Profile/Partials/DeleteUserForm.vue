@@ -30,8 +30,6 @@ const deleteUser = () => {
     });
 };
 
-const showButton = ref(false);
-
 const closeModal = () => {
     confirmingUserDeletion.value = false;
 
@@ -52,6 +50,7 @@ const closeModal = () => {
         <template #content>
             <div class="max-w-xl text-sm text-gray-600">
                 Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
+                <p class="text-red-600 pt-4">(please note, deleting of Demo Account has been disabled but user created accounts can be deleted)</p>
             </div>
 
             <div class="mt-5">

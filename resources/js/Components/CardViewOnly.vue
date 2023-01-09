@@ -31,7 +31,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         <Link class="hover:underline underline-offset-4" :href="'/user/' + photo.user.id + '/posts'">
         <div class="flex items-center">
             <img class="h-4 rounded-full mr-2" :src="photo.user.profile_photo_url" alt="">
-            <p>{{ photo.user.name }}</p>
+            <p class="text-white hover:underline underline-offset-4">{{ photo.user.name }}</p>
         </div>
         </Link>
     </div>

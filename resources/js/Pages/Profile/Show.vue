@@ -48,7 +48,7 @@ defineProps({
 
                 <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
                     <!-- <SectionBorder /> -->
-
+                    <div class="text-white">{{ user.id }} 1</div>
                     <DeleteUserForm class="mt-10 sm:mt-0" />
                 </template>
             </div>
