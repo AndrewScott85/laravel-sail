@@ -12,7 +12,9 @@ class UserController extends Controller
     {
         $uid = auth()->id();
         return inertia('User/Posts', [
-            'photos' => Photo::orderByDesc('id')->where('user_id', $uid)->with('user')->get()
+            'photos' => Photo::orderByDesc('id')->where('user_id', $uid)->with(['user' => function ($query) {
+                $query->select('id', 'name');
+            }])->get()
         ]);
     }
 
