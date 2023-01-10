@@ -19,8 +19,9 @@ defineProps({
     <AppLayout v-else title="Posts">
         <template #header>
                 <div class="flex flex-col items-center pt-4" v-if="singleUser">
-                <Link class="self-start rounded-md text-2xl text-bold bg-indigo-900 p-2" :href="route('allposts')">&lt All Posts</Link>
-                <h2 class="font-semibold text-3xl text-gray-100 pt-10">{{ photos[0].user.name }}'s Posts</h2>
+                <Link class="self-start rounded-md text-2xl text-bold text-indigo-600 ring-1 ring-indigo-600 p-2" :href="route('allposts')">&lt All Posts</Link>
+                <h2 class="font-semibold text-3xl text-gray-100 pt-10" v-if="$page.props.user.id == photos[0].user.id">Your Posts</h2>
+                <h2 class="font-semibold text-3xl text-gray-100 pt-10" v-else>{{ photos[0].user.name }}'s Posts</h2>
                 </div>
                 <div class="flex flex-col items-center" v-else>
                 <h2 class="font-semibold text-3xl text-gray-100">

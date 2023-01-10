@@ -14,11 +14,12 @@ defineProps({
     <AppLayout title="Photos">
         <template #header>
             <div class="flex justify-between items-center">
+                <div></div>
                 <h2 class="font-semibold text-3xl text-gray-100 leading-tight">
                    Your Posts
                 </h2>
                 <Link
-                    class="py-2 px-4 bg-emerald-700 text-white text-4xl font-bold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="py-2 px-4 ring-2 ring-emerald-600 text-emerald-600 text-4xl font-bold rounded-md shadow-sm hover:bg-emerald-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     :href="route('user.photos.create')">+</Link>
             </div>
         </template>

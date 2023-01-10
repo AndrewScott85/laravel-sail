@@ -53,8 +53,8 @@ export default defineComponent({
                 Create Post
             </h2>
         </template>
-        <div class="text-red-600 text-lg px-2 font-bold" v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI demonstration - Creation/Editing/Deletion is disabled on this account</div>
         <div class="py-12 max-w-7xl mx-auto">
+            <p class="text-red-600 text-lg px-4 lg:px-8 pb-4 font-bold" v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI demonstration: Creation, Editing, & Deletion are disabled on this account</p>
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                 <form @submit.prevent="form.post(route('user.photos.store'))">
                     <div class="flex flex-col px-4">
@@ -129,12 +129,12 @@ export default defineComponent({
                             Saving.... This can take a few seconds
                          </div>
                         <Link
-                            class="inline-flex justify-center rounded-md border border-transparent bg-slate-600 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                            class="inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-lg font-bold text-gray-500 ring-2 ring-gray-600 shadow-sm hover:bg-gray-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                             :href="route('user.manageposts')">
                         Cancel
                         </Link>
                         <button type="submit" :disabled="form.processing"
-                            class="inline-flex justify-center rounded-md border border-transparent bg-emerald-800 py-2 px-4 text-lg font-bold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                            class="inline-flex justify-center rounded-md border border-transparent ring-2 ring-emerald-600 py-2 px-4 text-lg font-bold text-emerald-600 shadow-sm hover:bg-emerald-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                             Save
                         </button>
                     </div>
