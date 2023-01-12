@@ -22,7 +22,7 @@ class GuestController extends Controller
         return inertia('Guest/Posts', [
             'photos' => Photo::orderByDesc('id')->with(['user' => function ($query) {
                 $query->select('id', 'name', 'profile_photo_path');
-            }])->get(),
+            }])->with('ai_service')->get(),
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
             'singleUser' => $singleUser
@@ -40,7 +40,7 @@ class GuestController extends Controller
         return inertia('Guest/Posts', [
             'photos' => Photo::orderByDesc('id')->where('user_id', $uid)->with(['user' => function ($query) {
                 $query->select('id', 'name', 'profile_photo_path');
-            }])->get(),
+            }])->with('ai_service')->get(),
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
             'singleUser' => $singleUser

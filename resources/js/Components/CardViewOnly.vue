@@ -27,7 +27,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
 
 <template class="">
     <div class="flex flex-col shadow-lg bg-neutral-800 p-4 w-[22rem] lg:w-96 rounded-sm hover:bg-neutral-900 hover:ring hover:ring-indigo-600/50 ring-offset-4 ring-offset-black">
-        <div class="flex justify-end pb-2">
+        <div class="flex justify-end pb-2"> 
         <Link class="hover:underline underline-offset-4" :href="'/user/' + photo.user.id + '/posts'">
         <div class="flex items-center">
             <img class="h-4 rounded-full mr-2" :src="photo.user.profile_photo_url" alt="">
@@ -43,6 +43,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         <div class="h-60 mt-4 rounded-sm flex justify-center ">
             <img class="" :src="photo.path" alt="" />
         </div>
+        <p class="pt-4 pb-2 font-semibold text-white">Created using: <a class="font-bold underline" :href="photo.ai_service.url">{{photo.ai_service.name }}</a></p>
         <div v-if="photo.description.length > 185" class="text-white text-base  px-2 py-4 h-32">
             <p>{{ photo.description.slice(0, 185) + "...." }}</p>
         </div>
@@ -54,7 +55,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         <template #content>
             <div class="flex flex-col bg-auto gap-4">
                 <div class="flex justify-end">
-                    <button class="bg-black outline outline-gray-800 rounded-full text-white text-lg mt-4 mr-4 py-2 px-4 hover:text-red-500/50 hover:outline-red-500/50" @click="closePhotoModal">X</button>
+                    <button class="outline outline-gray-800 rounded-full text-white text-lg mt-4 mr-4 py-2 px-4 hover:text-red-600 hover:outline-red-600" @click="closePhotoModal">X</button>
                 </div>
                 <div class="flex flex-col md:flex-row items-center justify-between">
                     <h2 class="order-last md:order-first font-bold text-left pl-2 md:text-2xl md:pl-10">{{ photo.title}}</h2>
