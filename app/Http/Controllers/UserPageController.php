@@ -27,7 +27,8 @@ class UserPageController extends Controller
     {
             if ($photo->user->id == auth()->id()) {
                 return inertia('User/PhotoEdit', [
-                    'photo' => $photo
+                    'photo' => $photo,
+                    'ai_services' => Ai_service::orderByDesc('name')->get()
                 ]);
             } else {
                 return to_route('user.manageposts');

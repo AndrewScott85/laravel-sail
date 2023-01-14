@@ -2,7 +2,6 @@
 import { defineComponent} from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
-import Dropdown from "../../Components/Dropdown.vue"; 
 
 
 
@@ -16,6 +15,7 @@ export default defineComponent({
             path: null,
             description: null,
             title: '',
+            ai_service_id: null,
         });
 
         return { form };
@@ -60,7 +60,6 @@ export default defineComponent({
             <h2 class="font-semibold text-3xl leading-tight px-4">
                 Create Post
             </h2>
-            <div class="text-white">{{ ai_services }}</div> 
         </template>
         <div class="py-12 max-w-7xl mx-auto">
             <p class="text-red-600 text-lg px-4 lg:px-8 pb-4 font-bold" v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI demonstration: Creation, Editing, & Deletion are disabled on this account</p>
@@ -72,7 +71,7 @@ export default defineComponent({
                                 characters)</label>
                             <div class="m-1">
                                 <input id="title" name="title" maxlength="30"
-                                    class="py-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                    class="py-1 block w-full text-black rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                     placeholder="  Enter a title for your post here" 
                                     v-model="form.title"
                                     v-on:click="form.clearErrors('title')"
@@ -80,8 +79,18 @@ export default defineComponent({
                                 <p class="pt-2">Characters remaining: {{ countdown }} </p>
                             </div>
                         </div>
-
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
+                        <div><label for="ai_service" class="py-2 block text-m font-bold">Image Generator used: </label>
+                        <select v-model="form.ai_service_id" class="form-control text-black">
+                            <option value=null selected hidden disabled>Select one:</option>
+                         <option v-for="ai_service in ai_services" :key="ai_service.id" :value="ai_service.id">
+                             {{ ai_service.name }}
+                        </option>
+                        </select>
+                    </div>
+                    <div class="text-red-600" v-if="form.errors.ai_service">{{ form.errors.ai_service }}</div>
+
+                        
                         <div>
                             <label class="block text-m mt-6 font-bold">Photo</label>
                             <div
@@ -128,7 +137,7 @@ export default defineComponent({
                         <label for="description" class="block text-m mt-6 font-bold ">Description</label>
                         <div class="my-2">
                             <textarea id="description" name="description" rows="3" v-on:click="form.clearErrors('description')"
-                                class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-md"
+                                class="mt-1 block w-full text-black rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-md"
                                 placeholder="Description for this post." v-model="form.description"></textarea>
                         </div>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>

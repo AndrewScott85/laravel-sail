@@ -20,6 +20,7 @@ Route::get('/', [App\Http\Controllers\GuestController::class, 'redirect']);
 
 Route::get('/allposts', App\Http\Controllers\GuestController::class)->name('allposts');
 Route::get('user/{uid}/posts', [App\Http\Controllers\GuestController::class, 'userPosts'])->name('userposts');
+Route::get('ai/{aiService}/posts', [App\Http\Controllers\GuestController::class, 'aiService'])->name('aiservice');
 
 
 Route::middleware([

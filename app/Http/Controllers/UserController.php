@@ -16,6 +16,7 @@ class UserController extends Controller
                 'path' => ['required', 'image', 'max:2000'],
                 'description' => ['required'],
                 'title' => ['required'],
+                'ai_service_id' => ['required']
             ]);
             $path = Storage::disk('s3')->put('photos', $request->file('path'));
             $path = Storage::disk('s3')->url($path);
@@ -31,7 +32,8 @@ class UserController extends Controller
         if (auth()->id() != 1 && auth()->id() != 2) {
             $validatedData = $request->validate([
                 'description' => ['required'],
-                'title' => ['required']
+                'title' => ['required'],
+                'ai_service_id' => ['required']
             ]);
 
             if ($request->hasFile('path')) {

@@ -9,7 +9,8 @@ defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
     photos: Array,
-    singleUser: Boolean
+    singleUser: Boolean,
+    singleAi: Boolean,
 });
 </script>
 
@@ -22,6 +23,10 @@ defineProps({
                 <Link class="self-start rounded-md text-2xl text-bold bg-indigo-900 p-2" :href="route('allposts')">&lt All Posts</Link>
                 <h2 class="font-semibold text-3xl text-gray-100 pt-10" v-if="photos[0].user.id != $page.props.user.id">{{ photos[0].user.name }}'s Posts</h2>
                 <h2 class="font-semibold text-3xl text-gray-100 pt-10" v-else>Your Posts</h2>
+                </div>
+                <div class="mt-4" v-else-if="singleAi">
+                    <Link class="self-start rounded-md text-2xl text-bold ring-2 text-indigo-600 ring-indigo-600 hover:text-white hover:bg-indigo-600 p-2" :href="route('allposts')">&lt All Posts</Link>
+                <h2 class="font-semibold text-3xl text-gray-100 pt-12">All posts created with <a class="underline" :href="photos[0].ai_service.url">{{ photos[0].ai_service.name }}</a></h2>
                 </div>
                 <div class="flex flex-col items-center" v-else>
                 <h2 class="font-semibold text-3xl text-gray-100">
@@ -73,6 +78,10 @@ defineProps({
             <div class="pt-4 flex flex-col" v-if="singleUser">
                 <Link class="mx-2 lg:mx-8 self-start rounded-md text-lg lg:text-2xl text-bold text-indigo-600 ring-2 ring-indigo-600 p-2 hover:bg-indigo-600 hover:text-white" :href="route('allposts')">&lt All Posts</Link>
                 <h2 class="font-semibold self-center text-xl lg:text-3xl text-gray-100 pt-4 lg:pt-0 lg:pb-4">{{ photos[0].user.name }}'s Posts</h2>
+                </div>
+                <div class="mt-4" v-else-if="singleAi">
+                    <Link class="self-start rounded-md text-2xl text-bold ring-2 text-indigo-600 ring-indigo-600 hover:text-white hover:bg-indigo-600 p-2" :href="route('allposts')">&lt All Posts</Link>
+                <h2 class="font-semibold text-3xl text-gray-100 pt-12">All posts created with <a class="underline" :href="photos[0].ai_service.url">{{ photos[0].ai_service.name }}</a></h2>
                 </div>
                 <h2 class="font-semibold self-center text-xl lg:text-3xl text-gray-100" v-else>
                   All Posts
