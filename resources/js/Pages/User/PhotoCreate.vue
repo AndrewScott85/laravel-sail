@@ -80,7 +80,8 @@ export default defineComponent({
                             </div>
                         </div>
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
-                        <div><label for="ai_service" class="py-2 block text-m font-bold">Image Generator used: </label>
+                        <div>
+                            <label for="ai_service" class="py-2 block text-m font-bold">Image Generator used: </label>
                         <select v-model="form.ai_service_id" class="form-control text-black">
                             <option value=null selected hidden disabled>Select one:</option>
                          <option v-for="ai_service in ai_services" :key="ai_service.id" :value="ai_service.id">

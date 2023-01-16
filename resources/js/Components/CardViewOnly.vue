@@ -35,20 +35,18 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         </div>
         </Link>
     </div>
-        <div class="cursor-pointer" @click="openPhotoModal">
         <div class="flex justify-between items-center text-white font-base">
-            <h3 class="text-lg font-bold self-start hover:underline underline-offset-2">{{ photo.title }}</h3>
+            <h3 class="cursor-pointer text-lg font-bold self-start hover:underline underline-offset-2" @click="openPhotoModal">{{ photo.title }}</h3>
             <p class="text-base self-end">{{ photoDate }}</p>
         </div>
         <div class="h-60 mt-4 rounded-sm flex justify-center ">
-            <img class="" :src="photo.path" alt="" />
+            <img class="cursor-pointer" :src="photo.path" alt="" @click="openPhotoModal"/>
         </div>
-        <p class="pt-4 pb-2 font-semibold text-white">Created using: <Link class="font-bold underline" :href="route('aiservice', photo.ai_service.id)">{{photo.ai_service.name }}</Link></p>
-        <div v-if="photo.description.length > 185" class="text-white text-base  px-2 py-4 h-32">
+        <p class="pt-4 pb-2 font-semibold text-white">Created using: <Link v-if="!$page.props.singleAi" class="font-bold underline" :href="route('aiservice', photo.ai_service.id)">{{photo.ai_service.name }}</Link><span v-else> {{ photo.ai_service.name }}</span></p>
+        <div v-if="photo.description.length > 185" class="text-white text-base  px-2 py-4 h-32 cursor-pointer" @click="openPhotoModal">
             <p>{{ photo.description.slice(0, 185) + "...." }}</p>
         </div>
-        <div v-else class="text-white text-base  px-2 py-4 h-32">{{ photo.description }}</div>
-    </div>
+        <div v-else class="text-white text-base  px-2 py-4 h-32 cursor-pointer" @click="openPhotoModal">{{ photo.description }}</div>
 </div>
 
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">

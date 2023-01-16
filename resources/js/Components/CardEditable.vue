@@ -60,10 +60,11 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         <div class="h-60 mt-4 rounded-sm flex justify-center cursor-pointer" @click="openPhotoModal">
         <img class="" :src="photo.path" alt=""/>
         </div>
-        <div v-if="(photo.description.length > 185)" class="text-white text-base px-2 py-2 h-32">
+        <p class="pt-4 pb-2 font-semibold text-white">Created using: {{photo.ai_service.name }}</p>
+        <div v-if="(photo.description.length > 185)" class="text-white text-base px-2 py-2 h-32 cursor-pointer" @click="openPhotoModal">
             <p>{{ photo.description.slice(0, 185) + "...." }}</p>
         </div>
-        <div v-else class="text-white text-base  px-2 py-4 h-32">{{ photo.description }}</div>
+        <div v-else class="text-white text-base  px-2 py-4 h-32 cursor-pointer" @click="openPhotoModal">{{ photo.description }}</div>
 
         <div class="flex gap-2 justify-center mt-4">
             <Link

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DemoLoginController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,6 +22,7 @@ Route::get('/', [App\Http\Controllers\GuestController::class, 'redirect']);
 Route::get('/allposts', App\Http\Controllers\GuestController::class)->name('allposts');
 Route::get('user/{uid}/posts', [App\Http\Controllers\GuestController::class, 'userPosts'])->name('userposts');
 Route::get('ai/{aiService}/posts', [App\Http\Controllers\GuestController::class, 'aiService'])->name('aiservice');
+Route::post('demo/login', DemoLoginController::class)->name('demologin');
 
 
 Route::middleware([

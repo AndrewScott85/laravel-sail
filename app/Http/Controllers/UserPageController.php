@@ -14,7 +14,7 @@ class UserPageController extends Controller
         return inertia('User/Posts', [
             'photos' => Photo::orderByDesc('id')->where('user_id', $uid)->with(['user' => function ($query) {
                 $query->select('id', 'name');
-            }])->get()
+            }])->with('ai_service')->get()
         ]);
     }
 
