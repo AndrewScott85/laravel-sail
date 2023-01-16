@@ -8,18 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function displayAllEditable()
-    {
-        $uid = auth()->id();
-        return inertia('User/Posts', [
-            'photos' => Photo::orderByDesc('id')->where('user_id', $uid)->with('user')->get()
-        ]);
-    }
-
-    public function create()
-    {
-        return inertia('User/PhotoCreate');
-    }
 
     public function post(Request $request)
     {
@@ -28,6 +16,7 @@ class UserController extends Controller
                 'path' => ['required', 'image', 'max:2000'],
                 'description' => ['required'],
                 'title' => ['required'],
+                'ai_service_id' => ['required']
             ]);
             $path = Storage::disk('s3')->put('photos', $request->file('path'));
             $path = Storage::disk('s3')->url($path);
@@ -38,23 +27,13 @@ class UserController extends Controller
         }
     }
 
-    public function edit(Photo $photo)
-    {
-            if ($photo->user->id == auth()->id()) {
-                return inertia('User/PhotoEdit', [
-                    'photo' => $photo
-                ]);
-            } else {
-                return to_route('user.manageposts');
-            }
-    }
-
     public function update(Photo $photo, Request $request)
     {
         if (auth()->id() != 1 && auth()->id() != 2) {
             $validatedData = $request->validate([
                 'description' => ['required'],
-                'title' => ['required']
+                'title' => ['required'],
+                'ai_service_id' => ['required']
             ]);
 
             if ($request->hasFile('path')) {

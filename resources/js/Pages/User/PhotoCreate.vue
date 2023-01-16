@@ -1,7 +1,9 @@
 <script>
-import { defineComponent } from "vue";
+import { defineComponent} from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
+
+
 
 export default defineComponent({
     components: {
@@ -13,6 +15,7 @@ export default defineComponent({
             path: null,
             description: null,
             title: '',
+            ai_service_id: null,
         });
 
         return { form };
@@ -42,6 +45,11 @@ export default defineComponent({
             return 30 - this.form.title.length;
         }
     },
+
+    props: {
+        ai_services: Object,
+    }
+    
 });
 
 </script>
@@ -63,7 +71,7 @@ export default defineComponent({
                                 characters)</label>
                             <div class="m-1">
                                 <input id="title" name="title" maxlength="30"
-                                    class="py-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                    class="py-1 block w-full text-black rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                     placeholder="  Enter a title for your post here" 
                                     v-model="form.title"
                                     v-on:click="form.clearErrors('title')"
@@ -71,8 +79,19 @@ export default defineComponent({
                                 <p class="pt-2">Characters remaining: {{ countdown }} </p>
                             </div>
                         </div>
-
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
+                        <div>
+                            <label for="ai_service" class="py-2 block text-m font-bold">Image Generator used: </label>
+                        <select v-model="form.ai_service_id" class="form-control text-black">
+                            <option value=null selected hidden disabled>Select one:</option>
+                         <option v-for="ai_service in ai_services" :key="ai_service.id" :value="ai_service.id">
+                             {{ ai_service.name }}
+                        </option>
+                        </select>
+                    </div>
+                    <div class="text-red-600" v-if="form.errors.ai_service">{{ form.errors.ai_service }}</div>
+
+                        
                         <div>
                             <label class="block text-m mt-6 font-bold">Photo</label>
                             <div
@@ -119,7 +138,7 @@ export default defineComponent({
                         <label for="description" class="block text-m mt-6 font-bold ">Description</label>
                         <div class="my-2">
                             <textarea id="description" name="description" rows="3" v-on:click="form.clearErrors('description')"
-                                class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-md"
+                                class="mt-1 block w-full text-black rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-md"
                                 placeholder="Description for this post." v-model="form.description"></textarea>
                         </div>
                         <div class="text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
@@ -134,7 +153,8 @@ export default defineComponent({
                         Cancel
                         </Link>
                         <button type="submit" :disabled="form.processing"
-                            class="inline-flex justify-center rounded-md border border-transparent ring-2 ring-emerald-600 py-2 px-4 text-lg font-bold text-emerald-600 shadow-sm hover:bg-emerald-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                            class="inline-flex justify-center rounded-md border border-transparent ring-2 ring-emerald-600 py-2 px-4 text-lg font-bold text-emerald-600 shadow-sm hover:bg-emerald-600 hover:text-white 
+                            focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                             Save
                         </button>
                     </div>

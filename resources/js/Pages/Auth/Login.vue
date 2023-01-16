@@ -6,12 +6,15 @@ import Checkbox from '@/Components/Checkbox.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import TextInput from '@/Components/TextInput.vue'; 
+import { ref } from 'vue';
 
 defineProps({
     canResetPassword: Boolean,
     status: String,
 });
+
+let errorMsg = ref(null);
 
 const form = useForm({
     email: '',
@@ -27,6 +30,11 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+const handleError = (error) => {
+    console.log(errorMsg);
+}
+
 </script>
 
 <template>
@@ -34,23 +42,18 @@ const submit = () => {
     <Head title="Log in" />
 
     <AuthenticationCard>
+        <Link :href="route('register')" class="sm:block absolute top-4 right-4 ml-4 text-sm text-gray-100  underline">Register</Link>
         <template #logo>
-            <div class="flex flex-col items-center">
             <AuthenticationCardLogo />
             <h1 class="text-4xl text-white font-bold text-center pb-10">GALÈRE.AI</h1>
-            <div class="border-double border-2 border-red-600 rounded-md p-2 text-md text-white font-bold">
-            <p>Sign-in credentials:</p>
-            <p> Email: <span class="font-normal">lane44@example.com</span></p>
-            <p> Password: <span class="font-normal">password</span></p>
-        </div>
-            </div>
         </template>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <h2 class="text-white font-bold text-2xl pb-4">Aready Registered?</h2>
+        <form @submit.prevent="submit" class="bg-neutral-800 p-4 rounded-md">
             <div>
                 <InputLabel for="email" value="Email" />
                 <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required />
@@ -82,5 +85,16 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+        <div class="flex flex-col w-full sm:max-w-md px-2 py-4">
+        <h2 class="font-bold text-white text-2xl py-4">OR</h2>
+            <Link class="self-center bg-orange-600 rounded-md px-4 py-2 text-md text-white font-bold hover:bg-orange-500"
+             :href="route('demologin')" method="post" as="button" :onError="handleError">
+            <p>LOG IN with Demo Account</p>
+            <p>(Reduced functionality)</p>
+            </Link>
+        </div>
+
+        <div v-if="errorMsg" class="text-2xl text-red-500">{{ errorMsg }}</div>
     </AuthenticationCard>
+
 </template>

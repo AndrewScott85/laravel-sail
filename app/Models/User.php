@@ -76,6 +76,7 @@ class User extends Authenticatable
 
     public function updateProfilePhoto(UploadedFile $photo)
     {
+        
         tap($this->profile_photo_path, function ($previous) use ($photo) {
             $this->forceFill([
                 'profile_photo_path' => $photo->store(

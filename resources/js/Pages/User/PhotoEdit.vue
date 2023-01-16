@@ -4,7 +4,8 @@ import { Link, useForm } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
 
 const props = defineProps({
-    photo: Object
+    photo: Object,
+    ai_services: Object,
 });
 
 const form = useForm({
@@ -12,6 +13,7 @@ const form = useForm({
     path: null,
     description: props.photo.description,
     title: props.photo.title,
+    ai_service_id: props.photo.ai_service_id
 });
 
 
@@ -42,6 +44,7 @@ const countdown = () => {
             </h2>
         </template>
         <div class="py-12 max-w-7xl mx-auto">
+            <p class="text-red-600 text-lg px-4 lg:px-8 pb-4 font-bold" v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI demonstration: Creation, Editing, & Deletion are disabled on this account</p>
             <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                 <form @submit.prevent="form.post(route('user.photos.update', photo.id))">
                     <div class="flex flex-col px-4">
@@ -57,6 +60,16 @@ const countdown = () => {
                             </div>
                         </div>
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
+                        <div>
+                            <label for="ai_service" class="py-2 block text-m font-bold">Image Generator used: </label>
+                        <select v-model="form.ai_service_id" class="form-control text-black">
+                            <option value=null selected hidden disabled>Select one:</option>
+                         <option v-for="ai_service in ai_services" :key="ai_service.id" :value="ai_service.id">
+                             {{ ai_service.name }}
+                        </option>
+                        </select>
+                    </div>
+                    <div class="text-red-600" v-if="form.errors.ai_service">{{ form.errors.ai_service }}</div>
                         <div>
                             <label class="block text-m mt-6 font-bold">Photo</label>
                             <div class="flex bg-white flex-col lg:flex-row items-center px-4 py-10 gap-10">
@@ -131,12 +144,12 @@ const countdown = () => {
                             Saving.... This can take a while, please be patient!
                          </div>
                          <div v-if="form.processing "></div>
-                        <Link class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-md"
+                        <Link class="text-gray-500  ring-2 ring-gray-500 hover:bg-gray-600 hover:text-white font-bold px-4 py-2 rounded-md"
                             :href="route('user.manageposts')">
                         Cancel
                         </Link>
                         <button type="submit" :disabled="form.processing"
-                            class="inline-flex justify-center rounded-md border border-transparent bg-emerald-800 py-2 px-4 font-bold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                            class="inline-flex justify-center rounded-md border border-transparent ring-2 ring-emerald-600 text-emerald-600 py-2 px-4 font-bold hover:text-white shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                             Save Changes
                         </button>
                     </div>

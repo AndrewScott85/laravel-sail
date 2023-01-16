@@ -19,7 +19,7 @@ defineProps({
                    Your Posts
                 </h2>
                 <Link
-                    class="py-2 px-4 ring-2 ring-emerald-600 text-emerald-600 text-4xl font-bold rounded-md shadow-sm hover:bg-emerald-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="py-2 px-4 text-emerald-600 ring-2 ring-emerald-600 text-4xl font-bold rounded-md shadow-sm hover:bg-emerald-600 hover:text-white hover:ring-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                     :href="route('user.photos.create')">+</Link>
             </div>
         </template>
