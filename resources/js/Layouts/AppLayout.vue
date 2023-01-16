@@ -44,7 +44,7 @@ const logout = () => {
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="'/posts'">
+                                <Link :href="route('allposts')">
                                 <ApplicationMark class="block h-14 w-auto" />
                                 </Link>
                             </div>
