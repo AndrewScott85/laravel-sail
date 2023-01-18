@@ -35,7 +35,7 @@ defineProps({
             </div>
         </template>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-black">
-            <div v-if="!photos">Nothing to display yet!</div>
+            <div v-if="photos.length == 0">Nothing to display yet!</div>
         <section class="photos">
             <div class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-4 justify-items-center">
                 <div class="my-2 flex flex-1" v-for="photo in photos" :key="photo.id">
@@ -61,10 +61,10 @@ defineProps({
 
                 <Link v-if="canRegister" :href="route('register')"
                     class="ml-4 text-sm text-gray-100  underline">Register</Link>
-
+ 
             </div>
             
-        <div class="max-w-7xl flex flex-col self-start items-start px-2 text-white sm:px-6 lg:px-8 pb-2">
+        <div class="max-w-7xl flex flex-col self-center px-2 text-white sm:px-6 lg:px-8 pb-2">
         <p class="">An image sharing site for artwork created using generative AI tools.</p>
             <p>Demo images made using <a class="font-bold" href="https://midjourney.com/home/?callbackUrl=%2Fapp%2F">Midjourney</a> and <a class="font-bold" href="https://creator.nightcafe.studio/">nightcafe</a>,
             with descriptions and titles written by <a class="font-bold" href="https://chat.openai.com/chat">ChatGPT</a>. </p>

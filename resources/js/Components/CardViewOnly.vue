@@ -42,7 +42,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         <div class="h-60 mt-4 rounded-sm flex justify-center ">
             <img class="cursor-pointer" :src="photo.path" alt="" @click="openPhotoModal"/>
         </div>
-        <p class="pt-4 pb-2 font-semibold text-white">Created using: <Link v-if="!$page.props.singleAi" class="font-bold underline" :href="route('aiservice', photo.ai_service.id)">{{photo.ai_service.name }}</Link><span v-else> {{ photo.ai_service.name }}</span></p>
+        <p class="pt-4 px-2 font-semibold text-white">Created using: <Link v-if="!$page.props.singleAi" class="font-bold underline" :href="route('aiservice', photo.ai_service.id)">{{photo.ai_service.name }}</Link><span v-else> {{ photo.ai_service.name }}</span></p>
         <div v-if="photo.description.length > 185" class="text-white text-base  px-2 py-4 h-32 cursor-pointer" @click="openPhotoModal">
             <p>{{ photo.description.slice(0, 185) + "...." }}</p>
         </div>
