@@ -52,7 +52,7 @@ const handleError = (error) => {
             {{ status }}
         </div>
 
-        <h2 class="text-white font-bold text-2xl pb-4">Aready Registered?</h2>
+        <h2 class="text-white font-bold text-xl pb-4">Login with your account details below</h2>
         <form @submit.prevent="submit" class="bg-neutral-800 p-4 rounded-md">
             <div>
                 <InputLabel for="email" value="Email" />

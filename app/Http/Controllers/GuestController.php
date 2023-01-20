@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Photo;
+use App\Models\User;
+use App\Models\Ai_service;
 
 class GuestController extends Controller
 {
@@ -18,14 +20,12 @@ class GuestController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $singleUser = false;
         return inertia('Guest/Posts', [
             'photos' => Photo::orderByDesc('id')->with(['user' => function ($query) {
                 $query->select('id', 'name', 'profile_photo_path');
             }])->with('ai_service')->get(),
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'singleUser' => $singleUser
         ]);
     }
 
@@ -36,31 +36,60 @@ class GuestController extends Controller
 
     public function userPosts($uid)
     {
-        $singleUser = true;
+
+        $photos = Photo::orderByDesc('id')->where('user_id', $uid)->with(['user' => function ($query) {
+            $query->select('id', 'name', 'profile_photo_path');
+        }])->with('ai_service')->get();
+
+        if ($photos->isEmpty()) {
+            $singleUser = User::select('id', 'name', 'profile_photo_path')->where('id', $uid)->get();
+           
+            if ($singleUser->isEmpty()) {
+                abort(404);
+            }
+
+            return inertia('Guest/Posts', [
+                'singleUser' => $singleUser[0],
+                'canLogin' => Route::has('login'),
+                'canRegister' => Route::has('register'),
+            ]);
+        }
+
         return inertia('Guest/Posts', [
-            'photos' => Photo::orderByDesc('id')->where('user_id', $uid)->with(['user' => function ($query) {
-                $query->select('id', 'name', 'profile_photo_path');
-            }])->with('ai_service')->get(),
+            'photos' => $photos,
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'singleUser' => $singleUser
+            'singleUser' => $photos[0]->user,
         ]);
     }
 
     public function aiService($aiService)
     {
-        $singleUser = false;
-        $singleAi = true;
-        return inertia('Guest/Posts', [
-            'photos' => Photo::orderByDesc('created_at')
+
+        $photos = Photo::orderByDesc('created_at')
             ->where('ai_service_id', $aiService)
             ->with(['user' => function ($query) {
                 $query->select('id', 'name', 'profile_photo_path');
-            }])->with('ai_service')->get(),
+            }])->with('ai_service')->get();
+
+        if ($photos->isEmpty()) {
+            $singleAi = Ai_service::select('id', 'name', 'url')->where('id', $aiService)->get();
+            
+            if (is_null($singleAi)) {
+                abort(404);
+            }
+            return inertia('Guest/Posts', [
+                'canLogin' => Route::has('login'),
+                'canRegister' => Route::has('register'),
+                'singleAi'  => $singleAi[0],
+            ]);
+        }
+
+        return inertia('Guest/Posts', [
+            'photos' => $photos,
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'singleUser' => $singleUser,
-            'singleAi' => $singleAi,
+            'singleAi' => $photos[0]->ai_service,
         ]);
     }
 }
