@@ -37,4 +37,7 @@ Route::middleware([
     Route::put('/photos/{photo}', [App\Http\Controllers\UserController::class, 'update'])->name('photos.update');
     Route::delete('/photos/{photo}', [App\Http\Controllers\UserController::class, 'delete'])->name('photos.delete');
 
+    Route::get('/openai/create/', [App\Http\Controllers\UserPageController::class, 'openai'])->name('openai.create');
+    Route::post('/openai/post', [App\Http\Controllers\OpenAIController::class, 'openaiPost'])->name('openai.post');
+
 });

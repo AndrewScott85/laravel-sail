@@ -65,12 +65,18 @@ defineProps({
  
             </div>
             
-        <div class="max-w-7xl flex flex-col text-center px-2 text-white sm:px-6 lg:px-8 pb-2">
-        <p class="">An image sharing site for artwork created using generative AI tools.</p>
+        <div class="max-w-7xl flex flex-col items-center px-2 text-white sm:px-6 lg:px-8 pb-2">
+        <p class="">An image sharing site for AI generated artwork.</p>
+        <p class="text-xl font-bold pt-4">Getting started:</p>
+        <ul>
+        <li>1. Register for an account (or login using the Demo Account to check out the UI)</li>
+        <li>2. Create an image using one of the listed services</li>
+        <li>3. Upload your image with a title and description/story (or use your favourite AI service to write them for you!)</li>
+        </ul>
             <p>Demo images made using <a class="font-bold" href="https://midjourney.com/home/?callbackUrl=%2Fapp%2F">Midjourney</a> and <a class="font-bold" href="https://creator.nightcafe.studio/">nightcafe</a>,
             with descriptions and titles written by <a class="font-bold" href="https://chat.openai.com/chat">ChatGPT</a>. </p>
-            <p class="mt-2"><Link class="font-bold underline" :href="route('register')">Register</Link>
-                or <Link class="font-bold underline" :href="route('login')">Login</Link> to checkout the user interface! (Login Details provided on Login page for Demo Account)</p>
+            <!-- <p class="mt-2"><Link class="font-bold underline" :href="route('register')">Register</Link>
+                or <Link class="font-bold underline" :href="route('login')">Login</Link> to checkout the user interface! (Login Details provided on Login page for Demo Account)</p> -->
         </div>
     </header>
 

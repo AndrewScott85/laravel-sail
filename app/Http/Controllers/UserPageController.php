@@ -35,5 +35,10 @@ class UserPageController extends Controller
             }
     }
 
+    public function openai()
+    {
+        return inertia('User/OpenAI');
+    }
+
 
 }

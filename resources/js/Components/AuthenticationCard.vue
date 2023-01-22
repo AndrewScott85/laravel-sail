@@ -9,8 +9,5 @@
             <slot />            
         </div>
 
-        <div class="w-full sm:max-w-md mt-6 px-6 bg-black overflow-hidden sm:rounded-lg flex flex-col items-center">
-            <slot name="demologin"/>            
-        </div>
     </div>
 </template>
