@@ -35,10 +35,24 @@ class UserPageController extends Controller
             }
     }
 
-    public function openai()
+    public function openaiCreate()
     {
-        return inertia('User/OpenAI');
+        return inertia('User/OpenAICreate');
     }
 
-
+    public function openaiReview()
+    {
+        $moderation = session()->get('moderation');
+        $description = session()->get('description');
+        $image = session()->get('image');
+        $title = session()->get('title');
+    
+        return inertia('User/OpenAIReview', [
+            'moderation' => $moderation,
+            'description' => $description,
+            'image' => $image,
+            'title' => $title
+        ]);
+    }
+    
 }

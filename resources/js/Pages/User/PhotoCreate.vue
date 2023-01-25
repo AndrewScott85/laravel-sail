@@ -60,6 +60,7 @@ export default defineComponent({
             <h2 class="font-semibold text-3xl leading-tight px-4">
                 Create Post
             </h2>
+            <div>{{ ai_services }}</div>
         </template>
         <div class="py-12 max-w-7xl mx-auto">
             <p class="text-red-600 text-lg px-4 lg:px-8 pb-4 font-bold" v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI demonstration: Creation, Editing, & Deletion are disabled on this account</p>

@@ -49,7 +49,7 @@ const countdown = () => {
                 <form @submit.prevent="form.post(route('user.photos.update', photo.id))">
                     <div class="flex flex-col px-4">
                         <div>
-                            <label for="title" class="block text-m font-bold">Title (max 35
+                            <label for="title" class="block text-m font-bold">Title (max 30
                                 characters)</label>
                             <div class="m-1">
                                 <input id="title" name="title" maxlength="30" v-on:click="form.clearErrors('title')"
