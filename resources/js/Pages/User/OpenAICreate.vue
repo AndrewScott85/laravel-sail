@@ -1,8 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
-import FullScreenphoto from "@/Components/FullScreenPhoto.vue";
 
 const form = useForm({
     prompt: null,
@@ -81,8 +79,8 @@ const countdown = () => {
                     
             </div>
             <div class="pt-6 flex justify-end gap-4 px-4">
-                <div v-show="form.processing" class="text-sm text-gray-100">
-                    Saving.... This can take a while, please be patient!
+                <div v-show="form.processing" class="text-base text-gray-100">
+                    Creating.... This can take a while, please be patient!
                 </div>
                 <div v-if="form.processing "></div>
                 <Link

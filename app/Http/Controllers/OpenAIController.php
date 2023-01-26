@@ -47,6 +47,27 @@ class OpenAIController extends Controller
     }
 }
 
+public function openaiStore(Request $request)
+{
+    
+    if (auth()->id() != 1 && auth()->id() != 2) {
+       
+        $url = $request->url;
+        $contents = file_get_contents($url);
+
+        $path = Storage::disk('s3')->put('photos', $contents);
+        $path = Storage::disk('s3')->url($path);
+        $validatedData['path'] = $path;
+        $validatedData['user_id'] = auth()->id();
+        $validatedData['title'] = $request->title;
+        $validatedData['description'] = $request->description;
+        $validatedData['ai_service_id'] = 2;
+        Photo::create($validatedData);
+        return to_route('user.manageposts');
+    }
+
+}
+
 // public function editImage(Request $request)
 //     {
 //             $validatedData = $this->validate($request, [

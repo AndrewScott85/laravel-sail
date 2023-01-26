@@ -24,11 +24,20 @@ const props = defineProps({
     flagged: Object,
     title: String,
 });
+
 const form = useForm({
     prompt: null,
     title: '',
     style: null,
 });
+
+const saveForm = useForm({
+            url: props.image.data[0].url,
+            description: props.description.choices[0].text,
+            title: props.title,
+            ai_service_id: 2,
+});
+
 
 // const styles = [
 //     {"id": 1, "name": "noir"},
@@ -70,11 +79,13 @@ const countdownStyle = () => {
                         <div v-if="flagged">
                             <p>{{ flagged }}</p>
                         </div>
+                        <p>{{ title }}</p>
                         <div v-if="image">
+                           {{ image }}
                             <img class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
                         </div>
                         <div v-if="description">
-                            <p>{{ title }}</p>
+                            
                             <p>{{ description.choices[0].text }}</p>
                         </div>
                         <div>
@@ -121,18 +132,26 @@ const countdownStyle = () => {
                     Saving.... This can take a while, please be patient!
                 </div>
                 <div v-if="form.processing "></div>
-                <Link
+              
+            </div>
+            </form>
+        </div>
+        <Link
                     class="text-gray-500  ring-2 ring-gray-500 hover:bg-gray-600 hover:text-white font-bold px-4 py-2 rounded-md"
                     :href="route('user.manageposts')">
                 Cancel
                 </Link>
-                <button type="submit" :disabled="form.processing"
+                <div>
+                    <form @submit.prevent="saveForm.post(route('user.openai.store'))">
+                    
+                        <button type="submit"  :disabled="saveForm.processing"
                     class="inline-flex justify-center rounded-md border border-transparent ring-2 ring-emerald-600 text-emerald-600 py-2 px-4 font-bold hover:text-white shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-                    Create!
+                    Save Post
                 </button>
-            </div>
+                <div class="text-red-600" v-if="form.errors">{{ form.errors }}</div>
             </form>
-        </div>
+                
+            </div>
         </div>
     </AppLayout>
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
@@ -143,7 +162,8 @@ const countdownStyle = () => {
                         class="outline outline-gray-800 rounded-full text-white text-lg mt-4 mr-4 py-2 px-4 hover:text-red-600 hover:outline-red-600"
                         @click="closePhotoModal">X</button>
                 </div>
-                <div class="flex justify-center">
+                <div class="flex flex-col items-center">
+                    <div class="text-bold text-2xl pl-4">{{ title }}</div>
                     <img class="object-scale-down py-6 px-4" :src="image.data[0].url" alt="" />
                 </div>
                 <div class="max-w-7xl mx-auto">

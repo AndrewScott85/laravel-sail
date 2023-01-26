@@ -11,6 +11,7 @@ class UserController extends Controller
 
     public function post(Request $request)
     {
+        dd($request);
         if (auth()->id() != 1 && auth()->id() != 2) {
             $validatedData = $this->validate($request, [
                 'path' => ['required', 'image', 'max:2000'],

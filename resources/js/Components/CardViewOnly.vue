@@ -26,8 +26,9 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
 
 
 <template class="">
-    <div class="flex flex-col shadow-lg bg-neutral-800 p-4 w-[22rem] lg:w-96 rounded-sm hover:bg-neutral-900 hover:ring hover:ring-indigo-600/50 ring-offset-4 ring-offset-black">
-        <div class="flex justify-end pb-2"> 
+    <div class="flex flex-col shadow-lg bg-neutral-900 p-4 w-[22rem] lg:w-96 rounded-sm hover:bg-neutral-900 hover:ring hover:ring-indigo-600/50 ring-offset-4 ring-offset-black">
+        <div class="flex justify-between pb-2"> 
+            <p class="text-base self-end">{{ photoDate }}</p>
         <Link class="hover:underline underline-offset-4" :href="'/user/' + photo.user.id + '/posts'">
         <div class="flex items-center">
             <img class="h-4 rounded-full mr-2" :src="photo.user.profile_photo_url" alt="">
@@ -35,9 +36,9 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
         </div>
         </Link>
     </div>
-        <div class="flex justify-between items-center text-white font-base">
+        <div class="text-white font-base">
             <h3 class="cursor-pointer text-lg font-bold self-start hover:underline underline-offset-2" @click="openPhotoModal">{{ photo.title }}</h3>
-            <p class="text-base self-end">{{ photoDate }}</p>
+          
         </div>
         <div class="h-60 mt-4 rounded-sm flex justify-center ">
             <img class="cursor-pointer" :src="photo.path" alt="" @click="openPhotoModal"/>

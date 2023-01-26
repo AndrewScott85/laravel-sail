@@ -52,10 +52,11 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
 
 <template>
     <div
-        class="flex flex-col shadow-lg bg-neutral-800 p-4 w-[22rem] lg:w-96 rounded-sm hover:bg-neutral-900 hover:ring hover:ring-indigo-600/50 ring-offset-4 ring-offset-black">
-        <div class="flex justify-between items-center text-white font-base" @click="openPhotoModal">
+        class="flex flex-col shadow-lg bg-neutral-900 p-4 w-[22rem] lg:w-96 rounded-sm hover:bg-neutral-900 hover:ring hover:ring-indigo-600/50 ring-offset-4 ring-offset-black">
+        <div class="flex flex-col text-white font-base" @click="openPhotoModal">
+            <p class="text-base">{{ photoDate }}</p>
             <h3 class="text-lg font-bold self-start cursor-pointer hover:underline">{{ photo.title }}</h3>
-            <p class="text-base self-end">{{ photoDate }}</p>
+            
         </div>
         <div class="h-60 mt-4 rounded-sm flex justify-center cursor-pointer" @click="openPhotoModal">
         <img class="" :src="photo.path" alt=""/>
@@ -102,7 +103,7 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
 
         <template #content>
             <div class="flex flex-col bg-auto gap-4">
-                <div class="flex justify-end">
+                <div class="flex justify-between">
                     <button
                         class="bg-black outline outline-gray-800 rounded-full text-white text-lg mt-4 mr-4 py-2 px-4 hover:text-red-600 hover:outline-red-600"
 
