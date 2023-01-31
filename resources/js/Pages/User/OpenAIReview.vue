@@ -3,6 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
 import FullScreenphoto from "@/Components/FullScreenPhoto.vue";
+import { Inertia } from "@inertiajs/inertia";
 
 const openingPhotoModal = ref(false);
 
@@ -31,12 +32,31 @@ const form = useForm({
     style: null,
 });
 
-const saveForm = useForm({
-            url: props.image.data[0].url,
-            description: props.description.choices[0].text,
-            title: props.title,
-            ai_service_id: 2,
+// const saveForm = useForm({
+//             path: null,
+//             description: props.description.choices[0].text,
+//             title: props.title,
+//             ai_service_id: 2,
+// });
+
+const useImage = () => {
+
+    let url = props.image.data[0].url;
+// let filename = url.substring(url.indexOf("img"), url.indexOf("?"));
+const regex = /img-(.*)\.png/;
+  const result = url.match(regex);
+  const filename = result[0];
+
+Inertia.post(route('user.openai.store'), {
+    _method: "POST",
+    url: props.image.data[0].url,
+    name: filename,
+    description: props.description.choices[0].text,
+    title:props.title,
+    ai_service_id: 2,
 });
+};
+
 
 
 // const styles = [
@@ -80,11 +100,11 @@ const countdownStyle = () => {
                             <p>{{ flagged }}</p>
                         </div>
                         <p>{{ title }}</p>
-                        <div v-if="image">
+                        <div v-if="image.data">
                            {{ image }}
-                            <img class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
+                            <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
                         </div>
-                        <div v-if="description">
+                        <div v-if="description.choices">
                             
                             <p>{{ description.choices[0].text }}</p>
                         </div>
@@ -142,14 +162,15 @@ const countdownStyle = () => {
                 Cancel
                 </Link>
                 <div>
-                    <form @submit.prevent="saveForm.post(route('user.openai.store'))">
-                    
+                    <button class="m-4 bg-emerald-600 p-2 ring-2 ring-white" @click="useImage">Use this photo</button>
+                    <!-- <form @submit.prevent="saveForm.post(route('user.photos.store'))">
+                        
                         <button type="submit"  :disabled="saveForm.processing"
                     class="inline-flex justify-center rounded-md border border-transparent ring-2 ring-emerald-600 text-emerald-600 py-2 px-4 font-bold hover:text-white shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                     Save Post
                 </button>
                 <div class="text-red-600" v-if="form.errors">{{ form.errors }}</div>
-            </form>
+            </form> -->
                 
             </div>
         </div>

@@ -49,14 +49,40 @@ class OpenAIController extends Controller
 
 public function openaiStore(Request $request)
 {
-    
     if (auth()->id() != 1 && auth()->id() != 2) {
-       
         $url = $request->url;
-        $contents = file_get_contents($url);
 
-        $path = Storage::disk('s3')->put('photos', $contents);
-        $path = Storage::disk('s3')->url($path);
+        $contents = file_get_contents($url);
+        $mime = "image/png";
+        $filename = $request->name;
+        $output = new \CURLFile($url, $mime, $filename);
+        $data = ["files" => $output];
+ 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://api.resmush.it/?qlty=90');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            $result = curl_error($ch);
+        }
+        curl_close($ch);
+ 
+        $arrResult = json_decode($result);
+ 
+        // store the optimized version of the image
+        $ch = curl_init($arrResult->dest);
+        $fp = fopen($filename, 'wb');
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+
+        $path = Storage::disk('s3')->put('photos/'.$filename, file_get_contents($filename));
+        $path = Storage::disk('s3')->url('photos/'.$filename);
         $validatedData['path'] = $path;
         $validatedData['user_id'] = auth()->id();
         $validatedData['title'] = $request->title;
@@ -65,6 +91,26 @@ public function openaiStore(Request $request)
         Photo::create($validatedData);
         return to_route('user.manageposts');
     }
+    // if (auth()->id() != 1 && auth()->id() != 2) {
+       
+    //     $url = $request->url;
+    //     $name = $request->name;
+       
+
+    //     $contents = file_get_contents($url);
+    //     $image = imagecreatefromstring($contents);
+
+        
+    //     $path = Storage::disk('s3')->put("photos/$name", $image);
+    //     $path = Storage::disk('s3')->url("photos/$name");
+    //     $validatedData['path'] = $path;
+    //     $validatedData['user_id'] = auth()->id();
+    //     $validatedData['title'] = $request->title;
+    //     $validatedData['description'] = $request->description;
+    //     $validatedData['ai_service_id'] = 2;
+    //     Photo::create($validatedData);
+    //     return to_route('user.manageposts');
+    // }
 
 }
 

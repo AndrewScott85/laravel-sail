@@ -28,7 +28,7 @@ const countdown = () => {
 </script>
 
 <template>
-    <AppLayout title="Edit Photo">
+    <AppLayout title="Create with OpenAI">
         <template #header>
             <h2 class="font-semibold text-3xl leading-tight">
                 Create Photo and Description using OpenAI!
