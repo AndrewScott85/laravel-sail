@@ -25,6 +25,7 @@ class OpenAIController extends Controller
                 $validatedData = $this->validate($request, [
                 'prompt' => ['required'],
                 'title' => ['required', 'max:30', 'string'],
+                'text' => ['required', 'max:30', 'string'],
                 'style' => ['required', 'max:30', 'string'],
             ]);
 
@@ -52,7 +53,6 @@ public function openaiStore(Request $request)
     if (auth()->id() != 1 && auth()->id() != 2) {
         $url = $request->url;
 
-        $contents = file_get_contents($url);
         $mime = "image/png";
         $filename = $request->name;
         $output = new \CURLFile($url, $mime, $filename);
@@ -91,27 +91,7 @@ public function openaiStore(Request $request)
         Photo::create($validatedData);
         return to_route('user.manageposts');
     }
-    // if (auth()->id() != 1 && auth()->id() != 2) {
-       
-    //     $url = $request->url;
-    //     $name = $request->name;
-       
-
-    //     $contents = file_get_contents($url);
-    //     $image = imagecreatefromstring($contents);
-
-        
-    //     $path = Storage::disk('s3')->put("photos/$name", $image);
-    //     $path = Storage::disk('s3')->url("photos/$name");
-    //     $validatedData['path'] = $path;
-    //     $validatedData['user_id'] = auth()->id();
-    //     $validatedData['title'] = $request->title;
-    //     $validatedData['description'] = $request->description;
-    //     $validatedData['ai_service_id'] = 2;
-    //     Photo::create($validatedData);
-    //     return to_route('user.manageposts');
-    // }
-
+   
 }
 
 // public function editImage(Request $request)

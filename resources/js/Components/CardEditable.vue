@@ -102,11 +102,10 @@ const photoDate = props.photo.created_at.slice(2, 10).split("-").reverse().join(
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
 
         <template #content>
-            <div class="flex flex-col bg-auto gap-4">
-                <div class="flex justify-between">
+            <div class="flex flex-col gap-4">
+                <div class="flex justify-end">
                     <button
                         class="bg-black outline outline-gray-800 rounded-full text-white text-lg mt-4 mr-4 py-2 px-4 hover:text-red-600 hover:outline-red-600"
-
                         @click="closePhotoModal">X</button>
                 </div>
                 <div class="flex flex-col md:flex-row items-center justify-between">

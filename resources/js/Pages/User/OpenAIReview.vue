@@ -32,45 +32,27 @@ const form = useForm({
     style: null,
 });
 
-// const saveForm = useForm({
-//             path: null,
-//             description: props.description.choices[0].text,
-//             title: props.title,
-//             ai_service_id: 2,
-// });
-
 const useImage = () => {
 
     let url = props.image.data[0].url;
-// let filename = url.substring(url.indexOf("img"), url.indexOf("?"));
-const regex = /img-(.*)\.png/;
-  const result = url.match(regex);
-  const filename = result[0];
+    // let filename = url.substring(url.indexOf("img"), url.indexOf("?"));
+    const regex = /img-(.*)\.png/;
+    const result = url.match(regex);
+    const filename = result[0];
 
-Inertia.post(route('user.openai.store'), {
-    _method: "POST",
-    url: props.image.data[0].url,
-    name: filename,
-    description: props.description.choices[0].text,
-    title:props.title,
-    ai_service_id: 2,
-});
+    Inertia.post(route('user.openai.store'), {
+        _method: "POST",
+        url: props.image.data[0].url,
+        name: filename,
+        description: props.description.choices[0].text,
+        title: props.title,
+        ai_service_id: 2,
+    });
 };
 
-
-
-// const styles = [
-//     {"id": 1, "name": "noir"},
-//     {"id": 2, "name": "children's story"},
-//     {"id": 3, "name": "scientific article"},
-//     {"id": 4, "name": "newspaper report"},
-//     {"id": 5, "name": "blog post"},
-//     {"id": 6, "name": "instagram post"},
-//     {"id": 7, "name": "tabloid report"},
-//     {"id": 1, "name": "highbrow magazine"},
-// ]
-
-
+let editTitle = ref(false);
+let editImage = ref(false);
+let editDescription = ref(false);
 
 const countdown = () => {
     return 30 - form.title.length;
@@ -93,77 +75,85 @@ const countdownStyle = () => {
             <!-- <p class="text-red-600 text-lg px-4 lg:px-8 pb-4 font-bold"
                 v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI
                 demonstration: Creation, Editing, & Deletion are disabled on this account</p> -->
-            <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
-                <form @submit.prevent="form.post(route('user.openai.post'))">
-                    <div class="flex flex-col px-4">
-                        <div v-if="flagged">
-                            <p>{{ flagged }}</p>
-                        </div>
-                        <p>{{ title }}</p>
-                        <div v-if="image.data">
-                           {{ image }}
-                            <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
-                        </div>
-                        <div v-if="description.choices">
-                            
-                            <p>{{ description.choices[0].text }}</p>
-                        </div>
-                        <div>
-                            <label for="title" class="block text-m font-bold">Title (max 30
-                                characters)</label>
-                            <div class="m-1">
-                                <input id="title" name="title" maxlength="30" v-on:click="form.clearErrors('title')"
-                                    class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                    v-model="form.title" v-on:keydown="countdown" />
-                                <p class="pt-2">Characters remaining: <countdown></countdown>
-                                </p>
-                            </div>
+
+
+            <div class="flex flex-col px-4">
+                <div v-if="flagged">
+                    <p>{{ flagged }}</p>
+                </div>
+                <h2 class="text-xl text-center">{{ title }}</h2>
+
+                <div v-if="image.data">
+                    <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
+                </div>
+                <div v-if="description.choices">
+                    <p class="whitespace-pre">{{ description.choices[0].text }}</p>
+                </div>
+            </div>
+            <form @submit.prevent="form.post(route('user.openai.edit'))">
+                <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
+
+                    <button @click="editTitle=true">Edit Title</button>
+                    <div v-if="editTitle">
+                        <button @click="editTitle=false">Cancel</button>
+                        <label for="title" class="block text-m font-bold">Title (max 30
+                            characters)</label>
+                        <div class="m-1">
+                            <input id="title" name="title" maxlength="30" v-on:click="form.clearErrors('title')"
+                                class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                v-model="form.title" v-on:keydown="countdown" />
+                            <p class="pt-2">Characters remaining: <countdown></countdown>
+                            </p>
                         </div>
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
+                    </div>
 
 
-
-                        <div>
-                            <label for="prompt" class="block text-m font-bold text-white pt-8"> Describe what you want
-                                to see here!</label>
-                            <div class="mt-1">
-                                <textarea id="prompt" name="prompt" rows="3" v-on:click="form.clearErrors('prompt')"
-                                    class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                    v-model="form.prompt"></textarea>
-                            </div>
-                            <div class="text-red-600" v-if="form.errors.prompt">{{ form.errors.prompt }}</div>
-                            <div>
-                                <label for="title" class="block text-m font-bold">Writing style (max 30
-                                    characters)</label>
-                                <div class="m-1">
-                                    <input id="style" name="style" maxlength="30" v-on:click="form.clearErrors('style')"
-                                        class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                        v-model="form.style" v-on:keydown="countdownStyle" />
-                                    <p class="pt-2">Characters remaining: <countdownStyle></countdownStyle>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="text-red-600" v-if="form.errors.style">{{ form.errors.style }}</div>
+                    <button @click="editImage">Edit Image</button>
+                    <div v-if="editImage">
+                        <label for="prompt" class="block text-m font-bold text-white pt-8"> Describe what you want
+                            to see here!</label>
+                        <div class="mt-1">
+                            <textarea id="prompt" name="prompt" rows="3" v-on:click="form.clearErrors('prompt')"
+                                class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                v-model="form.prompt"></textarea>
                         </div>
-                    
-            </div>
-            <div class="pt-6 flex justify-end gap-4 px-4">
-                <div v-show="form.processing" class="text-sm text-gray-100">
-                    Saving.... This can take a while, please be patient!
+                        <div class="text-red-600" v-if="form.errors.prompt">{{ form.errors.prompt }}</div>
+                    </div>
+
+                    <button @click="editDescription">Edit Description</button>
+                    <div v-if="editDescription">
+                        <label for="title" class="block text-m font-bold">Writing style (max 30
+                            characters)</label>
+                        <div class="m-1">
+                            <input id="style" name="style" maxlength="30" v-on:click="form.clearErrors('style')"
+                                class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                                v-model="form.style" v-on:keydown="countdownStyle" />
+                            <p class="pt-2">Characters remaining: <countdownStyle></countdownStyle>
+                            </p>
+                        </div>
+                    <div class="text-red-600" v-if="form.errors.style">{{ form.errors.style }}</div>
                 </div>
-                <div v-if="form.processing "></div>
-              
             </div>
+
+
+                <div class="pt-6 flex justify-end gap-4 px-4">
+                    <div v-show="form.processing" class="text-sm text-gray-100">
+                        Saving.... This can take a while, please be patient!
+                    </div>
+                    <div v-if="form.processing"></div>
+
+                </div>
             </form>
         </div>
         <Link
-                    class="text-gray-500  ring-2 ring-gray-500 hover:bg-gray-600 hover:text-white font-bold px-4 py-2 rounded-md"
-                    :href="route('user.manageposts')">
-                Cancel
-                </Link>
-                <div>
-                    <button class="m-4 bg-emerald-600 p-2 ring-2 ring-white" @click="useImage">Use this photo</button>
-                    <!-- <form @submit.prevent="saveForm.post(route('user.photos.store'))">
+            class="text-gray-500  ring-2 ring-gray-500 hover:bg-gray-600 hover:text-white font-bold px-4 py-2 rounded-md"
+            :href="route('user.manageposts')">
+        Cancel
+        </Link>
+        <div>
+            <button class="m-4 bg-emerald-600 p-2 ring-2 ring-white" @click="useImage">Use this photo</button>
+            <!-- <form @submit.prevent="saveForm.post(route('user.photos.store'))">
                         
                         <button type="submit"  :disabled="saveForm.processing"
                     class="inline-flex justify-center rounded-md border border-transparent ring-2 ring-emerald-600 text-emerald-600 py-2 px-4 font-bold hover:text-white shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
@@ -171,9 +161,9 @@ const countdownStyle = () => {
                 </button>
                 <div class="text-red-600" v-if="form.errors">{{ form.errors }}</div>
             </form> -->
-                
-            </div>
+
         </div>
+
     </AppLayout>
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
         <template #content>

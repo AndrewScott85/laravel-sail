@@ -30,7 +30,7 @@ const close = () => {
         :closeable="closeable"
         @close="close"
     >
-        <div class="bg-black text-white">
+        <div class="bg-black text-white w-screen flex flex-col">
             <div class="text-lg">
                 <slot name="title" />
             </div>

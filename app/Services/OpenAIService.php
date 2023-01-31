@@ -45,6 +45,7 @@ class OpenAIService
     {
         $prompt = $validatedData['prompt'];
         $title = $validatedData['title'];
+        $text = $validatedData['text'];
         $style = $validatedData['style'];
 
         $curl = curl_init();
@@ -59,7 +60,7 @@ class OpenAIService
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => '{
               "model": "text-davinci-003",
-              "prompt": "write a '.$style.' to accompany an image which has a title of '.$title.' and was created using the prompt '.$prompt.'",
+              "prompt": "write a '.$text.' in the style of '.$style.' to accompany an image which has a title of '.$title.' and was created using the prompt '.$prompt.'",
               "temperature": 0.25,
               "max_tokens": 600,
               "top_p": 1,
@@ -123,41 +124,43 @@ class OpenAIService
         }
     }
 
-    // public function editImage($validatedData)
-    // {
-    //     $image = $;
+    public function editImage($validatedData, $user)
+    {
+        $image = $validatedData['url'];
+        $prompt = $validatedData['prompt'];
 
-    //     $curl = curl_init();
+        $curl = curl_init();
 
-    //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL => "https://api.openai.com/v1/images/edits",
-    //         CURLOPT_RETURNTRANSFER => true,
-    //         CURLOPT_ENCODING => "",
-    //         CURLOPT_MAXREDIRS => 10,
-    //         CURLOPT_TIMEOUT => 30,
-    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //         CURLOPT_CUSTOMREQUEST => "POST",
-    //         CURLOPT_POSTFIELDS => '{
-    //             "image": "'.$image.'",
-    //             "prompt": "'.$prompt.'",
-    //             "n": 1,
-    //             "size": "1024x1024"
-    //           }',
-    //         CURLOPT_HTTPHEADER => array(
-    //             "Content-Type: application/json",
-    //             "Authorization: Bearer " . env('OPEN_AI_KEY')
-    //         ),
-    //     ));
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.openai.com/v1/images/edits",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => '{
+                "image": "'.$image.'",
+                "prompt": "'.$prompt.'",
+                "n": 1,
+                "size": "1024x1024",
+                "user": "'.$user.'"
+              }',
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Authorization: Bearer " . env('OPEN_AI_KEY')
+            ),
+        ));
         
-    //     $response = curl_exec($curl);
-    //     $err = curl_error($curl);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
         
-    //     curl_close($curl);
+        curl_close($curl);
         
-    //     if ($err) {
-    //         return "cURL Error #:" . $err;
-    //     } else {
-    //         return json_decode($response);
-    //     }
-    // }
+        if ($err) {
+            return "cURL Error #:" . $err;
+        } else {
+            return json_decode($response);
+        }
+    }
 }
