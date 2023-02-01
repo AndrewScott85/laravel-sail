@@ -50,10 +50,10 @@ const usePost = () => {
 };
 
 let postTitle = ref(props.title);
+let previousTitle = props.title;
 
 const updateTitle = (event) => {
       postTitle = event.target.value
-
     }
 
 let editTitle = ref(false);
@@ -67,6 +67,25 @@ const countdown = () => {
 const countdownStyle = () => {
     return 30 - form.style.length;
 }
+
+const editTitleHandler = () => {
+    if (!editTitle.value) {
+        console.log('current postTitle value is ' + postTitle.value)
+        console.log('current previousTitle value is ' + previousTitle)
+        previousTitle = postTitle.value;
+        console.log('new postTitle value is ' + postTitle.value)
+        console.log('new previousTitle value is ' + previousTitle)
+        editTitle.value = !editTitle.value;
+    } else {
+        postTitle.value = previousTitle;
+        editTitle.value = !editTitle.value
+    }
+};
+
+const saveNewTitle = () => {
+    editTitle.value = !editTitle.value
+};
+
 
 </script>
 
@@ -100,7 +119,7 @@ const countdownStyle = () => {
 
                 <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
                     <div class="flex p-4 gap-4">
-                    <button class="ring-2 ring-white p-2" @click="editTitle=!editTitle"> {{ editTitle ? 'Cancel' : 'Edit Title' }}</button>
+                    <button class="ring-2 ring-white p-2" @click="editTitleHandler"> {{ editTitle ? 'Cancel' : 'Edit Title' }}</button>
                     <button class="ring-2 ring-white p-2" @click="editImage=!editImage">{{ editImage ? 'Cancel' : 'Edit Image' }}</button>
                     <button class="ring-2 ring-white p-2" @click="editDescription=!editDescription">{{ editDescription ? 'Cancel' : 'Edit Description' }}</button>
                 </div>
@@ -114,6 +133,7 @@ const countdownStyle = () => {
                                 v-model="postTitle" @keyup="updateTitle, countdown" />
                             <p class="pt-2">Characters remaining: <countdown></countdown>
                             </p>
+                            <button class="ring-2 text-emerald-600 ring-emerald-600 p-2" @click="saveNewTitle">Save Change</button>
                         </div>
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
                     </div>
