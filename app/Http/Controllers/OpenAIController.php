@@ -20,8 +20,7 @@ class OpenAIController extends Controller
 
     public function openaiPost(Request $request)
     {
-                $user = hash("sha256", auth()->user()->name);
-
+                
                 $validatedData = $this->validate($request, [
                 'prompt' => ['required'],
                 'title' => ['required', 'max:30', 'string'],
@@ -29,6 +28,7 @@ class OpenAIController extends Controller
                 'style' => ['required', 'max:30', 'string'],
             ]);
 
+            $user = hash("sha256", auth()->user()->name);
             $moderation = $this->openAIService->moderateInput($validatedData, $user);
             
             if (!$moderation->results[0]->flagged) {
@@ -44,6 +44,30 @@ class OpenAIController extends Controller
         return inertia('User/OpenAICreate', [
             'flagged' => 'Your title or prompt has failed automatic content moderation, please
              consult the OpenAI moderation guidelines and try again.'
+        ]);
+    }
+}
+
+public function editImage(Request $request)
+    {
+        $validatedData = $this->validate($request, [
+                'url' => ['required', 'string'],
+                'prompt' => ['required', 'string'],
+            ]);
+
+            $user = hash("sha256", auth()->user()->name);
+
+            $moderation = $this->openAIService->moderateInput($validatedData, $user);
+            
+            if (!$moderation->results[0]->flagged) {
+            $image = $this->openAIService->generateImage($validatedData, $user);
+        return inertia('User/OpenAIReview', [
+            'image' => $image
+        ]);
+    } else {
+        return inertia('User/OpenAI', [
+            'flagged' => 'Your title or prompt has failed automatic content moderation, please try again.
+             If you do not know why your input generated this response, please consult the OpenAI moderation guidelines'
         ]);
     }
 }
@@ -94,30 +118,5 @@ public function openaiStore(Request $request)
    
 }
 
-// public function editImage(Request $request)
-//     {
-//             $validatedData = $this->validate($request, [
-//                 'prompt' => ['required'],
-//                 'title' => ['required', 'max:30', 'string'],
-//                 'style' => ['required', 'max:30', 'string'],
-//             ]);
-
-//             $moderation = $this->openAIService->moderateInput($validatedData);
-            
-//             if (!$moderation->results[0]->flagged) {
-//             $description = $this->openAIService->generateDescription($validatedData);
-//             $image = $this->openAIService->generateImage($validatedData['prompt']);
-//         return inertia('User/OpenAICreate', [
-//             'moderation' => $moderation,
-//             'description' => $description,
-//             'image' => $image
-//         ]);
-//     } else {
-//         return inertia('User/OpenAI', [
-//             'flagged' => 'Your title or prompt has failed automatic content moderation, please try again.
-//              If you do not know why your input generated this response, please consult the OpenAI moderation guidelines'
-//         ]);
-//     }
-// }
 
 }

@@ -18,6 +18,13 @@ const openPhotoModal = () => {
     openingPhotoModal.value = true;
 };
 
+const form = useForm({
+    prompt: null,
+    title: '',
+    style: null,
+});
+
+
 const props = defineProps({
     moderation: Object,
     description: Object,
@@ -26,28 +33,7 @@ const props = defineProps({
     title: String,
 });
 
-const form = useForm({
-    prompt: null,
-    title: '',
-    style: null,
-});
 
-const usePost = () => {
-
-    let url = props.image.data[0].url;
-    const regex = /img-(.*)\.png/;
-    const result = url.match(regex);
-    const filename = result[0];
-
-    Inertia.post(route('user.openai.store'), {
-        _method: "POST",
-        url: props.image.data[0].url,
-        name: filename,
-        description: props.description.choices[0].text,
-        title: props.title,
-        ai_service_id: 2,
-    });
-};
 
 let postTitle = ref(props.title);
 let previousTitle = props.title;
@@ -60,6 +46,31 @@ let editTitle = ref(false);
 let editImage = ref(false);
 let editDescription = ref(false);
 
+
+const editTitleHandler = () => {
+    if (!editTitle.value) {
+        previousTitle = postTitle.value;
+        editTitle.value = !editTitle.value;
+    } else {
+        postTitle.value = previousTitle;
+        editTitle.value = !editTitle.value
+    }
+};
+
+// const postImage = ref(props.image);
+// const postDescription = ref(props.description);
+
+const editImageForm = useForm({
+    url: null,
+    prompt: null,
+});
+
+
+
+const saveNewTitle = () => {
+    editTitle.value = !editTitle.value
+};
+
 const countdown = () => {
     return 30 - postTitle.value.length;
 }
@@ -68,24 +79,22 @@ const countdownStyle = () => {
     return 30 - form.style.length;
 }
 
-const editTitleHandler = () => {
-    if (!editTitle.value) {
-        console.log('current postTitle value is ' + postTitle.value)
-        console.log('current previousTitle value is ' + previousTitle)
-        previousTitle = postTitle.value;
-        console.log('new postTitle value is ' + postTitle.value)
-        console.log('new previousTitle value is ' + previousTitle)
-        editTitle.value = !editTitle.value;
-    } else {
-        postTitle.value = previousTitle;
-        editTitle.value = !editTitle.value
-    }
-};
+const usePost = () => {
 
-const saveNewTitle = () => {
-    editTitle.value = !editTitle.value
-};
+let url = props.image.data[0].url;
+const regex = /img-(.*)\.png/;
+const result = url.match(regex);
+const filename = result[0];
 
+Inertia.post(route('user.openai.store'), {
+    _method: "POST",
+    url: props.image.data[0].url,
+    name: filename,
+    description: props.description.choices[0].text,
+    title: props.title,
+    ai_service_id: 2,
+});
+};
 
 </script>
 
@@ -107,8 +116,8 @@ const saveNewTitle = () => {
                     <p>{{ flagged }}</p>
                 </div>
                 <h2 class="text-xl text-center">{{ postTitle }}</h2>
-
-                <div v-if="image">
+                <!-- <div v-if="image">{{ image }}</div> -->
+                <div v-if="image.data">
                     <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
                 </div>
                 <div v-if="description.choices">
@@ -139,16 +148,18 @@ const saveNewTitle = () => {
                     </div>
 
 
-                    
                     <div v-if="editImage">
+                        <form @submit.prevent="editImageForm.post(route('user.openai.editImage'))">
                         <label for="prompt" class="block text-m font-bold text-white pt-8"> Describe what you want
                             to see here!</label>
                         <div class="mt-1">
-                            <textarea id="prompt" name="prompt" rows="3" v-on:click="form.clearErrors('prompt')"
+                            <textarea id="prompt" name="prompt" rows="3" v-on:click="editImageForm.clearErrors('prompt')"
                                 class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                v-model="form.prompt"></textarea>
+                                v-model="editImageForm.prompt"></textarea>
+                                <button type="submit" :disabled="editImageForm.processing" class="ring-2 text-emerald-600 ring-emerald-600 p-2">Edit Image!</button>
                         </div>
-                        <div class="text-red-600" v-if="form.errors.prompt">{{ form.errors.prompt }}</div>
+                        <div class="text-red-600" v-if="editImageForm.errors.prompt">{{ editImageForm.errors.prompt }}</div>
+                    </form>
                     </div>
 
                     
@@ -183,15 +194,6 @@ const saveNewTitle = () => {
         </Link>
         <div>
             <button class="m-4 bg-emerald-600 p-2 ring-2 ring-white" @click="usePost">Use this photo</button>
-            <!-- <form @submit.prevent="saveForm.post(route('user.photos.store'))">
-                        
-                        <button type="submit"  :disabled="saveForm.processing"
-                    class="inline-flex justify-center rounded-md border border-transparent ring-2 ring-emerald-600 text-emerald-600 py-2 px-4 font-bold hover:text-white shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-                    Save Post
-                </button>
-                <div class="text-red-600" v-if="form.errors">{{ form.errors }}</div>
-            </form> -->
-
         </div>
 
     </AppLayout>
