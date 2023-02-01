@@ -49,10 +49,11 @@ const usePost = () => {
     });
 };
 
-let postTitle = props.title;
+let postTitle = ref(props.title);
 
 const updateTitle = (event) => {
       postTitle = event.target.value
+
     }
 
 let editTitle = ref(false);
@@ -60,11 +61,11 @@ let editImage = ref(false);
 let editDescription = ref(false);
 
 const countdown = () => {
-    return 30 - form.title.length;
+    return 30 - postTitle.value.length;
 }
 
 const countdownStyle = () => {
-    return 30 - form.title.length;
+    return 30 - form.style.length;
 }
 
 </script>
@@ -88,11 +89,11 @@ const countdownStyle = () => {
                 </div>
                 <h2 class="text-xl text-center">{{ postTitle }}</h2>
 
-                <div v-if="image.data">
+                <div v-if="image">
                     <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
                 </div>
                 <div v-if="description.choices">
-                    <p class="whitespace-pre">{{ description.choices[0].text }}</p>
+                    <p class="whitespace-pre-wrap">{{ description.choices[0].text }}</p>
                 </div>
                 <div v-else>{{ description }}</div>
             </div>
@@ -110,7 +111,7 @@ const countdownStyle = () => {
                         <div class="m-1">
                             <input id="title" name="title" maxlength="30"
                                 class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                v-model="postTitle" @input="updateTitle" v-on:keydown="countdown" />
+                                v-model="postTitle" @keyup="updateTitle, countdown" />
                             <p class="pt-2">Characters remaining: <countdown></countdown>
                             </p>
                         </div>
