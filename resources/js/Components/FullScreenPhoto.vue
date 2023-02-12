@@ -24,13 +24,13 @@ const close = () => {
 </script>
 
 <template>
-    <Modal
+    <Modal 
         :show="show"
         :max-width="maxWidth"
         :closeable="closeable"
         @close="close"
     >
-        <div class="bg-black text-white w-screen flex flex-col">
+        <div class="bg-black w-11/12 text-white">
             <div class="text-lg">
                 <slot name="title" />
             </div>

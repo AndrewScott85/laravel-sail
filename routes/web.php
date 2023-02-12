@@ -40,5 +40,8 @@ Route::middleware([
     Route::get('/openai/create/', [App\Http\Controllers\UserPageController::class, 'openaiCreate'])->name('openai.create');
     Route::post('/openai/post', [App\Http\Controllers\OpenAIController::class, 'openaiPost'])->name('openai.post');
     Route::get('/openai/review/', [App\Http\Controllers\UserPageController::class, 'openaiReview'])->name('openai.review');
+    Route::post('/openai/edit', [App\Http\Controllers\OpenAIController::class, 'editImage'])->name('openai.editImage');
+    Route::post('/openai/editDescription', [App\Http\Controllers\OpenAIController::class, 'editDescription'])->name('openai.editDescription');
+    Route::post('/openai/variation', [App\Http\Controllers\OpenAIController::class, 'variationImage'])->name('openai.variationImage');
     Route::post('/openai/store', [App\Http\Controllers\OpenAIController::class, 'openaiStore'])->name('openai.store');
 });

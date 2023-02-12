@@ -31,6 +31,8 @@ const props = defineProps({
     image: Object,
     flagged: Object,
     title: String,
+    newImage: Object,
+    newDesc: Object,
 });
 
 
@@ -60,12 +62,27 @@ const editTitleHandler = () => {
 // const postImage = ref(props.image);
 // const postDescription = ref(props.description);
 
+const postImage = ref(props.image.data[0].url);
+const postDesc = ref(props.description.choices[0].text);
+const imgName = ref(props.image.data[0].url.match(/img-(.*)\.png/)[0])
+
 const editImageForm = useForm({
-    url: null,
+    url: postImage,
     prompt: null,
+    name: imgName
 });
 
 
+const editDescForm = useForm({
+    text: postDesc,
+    instruction: null
+});
+
+const variationImage = () => {
+    Inertia.post(route('user.openai.variationImage'), {
+        url: props.image.data[0].url
+    }, {preserveState: true});
+}
 
 const saveNewTitle = () => {
     editTitle.value = !editTitle.value
@@ -73,10 +90,6 @@ const saveNewTitle = () => {
 
 const countdown = () => {
     return 30 - postTitle.value.length;
-}
-
-const countdownStyle = () => {
-    return 30 - form.style.length;
 }
 
 const usePost = () => {
@@ -87,7 +100,6 @@ const result = url.match(regex);
 const filename = result[0];
 
 Inertia.post(route('user.openai.store'), {
-    _method: "POST",
     url: props.image.data[0].url,
     name: filename,
     description: props.description.choices[0].text,
@@ -99,7 +111,7 @@ Inertia.post(route('user.openai.store'), {
 </script>
 
 <template>
-    <AppLayout title="Edit Photo">
+    <AppLayout title="OpenAI Review">
         <template #header>
             <h2 class="font-semibold text-3xl leading-tight">
                 Review and Edit Your Creation
@@ -109,21 +121,24 @@ Inertia.post(route('user.openai.store'), {
             <!-- <p class="text-red-600 text-lg px-4 lg:px-8 pb-4 font-bold"
                 v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI
                 demonstration: Creation, Editing, & Deletion are disabled on this account</p> -->
-
-
             <div class="flex flex-col px-4">
                 <div v-if="flagged">
                     <p>{{ flagged }}</p>
                 </div>
                 <h2 class="text-xl text-center">{{ postTitle }}</h2>
-                <!-- <div v-if="image">{{ image }}</div> -->
-                <div v-if="image.data">
+               
+                <div v-if="newImage">{{ newImage }}</div>
+                <div v-if="image && image.data">
                     <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
+                    <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button>
                 </div>
-                <div v-if="description.choices">
+                <div v-if="description && description.choices">
                     <p class="whitespace-pre-wrap">{{ description.choices[0].text }}</p>
                 </div>
-                <div v-else>{{ description }}</div>
+                <div v-if="newDesc && newDesc.choices">
+                    <p class="whitespace-pre-wrap">{{ newDesc.choices[0].text }}</p>
+                </div>
+                <!-- <div v-else>{{ description }}</div> -->
             </div>
 
                 <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
@@ -164,16 +179,16 @@ Inertia.post(route('user.openai.store'), {
 
                     
                     <div v-if="editDescription">
-                        <label for="title" class="block text-m font-bold">Writing style (max 30
-                            characters)</label>
+                        <form @submit.prevent="editDescForm.post(route('user.openai.editDescription'))">
+                        <label for="instruction" class="block text-m font-bold">Instructions for altering text here:</label>
                         <div class="m-1">
-                            <input id="style" name="style" maxlength="30" v-on:click="form.clearErrors('style')"
+                            <input id="instruction" name="instruction" maxlength="30" v-on:click="editDescForm.clearErrors('instructions')"
                                 class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                v-model="form.style" v-on:keydown="countdownStyle" />
-                            <p class="pt-2">Characters remaining: <countdownStyle></countdownStyle>
-                            </p>
+                                v-model="editDescForm.instruction" />
+                                <button type="submit" :disabled="editDescForm.processing" class="ring-2 text-emerald-600 ring-emerald-600 p-2">Edit Description!</button>
                         </div>
-                    <div class="text-red-600" v-if="form.errors.style">{{ form.errors.style }}</div>
+                    <div class="text-red-600" v-if="editDescForm.errors.instructions">{{ editDescForm.errors }}</div>
+                </form>
                 </div>
             </div>
 
@@ -199,7 +214,7 @@ Inertia.post(route('user.openai.store'), {
     </AppLayout>
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
         <template #content>
-            <div class="flex flex-col bg-auto gap-4">
+            <div v-if="title && image && image.data" class="flex flex-col bg-auto gap-4">
                 <div class="flex justify-end">
                     <button
                         class="outline outline-gray-800 rounded-full text-white text-lg mt-4 mr-4 py-2 px-4 hover:text-red-600 hover:outline-red-600"

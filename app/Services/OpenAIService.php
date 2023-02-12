@@ -86,6 +86,44 @@ class OpenAIService
         }
     }
 
+    public function editDescription($validatedData)
+    {
+        $text = json_encode($validatedData['text']);
+        $instruction = $validatedData['instruction'];
+ 
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.openai.com/v1/edits",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode([
+              "model" => "text-davinci-edit-001",
+              "input" => $text,
+              "instruction" => $instruction,
+            ]),
+            CURLOPT_HTTPHEADER => [
+                "Content-Type: application/json",
+                "Authorization: Bearer ". env('OPEN_AI_KEY'),
+            ],
+        ]);
+    
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+    
+        curl_close($curl);
+    
+        if ($err) {
+            return "cURL Error #:" . $err;
+        } else {
+            return json_decode($response);
+        }
+    }
+
     public function generateImage($validatedData, $user)
     {
         $prompt = $validatedData;
@@ -103,7 +141,7 @@ class OpenAIService
             CURLOPT_POSTFIELDS => '{
                 "prompt": "'.$prompt.'",
                 "n": 1,
-                "size": "1024x1024",
+                "size": "512x512",
                 "user": "'.$user.'"
               }',
             CURLOPT_HTTPHEADER => array(
@@ -124,30 +162,65 @@ class OpenAIService
         }
     }
 
-    public function editImage($validatedData, $user)
+    public function editImage($im, $prompt, $user)
     {
-        $image = $validatedData['url'];
-        $prompt = $validatedData['prompt'];
-
         $curl = curl_init();
-
+        
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.openai.com/v1/images/edits",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 120,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => '{
-                "image": "'.$image.'",
-                "prompt": "'.$prompt.'",
-                "n": 1,
-                "size": "1024x1024",
-                "user": "'.$user.'"
-              }',
+            CURLOPT_POSTFIELDS => array(
+                "image" => $im,
+                "prompt" => $prompt,
+                "n" => 1,
+                "size" => "512x512",
+                "user" => $user
+            ),
             CURLOPT_HTTPHEADER => array(
-                "Content-Type: application/json",
+                "Content-Type: multipart/form-data",
+                "Authorization: Bearer " . env('OPEN_AI_KEY')
+            ),
+        ));
+        
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        
+        curl_close($curl);
+        
+        if ($err) {
+            return "cURL Error #:" . $err;
+        } else {
+            return json_decode($response);
+        }
+    }
+    
+
+
+    public function variationImage($im, $user)
+    {
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.openai.com/v1/images/variations",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 180,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => array(
+                "image" => $im,
+                "n" => 1,
+                "size" => "512x512",
+                "user" => $user
+            ),
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: multipart/form-data",
                 "Authorization: Bearer " . env('OPEN_AI_KEY')
             ),
         ));
