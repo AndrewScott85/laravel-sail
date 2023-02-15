@@ -42,16 +42,16 @@ class UserPageController extends Controller
 
     public function openaiReview()
     {
-        $moderation = session()->get('moderation');
         $description = session()->get('description');
         $image = session()->get('image');
         $title = session()->get('title');
+        $newDesc = session()->get('newDesc', null);
     
         return inertia('User/OpenAIReview', [
-            'moderation' => $moderation,
             'description' => $description,
             'image' => $image,
-            'title' => $title
+            'title' => $title,
+            'newDesc' => $newDesc,
         ]);
     }
     

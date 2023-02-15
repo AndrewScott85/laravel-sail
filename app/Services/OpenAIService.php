@@ -204,6 +204,7 @@ class OpenAIService
     public function variationImage($im, $user)
     {
         $curl = curl_init();
+        $cfile = curl_file_create($im);
         
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.openai.com/v1/images/variations",
@@ -214,7 +215,7 @@ class OpenAIService
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => array(
-                "image" => $im,
+                "image" => $cfile,
                 "n" => 1,
                 "size" => "512x512",
                 "user" => $user

@@ -35,7 +35,6 @@ class OpenAIController extends Controller
             $description = $this->openAIService->generateDescription($validatedData, $user);
             $image = $this->openAIService->generateImage($validatedData['prompt'], $user);
             return redirect(route('user.openai.review'))->with([
-                'moderation' => $moderation,
                 'description' => $description,
                 'image' => $image,
                 'title' => $validatedData['title']
@@ -84,8 +83,11 @@ class OpenAIController extends Controller
         ]);
             
             $newDesc = $this->openAIService->editDescription($validatedData);
-            return inertia('User/OpenAIReview', [
-                'newDesc' => $newDesc
+            return redirect(route('user.openai.review'))->with([
+                'description' => $request['description'],
+                'image' => $request['image'],
+                'title' => $request['title'],
+                'newDesc' => json_decode($newDesc->choices[0]->text),
             ]);
     }
 
@@ -97,22 +99,11 @@ class OpenAIController extends Controller
 
         $user = hash("sha256", auth()->user()->name);
 
-        $moderation = $this->openAIService->moderateInput($validatedData, $user);
-
-        if (!$moderation->results[0]->flagged) {
-            // $filename = $validatedData['name'];
-            // $path = Storage::disk('local')->put('photos/' . $filename, file_get_contents($validatedData['url']));
-            $im = file_get_contents($validatedData['url']);
+            $im = $validatedData['url'];
             $image = $this->openAIService->variationImage($im, $user);
-            return inertia('User/OpenAIReview', [
+            return inertia(route('user.openai.review'), [
                 'newImage' => $image
             ]);
-        } else {
-            return inertia('User/OpenAI', [
-                'flagged' => 'Your title or prompt has failed automatic content moderation, please try again.
-             If you do not know why your input generated this response, please consult the OpenAI moderation guidelines'
-            ]);
-        }
     }
 
     public function openaiStore(Request $request)

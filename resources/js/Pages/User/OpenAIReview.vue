@@ -26,13 +26,12 @@ const form = useForm({
 
 
 const props = defineProps({
-    moderation: Object,
     description: Object,
     image: Object,
     flagged: Object,
     title: String,
     newImage: Object,
-    newDesc: Object,
+    newDesc: String,
 });
 
 
@@ -62,9 +61,10 @@ const editTitleHandler = () => {
 // const postImage = ref(props.image);
 // const postDescription = ref(props.description);
 
-const postImage = ref(props.image.data[0].url);
-const postDesc = ref(props.description.choices[0].text);
-const imgName = ref(props.image.data[0].url.match(/img-(.*)\.png/)[0])
+const postImage = ref(props.image?.data[0]?.url || null);
+const postDesc = ref(props.description?.choices[0]?.text || null);
+const imgName = ref(props.image?.data[0]?.url.match(/img-(.*)\.png/)?.[0] || null);
+
 
 const editImageForm = useForm({
     url: postImage,
@@ -75,13 +75,18 @@ const editImageForm = useForm({
 
 const editDescForm = useForm({
     text: postDesc,
-    instruction: null
+    instruction: null,
+    description: props.description,
+    image: props.image,
+    title: props.title,
+    newImage: props.newImage,
+    newDesc: props.newDesc
 });
 
 const variationImage = () => {
     Inertia.post(route('user.openai.variationImage'), {
         url: props.image.data[0].url
-    }, {preserveState: true});
+    });
 }
 
 const saveNewTitle = () => {
@@ -128,16 +133,24 @@ Inertia.post(route('user.openai.store'), {
                 <h2 class="text-xl text-center">{{ postTitle }}</h2>
                
                 <div v-if="newImage">{{ newImage }}</div>
+                <div v-if="newImage && newImage.data">
+                    <img id="image" class="h-72 w-auto" :src="newImage.data[0].url" alt="" @click="openPhotoModal">
+                    <!-- <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button> -->
+                </div>
+                <!-- <div v-if="image">{{ image }}</div> -->
                 <div v-if="image && image.data">
                     <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
                     <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button>
                 </div>
-                <div v-if="description && description.choices">
+                <div v-if="description && description.choices && !newDesc">
                     <p class="whitespace-pre-wrap">{{ description.choices[0].text }}</p>
                 </div>
-                <div v-if="newDesc && newDesc.choices">
-                    <p class="whitespace-pre-wrap">{{ newDesc.choices[0].text }}</p>
+                <div v-if="newDesc">
+                    <p class="whitespace-pre-wrap">{{ newDesc }}</p>
                 </div>
+                <!-- <div v-if="newDesc && newDesc.choices">
+                    <p class="whitespace-pre-wrap">{{ newDesc.choices[0].text }}</p>
+                </div> -->
                 <!-- <div v-else>{{ description }}</div> -->
             </div>
 
@@ -182,7 +195,7 @@ Inertia.post(route('user.openai.store'), {
                         <form @submit.prevent="editDescForm.post(route('user.openai.editDescription'))">
                         <label for="instruction" class="block text-m font-bold">Instructions for altering text here:</label>
                         <div class="m-1">
-                            <input id="instruction" name="instruction" maxlength="30" v-on:click="editDescForm.clearErrors('instructions')"
+                            <input id="instruction" name="instruction" v-on:click="editDescForm.clearErrors('instruction')"
                                 class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                 v-model="editDescForm.instruction" />
                                 <button type="submit" :disabled="editDescForm.processing" class="ring-2 text-emerald-600 ring-emerald-600 p-2">Edit Description!</button>
