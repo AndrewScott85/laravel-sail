@@ -24,8 +24,7 @@ class OpenAIController extends Controller
         $validatedData = $this->validate($request, [
             'prompt' => ['required'],
             'title' => ['required', 'max:30', 'string'],
-            'text' => ['required', 'max:30', 'string'],
-            'style' => ['required', 'max:30', 'string'],
+            'text' => ['required', 'string'],
         ]);
 
         $user = hash("sha256", auth()->user()->name);
@@ -77,18 +76,23 @@ class OpenAIController extends Controller
     
     public function editDescription(Request $request)
     {
+        // dd($request);
         $validatedData = $this->validate($request, [
             'text' => ['required', 'string'],
             'instruction' => ['required', 'string'],
         ]);
-            
             $newDesc = $this->openAIService->editDescription($validatedData);
-            return redirect(route('user.openai.review'))->with([
-                'description' => $request['description'],
-                'image' => $request['image'],
-                'title' => $request['title'],
-                'newDesc' => json_decode($newDesc->choices[0]->text),
+
+            if ($newDesc && isset($newDesc->choices[0]->text)) {
+            return response()->json([
+                'newDesc' => $newDesc->choices[0]->text
             ]);
+        } else {
+            return response()->json([
+                'newDesc' => $newDesc,
+            'errorMsg' => 'An error was produced - please try again, if the error persists try changing the prompt'
+        ]);
+        }
     }
 
     public function variationImage(Request $request)
@@ -101,7 +105,7 @@ class OpenAIController extends Controller
 
             $im = $validatedData['url'];
             $image = $this->openAIService->variationImage($im, $user);
-            return inertia(route('user.openai.review'), [
+            return redirect(route('user.openai.review'))->with([
                 'newImage' => $image
             ]);
     }

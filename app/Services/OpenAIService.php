@@ -15,7 +15,7 @@ class OpenAIService
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 120,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => '{
@@ -46,7 +46,6 @@ class OpenAIService
         $prompt = $validatedData['prompt'];
         $title = $validatedData['title'];
         $text = $validatedData['text'];
-        $style = $validatedData['style'];
 
         $curl = curl_init();
 
@@ -55,12 +54,16 @@ class OpenAIService
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 120,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => '{
               "model": "text-davinci-003",
-              "prompt": "write a '.$text.' in the style of '.$style.' to accompany an image which has a title of '.$title.' and was created using the prompt '.$prompt.'",
+              "prompt": "you are a highly intelligent, capable, and helpful AI text generator. "
+              . "The user has generated an image with OpenAI which has a title of '.$title.'. "
+              . "For context only, the image was created from the prompt '.$prompt.'. "
+              . "Do not write anything about this prompt. "
+              . "Write a text from the prompt: '.$text.' to accompany this image",
               "temperature": 0.25,
               "max_tokens": 600,
               "top_p": 1,
@@ -88,7 +91,7 @@ class OpenAIService
 
     public function editDescription($validatedData)
     {
-        $text = json_encode($validatedData['text']);
+        $text = $validatedData['text'];
         $instruction = $validatedData['instruction'];
  
         $curl = curl_init();
@@ -98,7 +101,7 @@ class OpenAIService
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 120,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => json_encode([
@@ -135,7 +138,7 @@ class OpenAIService
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 120,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => '{

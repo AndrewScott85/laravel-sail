@@ -6,7 +6,6 @@ const form = useForm({
     prompt: null,
     title: '',
     text: null,
-    style: null,
 });
 
 // const styles = [
@@ -66,27 +65,19 @@ const countdown = () => {
                                     v-model="form.prompt"></textarea>
                             </div>
                             <div class="text-red-600" v-if="form.errors.prompt">{{ form.errors.prompt }}</div>
+
                             <div>
                                 <label for="text" class="block text-m font-bold">Write a: (e.g. haiku, blogpost, film script, newspaper article, communist slogan etc) max 30
                                     characters</label>
                                 <div class="m-1">
-                                    <input id="text" name="text" maxlength="30" v-on:click="form.clearErrors('text')"
+                                    <input id="text" name="text" v-on:click="form.clearErrors('text')"
                                         class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
                                         v-model="form.text" />
                                 </div>
                             
                             <div class="text-red-600" v-if="form.errors.text">{{ form.errors.text }}</div>
                         </div>
-                        <div>
-                                <label for="style" class="block text-m font-bold">In the style of: ( e.g. a robot, mr T, donald trump, etc.) max 30
-                                    characters</label>
-                                <div class="m-1">
-                                    <input id="style" name="style" maxlength="50" v-on:click="form.clearErrors('style')"
-                                        class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                        v-model="form.style" />
-                                </div>
-                            </div>
-                            <div class="text-red-600" v-if="form.errors.style">{{ form.errors.style }}</div>
+                        
                         </div>
                     
             </div>

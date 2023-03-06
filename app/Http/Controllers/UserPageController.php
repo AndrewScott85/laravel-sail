@@ -46,12 +46,14 @@ class UserPageController extends Controller
         $image = session()->get('image');
         $title = session()->get('title');
         $newDesc = session()->get('newDesc', null);
+        $newImage = session()->get('newImage', null);
     
         return inertia('User/OpenAIReview', [
             'description' => $description,
             'image' => $image,
             'title' => $title,
             'newDesc' => $newDesc,
+            'newImage' => $newImage,
         ]);
     }
     

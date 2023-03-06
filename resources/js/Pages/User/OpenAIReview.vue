@@ -4,6 +4,7 @@ import { Link, useForm } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
 import FullScreenphoto from "@/Components/FullScreenPhoto.vue";
 import { Inertia } from "@inertiajs/inertia";
+import axios from "axios";
 
 const openingPhotoModal = ref(false);
 
@@ -58,13 +59,14 @@ const editTitleHandler = () => {
     }
 };
 
-// const postImage = ref(props.image);
-// const postDescription = ref(props.description);
 
 const postImage = ref(props.image?.data[0]?.url || null);
-const postDesc = ref(props.description?.choices[0]?.text || null);
+const postDesc = ref(props.description?.choices?.[0].text || null);
 const imgName = ref(props.image?.data[0]?.url.match(/img-(.*)\.png/)?.[0] || null);
 
+let instruction = '';
+let updatedDesc = ref(null);
+let originalDesc = ref(false);
 
 const editImageForm = useForm({
     url: postImage,
@@ -72,21 +74,41 @@ const editImageForm = useForm({
     name: imgName
 });
 
+const updateInstruction = (event) => {
+      instruction = event.target.value
+    }
 
-const editDescForm = useForm({
-    text: postDesc,
-    instruction: null,
-    description: props.description,
-    image: props.image,
-    title: props.title,
-    newImage: props.newImage,
-    newDesc: props.newDesc
-});
+const editDesc = () => {
+    axios.post(route('user.openai.editDescription'), {
+    text: postDesc.value,
+    instruction: instruction,
+}).then(response => {
+    postDesc.value = response.data.newDesc;
+    updatedDesc.value = response.data.newDesc;
+    originalDesc.value = false;
+    editDescription = ref(false);
+    instruction = '';
+
+}).catch(error => { 
+console.log('oopsydoodle - something went wrong')
+})
+};
+
+const switchDesc = () => {
+    if (postDesc.value == props.description.choices[0].text) {
+        postDesc.value = updatedDesc.value;
+        originalDesc.value = false;
+    }
+    else {
+        postDesc.value = props.description.choices[0].text
+        originalDesc.value = true;
+    }
+}
 
 const variationImage = () => {
     Inertia.post(route('user.openai.variationImage'), {
         url: props.image.data[0].url
-    });
+    }, {preserveState : true});
 }
 
 const saveNewTitle = () => {
@@ -142,16 +164,16 @@ Inertia.post(route('user.openai.store'), {
                     <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
                     <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button>
                 </div>
-                <div v-if="description && description.choices && !newDesc">
-                    <p class="whitespace-pre-wrap">{{ description.choices[0].text }}</p>
+                <div v-if="postDesc">
+                    <p class="whitespace-pre-wrap">{{ postDesc}}</p>
                 </div>
-                <div v-if="newDesc">
-                    <p class="whitespace-pre-wrap">{{ newDesc }}</p>
-                </div>
+                <!-- <div v-if="updatedDesc">
+                    <p class="whitespace-pre-wrap">{{ updatedDesc}}</p>
+                </div> -->
                 <!-- <div v-if="newDesc && newDesc.choices">
                     <p class="whitespace-pre-wrap">{{ newDesc.choices[0].text }}</p>
                 </div> -->
-                <!-- <div v-else>{{ description }}</div> -->
+                <div v-else>{{ description }}</div>
             </div>
 
                 <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
@@ -159,6 +181,7 @@ Inertia.post(route('user.openai.store'), {
                     <button class="ring-2 ring-white p-2" @click="editTitleHandler"> {{ editTitle ? 'Cancel' : 'Edit Title' }}</button>
                     <button class="ring-2 ring-white p-2" @click="editImage=!editImage">{{ editImage ? 'Cancel' : 'Edit Image' }}</button>
                     <button class="ring-2 ring-white p-2" @click="editDescription=!editDescription">{{ editDescription ? 'Cancel' : 'Edit Description' }}</button>
+                    <button v-if="updatedDesc" class="ring-2 ring-white p-2" @click="switchDesc">{{ originalDesc ?  'Redo' : 'Original Text'  }}</button>
                 </div>
                     
                     <div v-if="editTitle">
@@ -192,28 +215,24 @@ Inertia.post(route('user.openai.store'), {
 
                     
                     <div v-if="editDescription">
-                        <form @submit.prevent="editDescForm.post(route('user.openai.editDescription'))">
                         <label for="instruction" class="block text-m font-bold">Instructions for altering text here:</label>
                         <div class="m-1">
-                            <input id="instruction" name="instruction" v-on:click="editDescForm.clearErrors('instruction')"
+                            <input id="instruction" name="instruction" 
                                 class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                v-model="editDescForm.instruction" />
-                                <button type="submit" :disabled="editDescForm.processing" class="ring-2 text-emerald-600 ring-emerald-600 p-2">Edit Description!</button>
+                                v-model="instruction"
+                                @keyup="updateInstruction"/>
+                                <button @click="editDesc" :disabled="editDesc.processing" class="ring-2 text-emerald-600 ring-emerald-600 p-2">Edit Description!</button>
                         </div>
-                    <div class="text-red-600" v-if="editDescForm.errors.instructions">{{ editDescForm.errors }}</div>
-                </form>
+                    <!-- <div class="text-red-600" v-if="editDescForm.errors.instructions">{{ editDescForm.errors }}</div> -->
+                
                 </div>
             </div>
-
-
                 <div class="pt-6 flex justify-end gap-4 px-4">
                     <div v-show="form.processing" class="text-sm text-gray-100">
                         Saving.... This can take a while, please be patient!
                     </div>
                     <div v-if="form.processing"></div>
-
-                </div>
-          
+                </div>         
         </div>
         <Link
             class="text-gray-500  ring-2 ring-gray-500 hover:bg-gray-600 hover:text-white font-bold px-4 py-2 rounded-md"
@@ -238,7 +257,7 @@ Inertia.post(route('user.openai.store'), {
                     <img class="object-scale-down py-6 px-4" :src="image.data[0].url" alt="" />
                 </div>
                 <div class="max-w-7xl mx-auto">
-                    <p class="whitespace-pre-line md:text-xl px-4 pb-4 text-left">{{ description.choices[0].text }}</p>
+                    <p class="whitespace-pre-line md:text-xl px-4 pb-4 text-left">{{ postDesc }}</p>
                 </div>
             </div>
         </template>
