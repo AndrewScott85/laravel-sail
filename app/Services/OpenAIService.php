@@ -48,9 +48,13 @@ class OpenAIService
         $text = $validatedData['text'];
 
         $curl = curl_init();
+        $messages = array(
+        ["role" => "system", "content" => "you are a highly intelligent, capable, and helpful AI text generator."],
+        ["role" => "user", "content" => "I have an image with title $title, please can you write $text to accompany it"],
+        );
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.openai.com/v1/completions",
+            CURLOPT_URL => "https://api.openai.com/v1/chat/completions",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -58,12 +62,13 @@ class OpenAIService
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => json_encode([
-              "model" => "text-davinci-003",
-              "prompt" => "you are a highly intelligent, capable, and helpful AI text generator. "
-              . "The user has generated an image with OpenAI which has a title of $title. "
+              "model" => "gpt-3.5-turbo",
+              "messages" => $messages,
+            //   "you are a highly intelligent, capable, and helpful AI text generator. "
+            //   . "The user has generated an image with OpenAI which has a title of $title. "
             //   . "For context only, the image was created from the prompt $prompt. "
             //   . "Do not write anything using the words in the image prompt. "
-              . "Write a text from the prompt: $text to accompany this image",
+            //   . "Write a text from the prompt: $text to accompany this image",
               "temperature" => 0.25,
               "max_tokens" => 600,
               "top_p" => 1,

@@ -59,7 +59,7 @@ const editTitleHandler = () => {
 
 
 const postImage = ref(props.image?.data?.[0]?.url || null);
-const postDesc = ref(props.description?.choices?.[0].text || null);
+const postDesc = ref(props.description?.choices?.[0]?.message?.content || null);
 const imgName = ref(props.image?.data?.[0]?.url.match(/img-(.*)\.png/)?.[0] || null);
 
 let instruction = '';
@@ -107,9 +107,8 @@ const switchDesc = () => {
 }
 
 const variationImage = () => {
-    console.log(postImage.value);
     axios.post(route('user.openai.variationImage'), {
-        url: props.image.data[0].url
+        url: postImage.value
     }).then(response => {
         postImage.value = response.data.newImage;
         updatedImage.value = response.data.newImage;
@@ -191,7 +190,7 @@ Inertia.post(route('user.openai.store'), {
                 <!-- <div v-if="newDesc && newDesc.choices">
                     <p class="whitespace-pre-wrap">{{ newDesc.choices[0].text }}</p>
                 </div> -->
-                <div v-else>{{ description }}</div>
+                <div v-else>{{ description.choices[0].message.content }}</div>
             </div>
 
                 <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
