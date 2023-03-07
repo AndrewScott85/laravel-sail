@@ -43,7 +43,7 @@ class OpenAIService
 
     public function generateDescription($validatedData, $user)
     {
-        $prompt = $validatedData['prompt'];
+        // $prompt = $validatedData['prompt'];
         $title = $validatedData['title'];
         $text = $validatedData['text'];
 
@@ -57,20 +57,20 @@ class OpenAIService
             CURLOPT_TIMEOUT => 120,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => '{
-              "model": "text-davinci-003",
-              "prompt": "you are a highly intelligent, capable, and helpful AI text generator. "
-              . "The user has generated an image with OpenAI which has a title of '.$title.'. "
-              . "For context only, the image was created from the prompt '.$prompt.'. "
-              . "Do not write anything about this prompt. "
-              . "Write a text from the prompt: '.$text.' to accompany this image",
-              "temperature": 0.25,
-              "max_tokens": 600,
-              "top_p": 1,
-              "frequency_penalty": 0.5,
-              "presence_penalty": 0.5,
-              "user": "'.$user.'"
-            }',
+            CURLOPT_POSTFIELDS => json_encode([
+              "model" => "text-davinci-003",
+              "prompt" => "you are a highly intelligent, capable, and helpful AI text generator. "
+              . "The user has generated an image with OpenAI which has a title of $title. "
+            //   . "For context only, the image was created from the prompt $prompt. "
+            //   . "Do not write anything using the words in the image prompt. "
+              . "Write a text from the prompt: $text to accompany this image",
+              "temperature" => 0.25,
+              "max_tokens" => 600,
+              "top_p" => 1,
+              "frequency_penalty" => 0.5,
+              "presence_penalty" => 0.5,
+              "user" => $user
+            ]),
             CURLOPT_HTTPHEADER => [
                 "Content-Type: application/json",
                 "Authorization: Bearer ". env('OPEN_AI_KEY'),
@@ -144,7 +144,7 @@ class OpenAIService
             CURLOPT_POSTFIELDS => '{
                 "prompt": "'.$prompt.'",
                 "n": 1,
-                "size": "512x512",
+                "size": "1024x1024",
                 "user": "'.$user.'"
               }',
             CURLOPT_HTTPHEADER => array(
@@ -220,7 +220,7 @@ class OpenAIService
             CURLOPT_POSTFIELDS => array(
                 "image" => $cfile,
                 "n" => 1,
-                "size" => "512x512",
+                "size" => "1024x1024",
                 "user" => $user
             ),
             CURLOPT_HTTPHEADER => array(

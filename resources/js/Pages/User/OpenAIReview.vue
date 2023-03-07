@@ -31,8 +31,6 @@ const props = defineProps({
     image: Object,
     flagged: Object,
     title: String,
-    newImage: Object,
-    newDesc: String,
 });
 
 
@@ -60,13 +58,16 @@ const editTitleHandler = () => {
 };
 
 
-const postImage = ref(props.image?.data[0]?.url || null);
+const postImage = ref(props.image?.data?.[0]?.url || null);
 const postDesc = ref(props.description?.choices?.[0].text || null);
-const imgName = ref(props.image?.data[0]?.url.match(/img-(.*)\.png/)?.[0] || null);
+const imgName = ref(props.image?.data?.[0]?.url.match(/img-(.*)\.png/)?.[0] || null);
 
 let instruction = '';
 let updatedDesc = ref(null);
 let originalDesc = ref(false);
+
+let updatedImage = ref(null);
+let originalImage = ref(false);
 
 const editImageForm = useForm({
     url: postImage,
@@ -106,9 +107,24 @@ const switchDesc = () => {
 }
 
 const variationImage = () => {
-    Inertia.post(route('user.openai.variationImage'), {
+    console.log(postImage.value);
+    axios.post(route('user.openai.variationImage'), {
         url: props.image.data[0].url
-    }, {preserveState : true});
+    }).then(response => {
+        postImage.value = response.data.newImage;
+        updatedImage.value = response.data.newImage;
+    });
+}
+
+const switchImage = () => {
+    if (postImage.value == props.image.data[0].url) {
+        postImage.value = updatedImage.value;
+        originalImage.value = false;
+    }
+    else {
+        postImage.value = props.image.data[0].url
+        originalImage.value = true;
+    }
 }
 
 const saveNewTitle = () => {
@@ -154,16 +170,18 @@ Inertia.post(route('user.openai.store'), {
                 </div>
                 <h2 class="text-xl text-center">{{ postTitle }}</h2>
                
-                <div v-if="newImage">{{ newImage }}</div>
-                <div v-if="newImage && newImage.data">
-                    <img id="image" class="h-72 w-auto" :src="newImage.data[0].url" alt="" @click="openPhotoModal">
+                <div v-if="postImage"><img id="postImage" class="h-80 w-auto" :src="postImage" alt=""></div>
+                <button v-if="updatedImage" class="ring-2 ring-white p-2" @click="switchImage">{{ originalImage ?  'Redo' : 'Original Image'  }}</button>
+                <!-- <div v-if="newImage && newImage.data">
+                    <img id="image" class="h-72 w-auto" :src="newImage.data[0].url" alt="" @click="openPhotoModal"> -->
                     <!-- <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button> -->
-                </div>
+                <!-- </div> -->
                 <!-- <div v-if="image">{{ image }}</div> -->
                 <div v-if="image && image.data">
                     <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
                     <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button>
                 </div>
+                <div v-else class="text-white">{{ image }}</div>
                 <div v-if="postDesc">
                     <p class="whitespace-pre-wrap">{{ postDesc}}</p>
                 </div>
@@ -246,7 +264,7 @@ Inertia.post(route('user.openai.store'), {
     </AppLayout>
     <FullScreenphoto :show="openingPhotoModal" @close="closePhotoModal">
         <template #content>
-            <div v-if="title && image && image.data" class="flex flex-col bg-auto gap-4">
+            <div v-if="title && postImage" class="flex flex-col bg-auto gap-4">
                 <div class="flex justify-end">
                     <button
                         class="outline outline-gray-800 rounded-full text-white text-lg mt-4 mr-4 py-2 px-4 hover:text-red-600 hover:outline-red-600"
@@ -254,7 +272,7 @@ Inertia.post(route('user.openai.store'), {
                 </div>
                 <div class="flex flex-col items-center">
                     <div class="text-bold text-2xl pl-4">{{ title }}</div>
-                    <img class="object-scale-down py-6 px-4" :src="image.data[0].url" alt="" />
+                    <img class="object-scale-down py-6 px-4" :src="postImage" alt="" />
                 </div>
                 <div class="max-w-7xl mx-auto">
                     <p class="whitespace-pre-line md:text-xl px-4 pb-4 text-left">{{ postDesc }}</p>

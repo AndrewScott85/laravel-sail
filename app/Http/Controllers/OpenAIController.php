@@ -105,9 +105,21 @@ class OpenAIController extends Controller
 
             $im = $validatedData['url'];
             $image = $this->openAIService->variationImage($im, $user);
-            return redirect(route('user.openai.review'))->with([
-                'newImage' => $image
+
+            if ($image && isset($image->data[0]->url)) {
+                return response()->json([
+                    'newImage' => $image->data[0]->url
+                ]);
+            } else {
+                return response()->json([
+                    'newImage' => $image,
+                'errorMsg' => 'An error was produced - please try again, if the error persists try changing the prompt'
             ]);
+            }
+
+            // return redirect(route('user.openai.review'))->with([
+            //     'newImage' => $image
+            // ]);
     }
 
     public function openaiStore(Request $request)
