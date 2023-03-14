@@ -49,8 +49,8 @@ class OpenAIService
 
         $curl = curl_init();
         $messages = array(
-        ["role" => "system", "content" => "you are a highly intelligent, capable, and helpful AI text generator."],
-        ["role" => "user", "content" => "I have an image with title $title, please can you write $text to accompany it"],
+        ["role" => "system", "content" => "you are a highly intelligent, capable, and helpful AI text generator. Your job is to write text to accompany an image when given a title and a text prompt. It doesn't matter that you can't see the image"],
+        ["role" => "user", "content" => "I have an image with title $title, write $text to accompany it. Return only this text"],
         );
 
         curl_setopt_array($curl, [
@@ -64,11 +64,6 @@ class OpenAIService
             CURLOPT_POSTFIELDS => json_encode([
               "model" => "gpt-3.5-turbo",
               "messages" => $messages,
-            //   "you are a highly intelligent, capable, and helpful AI text generator. "
-            //   . "The user has generated an image with OpenAI which has a title of $title. "
-            //   . "For context only, the image was created from the prompt $prompt. "
-            //   . "Do not write anything using the words in the image prompt. "
-            //   . "Write a text from the prompt: $text to accompany this image",
               "temperature" => 0.25,
               "max_tokens" => 600,
               "top_p" => 1,

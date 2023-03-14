@@ -39,11 +39,10 @@ let postTitle = ref(props.title);
 let previousTitle = props.title;
 
 const updateTitle = (event) => {
-      postTitle = event.target.value
-    }
+    postTitle = event.target.value
+}
 
 let editTitle = ref(false);
-let editImage = ref(false);
 let editDescription = ref(false);
 
 
@@ -76,23 +75,23 @@ const editImageForm = useForm({
 });
 
 const updateInstruction = (event) => {
-      instruction = event.target.value
-    }
+    instruction = event.target.value
+}
 
 const editDesc = () => {
     axios.post(route('user.openai.editDescription'), {
-    text: postDesc.value,
-    instruction: instruction,
-}).then(response => {
-    postDesc.value = response.data.newDesc;
-    updatedDesc.value = response.data.newDesc;
-    originalDesc.value = false;
-    editDescription = ref(false);
-    instruction = '';
+        text: postDesc.value,
+        instruction: instruction,
+    }).then(response => {
+        postDesc.value = response.data.newDesc;
+        updatedDesc.value = response.data.newDesc;
+        originalDesc.value = false;
+        editDescription = ref(false);
+        instruction = '';
 
-}).catch(error => { 
-console.log('oopsydoodle - something went wrong')
-})
+    }).catch(error => {
+        console.log('oopsydoodle - something went wrong')
+    })
 };
 
 const switchDesc = () => {
@@ -136,18 +135,18 @@ const countdown = () => {
 
 const usePost = () => {
 
-let url = props.image.data[0].url;
-const regex = /img-(.*)\.png/;
-const result = url.match(regex);
-const filename = result[0];
+    let url = props.image.data[0].url;
+    const regex = /img-(.*)\.png/;
+    const result = url.match(regex);
+    const filename = result[0];
 
-Inertia.post(route('user.openai.store'), {
-    url: props.image.data[0].url,
-    name: filename,
-    description: props.description.choices[0].text,
-    title: props.title,
-    ai_service_id: 2,
-});
+    Inertia.post(route('user.openai.store'), {
+        url: props.image.data[0].url,
+        name: filename,
+        description: props.description.choices[0].text,
+        title: props.title,
+        ai_service_id: 2,
+    });
 };
 
 </script>
@@ -161,98 +160,77 @@ Inertia.post(route('user.openai.store'), {
         </template>
         <div class="py-12 max-w-7xl mx-auto">
             <!-- <p class="text-red-600 text-lg px-4 lg:px-8 pb-4 font-bold"
-                v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI
-                demonstration: Creation, Editing, & Deletion are disabled on this account</p> -->
-            <div class="flex flex-col px-4">
+                    v-if="$page.props.user.id == 1 || $page.props.user.id == 2">Please Note: The Demo Account is for UI
+                    demonstration: Creation, Editing, & Deletion are disabled on this account</p> -->
+            <div class="flex flex-col px-4 gap-4 items-center">
                 <div v-if="flagged">
                     <p>{{ flagged }}</p>
                 </div>
-                <h2 class="text-xl text-center">{{ postTitle }}</h2>
-               
-                <div v-if="postImage"><img id="postImage" class="h-80 w-auto" :src="postImage" alt=""></div>
-                <button v-if="updatedImage" class="ring-2 ring-white p-2" @click="switchImage">{{ originalImage ?  'Redo' : 'Original Image'  }}</button>
-                <!-- <div v-if="newImage && newImage.data">
-                    <img id="image" class="h-72 w-auto" :src="newImage.data[0].url" alt="" @click="openPhotoModal"> -->
-                    <!-- <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button> -->
-                <!-- </div> -->
-                <!-- <div v-if="image">{{ image }}</div> -->
-                <div v-if="image && image.data">
-                    <img id="image" class="h-72 w-auto" :src="image.data[0].url" alt="" @click="openPhotoModal">
-                    <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button>
+                <div v-if="editTitle">
+                    <!-- <label for="title" class="block text-m font-bold">New Title (max 30
+                        characters)</label> -->
+                    <div class="m-1">
+                        <div class="flex gap-2">
+                        <input id="title" name="title" maxlength="30"
+                            class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                            v-model="postTitle" @keyup="updateTitle, countdown" />
+                            <button class="my-2 ring-2 text-emerald-600 ring-emerald-600 p-2" @click="saveNewTitle">&#10004</button>
+                            <button class="ring-2 ring-red-600 text-red-600 px-2 my-2" @click="editTitleHandler">X</button>
+                        </div>
+                        <p class="pt-2">Characters remaining: <countdown></countdown>
+                        </p>   
+                    </div>
                 </div>
-                <div v-else class="text-white">{{ image }}</div>
+                <div v-else class="self-stretch grid grid-cols-3 gap-4">
+                <h2 class="text-2xl col-start-2 text-center" >{{ postTitle }} </h2>
+                <button class="ring-2 ring-white px-2 my-2 col-start-3 justify-self-start" @click="editTitleHandler">Edit</button>
+            </div>
+                <div v-if="postImage" class="flex flex-col gap-4">
+                    <img id="postImage" class="h-80 w-auto" :src="postImage" alt="" @click="openPhotoModal">
+                    {{  }}
+                </div>
+                <div v-else class="text-white">Uh-Oh! It Looks like something went wrong with the image generation, please try again!</div>
                 <div v-if="postDesc">
-                    <p class="whitespace-pre-wrap">{{ postDesc}}</p>
+                    <p class="whitespace-pre-wrap">{{ postDesc }}</p>
                 </div>
-                <!-- <div v-if="updatedDesc">
-                    <p class="whitespace-pre-wrap">{{ updatedDesc}}</p>
-                </div> -->
-                <!-- <div v-if="newDesc && newDesc.choices">
-                    <p class="whitespace-pre-wrap">{{ newDesc.choices[0].text }}</p>
-                </div> -->
-                <div v-else>{{ description.choices[0].message.content }}</div>
+                <div v-else>Uh-Oh! It Looks like something went wrong with the description, please try again!</div>
             </div>
 
-                <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
-                    <div class="flex p-4 gap-4">
-                    <button class="ring-2 ring-white p-2" @click="editTitleHandler"> {{ editTitle ? 'Cancel' : 'Edit Title' }}</button>
-                    <button class="ring-2 ring-white p-2" @click="editImage=!editImage">{{ editImage ? 'Cancel' : 'Edit Image' }}</button>
-                    <button class="ring-2 ring-white p-2" @click="editDescription=!editDescription">{{ editDescription ? 'Cancel' : 'Edit Description' }}</button>
-                    <button v-if="updatedDesc" class="ring-2 ring-white p-2" @click="switchDesc">{{ originalDesc ?  'Redo' : 'Original Text'  }}</button>
+            <div class="sm:px-4 lg:px-8 mt-5 md:col-span-2 md:mt-0">
+                <div class="flex flex-col p-4 gap-4">
+                    
+                    <div v-if="postImage" class="flex gap-4">
+                    <button class="ring-2 text-indigo-600 ring-indigo-600 p-2" @click="variationImage">Variation of this Image?</button>
+                    <button v-if="updatedImage" class="ring-2 ring-white p-2" @click="switchImage">{{ originalImage ? 'Updated Image >' : '< Original Image' }}</button>
+                    </div>
+                    <button class="ring-2 ring-white p-2" @click="editDescription = !editDescription">{{ editDescription ? 'Cancel' : 'Edit Description' }}</button>
+                    <button v-if="updatedDesc" class="ring-2 ring-white p-2" @click="switchDesc">{{ originalDesc ? 'Redo' :'Original Text' }}</button>
                 </div>
-                    
-                    <div v-if="editTitle">
-                        <label for="title" class="block text-m font-bold">New Title (max 30
-                            characters)</label>
-                        <div class="m-1">
-                            <input id="title" name="title" maxlength="30"
-                                class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                v-model="postTitle" @keyup="updateTitle, countdown" />
-                            <p class="pt-2">Characters remaining: <countdown></countdown>
-                            </p>
-                            <button class="ring-2 text-emerald-600 ring-emerald-600 p-2" @click="saveNewTitle">Save Change</button>
-                        </div>
-                        <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
-                    </div>
 
-
-                    <div v-if="editImage">
-                        <form @submit.prevent="editImageForm.post(route('user.openai.editImage'))">
-                        <label for="prompt" class="block text-m font-bold text-white pt-8"> Describe what you want
-                            to see here!</label>
-                        <div class="mt-1">
-                            <textarea id="prompt" name="prompt" rows="3" v-on:click="editImageForm.clearErrors('prompt')"
-                                class="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                v-model="editImageForm.prompt"></textarea>
-                                <button type="submit" :disabled="editImageForm.processing" class="ring-2 text-emerald-600 ring-emerald-600 p-2">Edit Image!</button>
-                        </div>
-                        <div class="text-red-600" v-if="editImageForm.errors.prompt">{{ editImageForm.errors.prompt }}</div>
-                    </form>
-                    </div>
-
-                    
-                    <div v-if="editDescription">
-                        <label for="instruction" class="block text-m font-bold">Instructions for altering text here:</label>
-                        <div class="m-1">
-                            <input id="instruction" name="instruction" 
-                                class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
-                                v-model="instruction"
-                                @keyup="updateInstruction"/>
-                                <button @click="editDesc" :disabled="editDesc.processing" class="ring-2 text-emerald-600 ring-emerald-600 p-2">Edit Description!</button>
-                        </div>
-                    <!-- <div class="text-red-600" v-if="editDescForm.errors.instructions">{{ editDescForm.errors }}</div> -->
                 
+
+
+                <div v-if="editDescription">
+                    <label for="instruction" class="block text-m font-bold">Instructions for altering text here:</label>
+                    <div class="m-1">
+                        <input id="instruction" name="instruction"
+                            class="py-1 px-2 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-m"
+                            v-model="instruction" @keyup="updateInstruction" />
+                        <button @click="editDesc" :disabled="editDesc.processing"
+                            class="ring-2 text-emerald-600 ring-emerald-600 p-2">Edit Description!</button>
+                    </div>
+                    <!-- <div class="text-red-600" v-if="editDescForm.errors.instructions">{{ editDescForm.errors }}</div> -->
+
                 </div>
             </div>
-                <div class="pt-6 flex justify-end gap-4 px-4">
-                    <div v-show="form.processing" class="text-sm text-gray-100">
-                        Saving.... This can take a while, please be patient!
-                    </div>
-                    <div v-if="form.processing"></div>
-                </div>         
+            <div class="pt-6 flex justify-end gap-4 px-4">
+                <div v-show="form.processing" class="text-sm text-gray-100">
+                    Saving.... This can take a while, please be patient!
+                </div>
+                <div v-if="form.processing"></div>
+            </div>
         </div>
-        <Link
-            class="text-gray-500  ring-2 ring-gray-500 hover:bg-gray-600 hover:text-white font-bold px-4 py-2 rounded-md"
+        <Link class="text-gray-500  ring-2 ring-gray-500 hover:bg-gray-600 hover:text-white font-bold px-4 py-2 rounded-md"
             :href="route('user.manageposts')">
         Cancel
         </Link>
@@ -275,8 +253,7 @@ Inertia.post(route('user.openai.store'), {
                 </div>
                 <div class="max-w-7xl mx-auto">
                     <p class="whitespace-pre-line md:text-xl px-4 pb-4 text-left">{{ postDesc }}</p>
-                </div>
             </div>
-        </template>
-    </FullScreenphoto>
-</template>
+        </div>
+    </template>
+</FullScreenphoto></template>

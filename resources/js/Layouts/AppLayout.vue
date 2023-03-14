@@ -56,7 +56,8 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('user.manageposts')" :active="route().current('user.manageposts')">
+                                <NavLink :href="route('user.manageposts')" 
+                                :active="route().current('user.manageposts')">
                                     Manage Posts
                                 </NavLink>
                             </div>
@@ -220,9 +221,22 @@ const logout = () => {
                 <div :class="{ 'block': showingNavigationDropdown, 'hidden': !showingNavigationDropdown }"
                     class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <!-- <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink> -->
+                        <ResponsiveNavLink :href="route('allposts')" :active="route().current('allposts')">
+                            All Posts
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('user.manageposts')" 
+                                :active="route().current('user.manageposts')">
+                                    Manage Posts
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('user.photos.create')"
+                                    :active="route().current('user.photos.create')">
+                                    Add New
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('user.openai.create')"
+                                    :active="route().current('user.openai.create')">
+                                    OpenAI
+                        </ResponsiveNavLink>
+                        
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -244,9 +258,9 @@ const logout = () => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                            <!-- <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
                                 Profile
-                            </ResponsiveNavLink>
+                            </ResponsiveNavLink> -->
 
                             <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures"
                                 :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
