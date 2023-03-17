@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import FullScreenphoto from "@/Components/FullScreenPhoto.vue";
 import { Inertia } from "@inertiajs/inertia";
 import axios from "axios";
@@ -33,6 +33,32 @@ const props = defineProps({
     title: String,
 });
 
+const currentProps = ref(props)
+const previousProps = JSON.parse(window.sessionStorage.getItem('previousProps'))
+
+
+
+const handleUpdate = () => {
+    if (props.length != 0) {
+  window.sessionStorage.setItem('previousProps', JSON.stringify(currentProps.value))
+}
+}
+
+onMounted(() => {
+  handleUpdate();
+  if (previousProps && Object.keys(props).length === 0) {
+  props.value = previousProps;
+  Object.assign(currentProps.value, previousProps)
+}
+    console.log('previousProps =')
+  console.log(previousProps);
+  console.log('Props = :')
+  console.log(props.value)
+})
+
+// onUnmounted(() => {
+//   currentProps.value.$off('update', handleUpdate)
+// })
 
 
 let postTitle = ref(props.title);
@@ -181,16 +207,16 @@ const usePost = () => {
                         </p>   
                     </div>
                 </div>
-                <div v-else class="self-stretch grid grid-cols-3 gap-4">
-                <h2 class="text-2xl col-start-2 text-center" >{{ postTitle }} </h2>
-                <button class="ring-2 ring-white px-2 my-2 col-start-3 justify-self-start" @click="editTitleHandler">Edit</button>
+                <div v-else class="self-stretch grid grid-cols-5">
+                <h2 class="text-2xl col-start-2 col-end-5 text-center" >{{ postTitle }} </h2>
+                <button class="ring-2 ring-white px-2 my-2 col-start-5 justify-self-start" @click="editTitleHandler">Edit</button>
             </div>
                 <div v-if="postImage" class="flex flex-col gap-4">
                     <img id="postImage" class="h-80 w-auto" :src="postImage" alt="" @click="openPhotoModal">
                     {{  }}
                 </div>
                 <div v-else class="text-white">Uh-Oh! It Looks like something went wrong with the image generation, please try again!</div>
-                <div v-if="postDesc">
+                <div v-if="postDesc" class="">
                     <p class="whitespace-pre-wrap">{{ postDesc }}</p>
                 </div>
                 <div v-else>Uh-Oh! It Looks like something went wrong with the description, please try again!</div>

@@ -30,7 +30,7 @@ class OpenAIController extends Controller
         $user = hash("sha256", auth()->user()->name);
         $moderation = $this->openAIService->moderateInput($validatedData, $user);
 
-        if (!$moderation->results[0]->flagged) {
+        if (isset($moderation->results) && !$moderation->results[0]->flagged) {
             $description = $this->openAIService->generateDescription($validatedData, $user);
             $image = $this->openAIService->generateImage($validatedData['prompt'], $user);
             return redirect(route('user.openai.review'))->with([
