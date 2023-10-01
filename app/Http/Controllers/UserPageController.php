@@ -37,7 +37,13 @@ class UserPageController extends Controller
 
     public function openaiCreate()
     {
-        return inertia('User/OpenAICreate');
+        $flagged = session()->get('flagged');
+        $errmsg = session()->get('errmsg');
+
+        return inertia('User/OpenAICreate', [
+            'flagged' => $flagged,
+            'errmsg' => $errmsg
+        ]);
     }
 
     public function openaiReview()

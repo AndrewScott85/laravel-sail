@@ -29,6 +29,7 @@ class OpenAIController extends Controller
 
         $user = hash("sha256", auth()->user()->name);
         $moderation = $this->openAIService->moderateInput($validatedData, $user);
+        
 
         if (isset($moderation->results) && !$moderation->results[0]->flagged) {
             $description = $this->openAIService->generateDescription($validatedData, $user);
@@ -40,8 +41,9 @@ class OpenAIController extends Controller
             ]);
         } else {
             return inertia('User/OpenAICreate', [
-                'flagged' => 'Your title or prompt has failed automatic content moderation, please
-             consult the OpenAI moderation guidelines and try again.'
+                'flagged' => 'There was a problem with moderating your request.
+                Please check you have sufficient credits and that you have not contravened the content rules',
+                'errmsg'=> $moderation
             ]);
         }
     }

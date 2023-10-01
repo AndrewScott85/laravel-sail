@@ -19,12 +19,16 @@ const form = useForm({
 //     {"id": 1, "name": "highbrow magazine"},
 // ]
 
-
+const props = defineProps({
+    flagged: String,
+    errmsg: Object
+});
 
 const countdown = () => {
     return 30 - form.title.length;
 }
 
+console.log(props)
 </script>
 
 <template>
@@ -52,6 +56,11 @@ const countdown = () => {
                                 </p>
                             </div>
                         </div>
+                        <div class="text-xl" v-if="flagged"> 
+                            <p> {{flagged}} </p>
+                            <p>The Error message returned was: </p>
+                            <p class="text-red-600" v-if="errmsg.error.message"> {{ errmsg.error.message }}</p>
+                         </div>
                         <div class="text-red-600" v-if="form.errors.title">{{ form.errors.title }}</div>
 
 
